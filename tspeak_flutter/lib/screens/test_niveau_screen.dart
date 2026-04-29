@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../utils/url_validator.dart';
 import 'home_screen.dart';
 
 class TestNiveauScreen extends StatefulWidget {
@@ -30,9 +31,24 @@ class _TestNiveauScreenState extends State<TestNiveauScreen>
     super.dispose();
   }
 
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (_pulseController.isAnimating) {
+      _pulseController.stop();
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) _pulseController.repeat();
+      });
+    }
+  }
+
   void _toggleRecording() {
-    setState(() {
-      _isRecording = !_isRecording;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
+          _isRecording = !_isRecording;
+        });
+      }
     });
   }
 
@@ -52,8 +68,8 @@ class _TestNiveauScreenState extends State<TestNiveauScreen>
               width: 2,
             ),
           ),
-          child: const CircleAvatar(
-            backgroundImage: NetworkImage(
+          child: CircleAvatar(
+            backgroundImage: UrlValidator.getSafeImage(
               'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop',
             ),
           ),
@@ -131,8 +147,11 @@ class _TestNiveauScreenState extends State<TestNiveauScreen>
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Image.network(
-                      'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=100&h=100&fit=crop',
+                    child: Image(
+                      image: UrlValidator.getSafeImage(
+                        'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=100&h=100&fit=crop',
+                        placeholder: 'assets/images/logo.png',
+                      ),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -294,9 +313,13 @@ class _TestNiveauScreenState extends State<TestNiveauScreen>
           // Skip button
           TextButton(
             onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => const HomeScreen()),
-              );
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => const HomeScreen()),
+                  );
+                }
+              });
             },
             child: Text(
               'Passer le test',

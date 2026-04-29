@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../theme/app_theme.dart';
 import '../widgets/patterns_painter.dart';
 import '../services/auth_service.dart';
-import '../models/user.dart';
+import '../utils/safe_ui.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,23 +20,46 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   bool _obscurePassword = true;
   String? _errorMessage;
+  int _cooldownSeconds = 0;
+  Timer? _cooldownTimer;
 
   @override
   void dispose() {
+    _cooldownTimer?.cancel();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
   Future<void> _handleLogin() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      setState(() => _errorMessage = 'Veuillez remplir tous les champs.');
+    if (_cooldownSeconds > 0) {
+      SafeUI.run(() {
+        if (mounted) {
+          setState(() {
+            _errorMessage =
+                'Trop de tentatives. Réessaie dans $_cooldownSeconds secondes.';
+          });
+        }
+      });
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      SafeUI.run(() {
+        if (mounted) {
+          setState(() => _errorMessage = 'Veuillez remplir tous les champs.');
+        }
+      });
+      return;
+    }
+
+    SafeUI.run(() {
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+          _errorMessage = null;
+        });
+      }
     });
 
     try {
@@ -46,21 +70,72 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (mounted) {
-        setState(() => _isLoading = false);
-        if (user != null) {
-          Navigator.pushReplacementNamed(context, '/home');
-        } else {
-          setState(() => _errorMessage = 'Email ou mot de passe incorrect.');
-        }
+        SafeUI.run(() {
+          if (mounted) {
+            setState(() => _isLoading = false);
+            if (user != null) {
+              Navigator.pushReplacementNamed(context, '/home');
+            } else {
+              setState(() => _errorMessage = 'Email ou mot de passe incorrect.');
+            }
+          }
+        });
+      }
+    } on AuthException catch (e) {
+      if (mounted) {
+        SafeUI.run(() {
+          if (mounted) {
+            setState(() {
+              _isLoading = false;
+              _errorMessage = e.message;
+            });
+
+            if ((e.retryAfterSeconds ?? 0) > 0) {
+              _startCooldown(e.retryAfterSeconds!);
+            }
+          }
+        });
       }
     } catch (e) {
       if (mounted) {
-        setState(() {
-          _isLoading = false;
-          _errorMessage = 'Une erreur est survenue. Réessaie.';
+        SafeUI.run(() {
+          if (mounted) {
+            setState(() {
+              _isLoading = false;
+              _errorMessage = 'Une erreur est survenue. Réessaie.';
+            });
+          }
         });
       }
     }
+  }
+
+  void _startCooldown(int seconds) {
+    _cooldownTimer?.cancel();
+
+    setState(() {
+      _cooldownSeconds = seconds;
+    });
+
+    _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted || _cooldownSeconds <= 1) {
+        timer.cancel();
+        if (mounted) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              setState(() => _cooldownSeconds = 0);
+            }
+          });
+        }
+        return;
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() => _cooldownSeconds -= 1);
+        }
+      });
+    });
   }
 
   @override
@@ -71,27 +146,38 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Stack(
             children: [
               SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 32), // Space for back button
-                    
+
                     // Header
                     Center(
                       child: Column(
                         children: [
-                          Image.asset('assets/images/logo.png', width: 100, height: 100),
+                          Image.asset('assets/images/logo.png',
+                              width: 100, height: 100),
                           const SizedBox(height: 16),
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text('T.', style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                color: AppColors.primary, fontWeight: FontWeight.w900,
-                              )),
-                              Text('Speak', style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                fontWeight: FontWeight.w900,
-                              )),
+                              Text('T.',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge
+                                      ?.copyWith(
+                                        color: AppColors.primary,
+                                        fontWeight: FontWeight.w900,
+                                      )),
+                              Text('Speak',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineLarge
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w900,
+                                      )),
                             ],
                           ),
                         ],
@@ -105,17 +191,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Text(
                             'Bon retour !',
-                            style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                ),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             'Connecte-toi pour continuer ton parcours.',
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: AppColors.onSurface.withOpacity(0.6),
-                            ),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      color: AppColors.onSurface
+                                          .withValues(alpha: 0.6),
+                                    ),
                           ),
                         ],
                       ),
@@ -126,8 +217,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(
                       'EMAIL',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.primary, letterSpacing: 2,
-                      ),
+                            color: AppColors.primary,
+                            letterSpacing: 2,
+                          ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
@@ -145,8 +237,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(
                       'MOT DE PASSE',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.primary, letterSpacing: 2,
-                      ),
+                            color: AppColors.primary,
+                            letterSpacing: 2,
+                          ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
@@ -157,9 +250,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         prefixIcon: const Icon(Icons.lock_outline),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                            _obscurePassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
                           ),
-                          onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                          onPressed: () => setState(
+                              () => _obscurePassword = !_obscurePassword),
                         ),
                       ),
                       onSubmitted: (_) => _handleLogin(),
@@ -171,19 +267,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: AppColors.errorContainer.withOpacity(0.2),
+                          color:
+                              AppColors.errorContainer.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.error_outline, color: AppColors.error, size: 18),
+                            const Icon(Icons.error_outline,
+                                color: AppColors.error, size: 18),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 _errorMessage!,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: AppColors.error,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: AppColors.error,
+                                    ),
                               ),
                             ),
                           ],
@@ -201,25 +302,38 @@ class _LoginScreenState extends State<LoginScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: const LinearGradient(
-                            colors: [AppColors.primary, AppColors.primaryContainer],
+                            colors: [
+                              AppColors.primary,
+                              AppColors.primaryContainer
+                            ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                         ),
                         child: ElevatedButton(
-                          onPressed: _isLoading ? null : _handleLogin,
+                          onPressed: (_isLoading || _cooldownSeconds > 0)
+                              ? null
+                              : _handleLogin,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
                             shadowColor: Colors.transparent,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
                           ),
                           child: _isLoading
-                              ? const CircularProgressIndicator(color: Colors.white)
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white)
                               : Text(
-                                  'Se connecter',
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: Colors.white, fontWeight: FontWeight.bold,
-                                  ),
+                                  _cooldownSeconds > 0
+                                      ? 'Réessaie dans ${_cooldownSeconds}s'
+                                      : 'Se connecter',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                         ),
                       ),
@@ -233,18 +347,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Text(
                           'Pas encore de compte ? ',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.onSurface.withOpacity(0.6),
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color:
+                                    AppColors.onSurface.withValues(alpha: 0.6),
+                              ),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.pushReplacementNamed(context, '/inscription'),
+                          onTap: () => Navigator.pushReplacementNamed(
+                              context, '/inscription'),
                           child: Text(
                             'Créer un compte',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ),
                       ],
@@ -253,7 +375,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              
+
               // Positioned Back Button (Bouton de sortie)
               Positioned(
                 top: 16,
@@ -265,13 +387,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(2),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.white.withOpacity(0.3)),
+                        border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.3)),
                       ),
                       child: IconButton(
                         onPressed: () => Navigator.maybePop(context),
-                        icon: const Icon(Icons.arrow_back_ios_new, size: 18, color: AppColors.onSurface),
+                        icon: const Icon(Icons.arrow_back_ios_new,
+                            size: 18, color: AppColors.onSurface),
                         visualDensity: VisualDensity.compact,
                       ),
                     ),

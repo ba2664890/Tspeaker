@@ -24,7 +24,11 @@ class _SplashScreenState extends State<SplashScreen> {
       final authService = context.read<AuthService>();
       final loggedIn = await authService.isLoggedIn();
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed(loggedIn ? '/home' : '/login');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            Navigator.of(context).pushReplacementNamed(loggedIn ? '/home' : '/login');
+          }
+        });
       }
     }
   }

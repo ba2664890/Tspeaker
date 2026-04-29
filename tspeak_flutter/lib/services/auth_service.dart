@@ -3,6 +3,21 @@ import 'package:dio/dio.dart';
 import '../models/user.dart';
 import 'api_service.dart';
 
+class AuthException implements Exception {
+  final String message;
+  final int? statusCode;
+  final int? retryAfterSeconds;
+
+  const AuthException(
+    this.message, {
+    this.statusCode,
+    this.retryAfterSeconds,
+  });
+
+  @override
+  String toString() => message;
+}
+
 class AuthService {
   final ApiService _apiService;
 
@@ -65,8 +80,36 @@ class AuthService {
         return null;
       }
       return null;
-    } on DioException {
-      return null;
+    } on DioException catch (e) {
+      final statusCode = e.response?.statusCode;
+      final responseData = e.response?.data;
+
+      if (statusCode == 401) {
+        return null;
+      }
+
+      if (statusCode == 429) {
+        throw AuthException(
+          _extractErrorMessage(responseData) ??
+              'Trop de tentatives. Réessaie dans quelques secondes.',
+          statusCode: statusCode,
+          retryAfterSeconds: _extractRetryAfterSeconds(responseData),
+        );
+      }
+
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.connectionError) {
+        throw const AuthException(
+          'Impossible de joindre le serveur pour le moment.',
+        );
+      }
+
+      throw AuthException(
+        _extractErrorMessage(responseData) ??
+            'Une erreur est survenue pendant la connexion.',
+        statusCode: statusCode,
+      );
     }
   }
 
@@ -143,7 +186,7 @@ class AuthService {
       if (response.statusCode == 200) {
         await _saveTokens(
           response.data['access'] as String,
-          refreshToken, // refresh token stays the same
+          response.data['refresh'] as String, // Update refresh token too
         );
         return true;
       }
@@ -151,5 +194,42 @@ class AuthService {
     } catch (_) {
       return false;
     }
+  }
+
+  String? _extractErrorMessage(dynamic responseData) {
+    if (responseData is Map<String, dynamic>) {
+      final error = responseData['error'];
+      if (error is Map<String, dynamic>) {
+        final message = error['message'];
+        if (message is String && message.isNotEmpty) {
+          return message;
+        }
+      }
+
+      final detail = responseData['detail'];
+      if (detail is String && detail.isNotEmpty) {
+        return detail;
+      }
+    }
+
+    return null;
+  }
+
+  int? _extractRetryAfterSeconds(dynamic responseData) {
+    if (responseData is Map<String, dynamic>) {
+      final retryAfter = responseData['retry_after'];
+      if (retryAfter is int) return retryAfter;
+      if (retryAfter is num) return retryAfter.toInt();
+
+      final detail = responseData['detail'];
+      if (detail is String) {
+        final match = RegExp(r'(\d+)').firstMatch(detail);
+        if (match != null) {
+          return int.tryParse(match.group(1)!);
+        }
+      }
+    }
+
+    return null;
   }
 }

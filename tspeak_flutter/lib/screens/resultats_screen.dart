@@ -1,10 +1,23 @@
-import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
+import 'package:flutter/material.dart';
+
+import '../models/user.dart';
 import '../theme/app_theme.dart';
 import 'home_screen.dart';
 
 class ResultatsScreen extends StatefulWidget {
-  const ResultatsScreen({super.key});
+  final SessionResult? result;
+  final String sessionTitle;
+  final String primaryActionLabel;
+  final bool returnToPreviousRoute;
+
+  const ResultatsScreen({
+    super.key,
+    this.result,
+    this.sessionTitle = 'Session vocale',
+    this.primaryActionLabel = 'Prochaine session',
+    this.returnToPreviousRoute = false,
+  });
 
   @override
   State<ResultatsScreen> createState() => _ResultatsScreenState();
@@ -13,12 +26,21 @@ class ResultatsScreen extends StatefulWidget {
 class _ResultatsScreenState extends State<ResultatsScreen> {
   late ConfettiController _confettiController;
 
-  final Map<String, int> _metrics = {
-    'Prononciation': 92,
-    'Fluidité': 78,
-    'Grammaire': 88,
-    'Vocabulaire': 81,
-  };
+  SessionResult get _result =>
+      widget.result ??
+      SessionResult(
+        overallScore: 85,
+        xpEarned: 150,
+        streak: 5,
+        metrics: const {
+          'Prononciation': 92,
+          'Fluidité': 78,
+          'Grammaire': 88,
+          'Vocabulaire': 81,
+        },
+        aiFeedback:
+            'Ta prise de parole progresse bien. Continue à réduire les pauses et à varier ton vocabulaire pour gagner encore en impact.',
+      );
 
   @override
   void initState() {
@@ -37,11 +59,12 @@ class _ResultatsScreenState extends State<ResultatsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final metrics = _result.metrics.entries.toList();
+
     return Scaffold(
       backgroundColor: AppColors.surface,
       body: Stack(
         children: [
-          // Confetti
           Align(
             alignment: Alignment.topCenter,
             child: ConfettiWidget(
@@ -52,7 +75,7 @@ class _ResultatsScreenState extends State<ResultatsScreen> {
               numberOfParticles: 50,
               gravity: 0.2,
               shouldLoop: false,
-              colors: [
+              colors: const [
                 AppColors.primary,
                 AppColors.secondary,
                 AppColors.tertiary,
@@ -61,272 +84,74 @@ class _ResultatsScreenState extends State<ResultatsScreen> {
               ],
             ),
           ),
-          // Content
           SafeArea(
             child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
               slivers: [
-                // Header
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.fromLTRB(24, 18, 24, 10),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           'T.Speak',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 24,
-                            fontWeight: FontWeight.w900,
-                            color: AppColors.primary,
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'Level 12',
-                                  style: TextStyle(
-                                    fontFamily: 'SpaceMono',
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.onSurface.withOpacity(0.6),
-                                  ),
-                                ),
-                                Text(
-                                  'Alex K.',
-                                  style: TextStyle(
-                                    fontFamily: 'PlusJakartaSans',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppColors.onSurface,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(width: 12),
-                            const CircleAvatar(
-                              radius: 20,
-                              backgroundImage: NetworkImage(
-                                'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w900,
                               ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.surfaceContainerLow,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Text(
+                            widget.sessionTitle,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                // Results content
                 SliverPadding(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.fromLTRB(24, 14, 24, 100),
                   sliver: SliverList(
                     delegate: SliverChildListDelegate([
-                      // Score circle
-                      Center(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            // SVG-like circle progress
-                            SizedBox(
-                              width: 120,
-                              height: 120,
-                              child: CircularProgressIndicator(
-                                value: 0.85,
-                                strokeWidth: 8,
-                                backgroundColor: AppColors.surfaceContainerHighest,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  AppColors.primaryContainer,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              '85',
-                              style: TextStyle(
-                                fontFamily: 'SpaceMono',
-                                fontSize: 48,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.onSurface,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      // Title
-                      Text(
-                        'Excellent travail !',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          fontSize: 36,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.onSurface,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      // Badges
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _buildBadge(
-                            icon: Icons.bolt,
-                            text: '+150 XP',
-                            backgroundColor: AppColors.secondaryContainer,
-                            textColor: AppColors.onSecondaryContainer,
-                          ),
-                          const SizedBox(width: 12),
-                          _buildBadge(
-                            icon: Icons.military_tech,
-                            text: 'STREAK 5',
-                            backgroundColor: AppColors.tertiaryFixed,
-                            textColor: AppColors.onTertiaryFixedVariant,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 32),
-                      // Metrics grid
+                      _buildHeroScore(),
+                      const SizedBox(height: 28),
+                      _buildHighlights(),
+                      const SizedBox(height: 28),
                       GridView.count(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         crossAxisCount: 2,
                         mainAxisSpacing: 16,
                         crossAxisSpacing: 16,
-                        childAspectRatio: 1.3,
-                        children: _metrics.entries.map((entry) {
+                        childAspectRatio: 1.25,
+                        children: metrics.map((entry) {
                           return _buildMetricCard(
                             label: entry.key,
                             value: entry.value,
-                            icon: _getIconForMetric(entry.key),
-                            color: _getColorForMetric(entry.key),
+                            icon: _iconForMetric(entry.key),
+                            color: _colorForMetric(entry.key),
                           );
                         }).toList(),
                       ),
-                      const SizedBox(height: 32),
-                      // AI Feedback Card
-                      Container(
-                        padding: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF0EDE6),
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(
-                            color: AppColors.outlineVariant.withOpacity(0.2),
-                          ),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 56,
-                              height: 56,
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryContainer,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: const Icon(
-                                Icons.smart_toy,
-                                color: Colors.white,
-                                size: 28,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Analyse de l\'IA',
-                                    style: TextStyle(
-                                      fontFamily: 'PlusJakartaSans',
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.onSurface,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    'Votre prononciation des sons "th" s\'est nettement améliorée. Pour la prochaine session, essayez de réduire les pauses entre les connecteurs logiques pour augmenter votre score de fluidité.',
-                                    style: TextStyle(
-                                      fontFamily: 'BeVietnamPro',
-                                      fontSize: 14,
-                                      color: AppColors.onSurfaceVariant,
-                                      height: 1.5,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      // CTA Buttons
-                      SizedBox(
-                        width: double.infinity,
-                        height: 64,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                builder: (_) => const HomeScreen(),
-                              ),
-                              (route) => false,
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: AppColors.onPrimary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            elevation: 0,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Prochaine session',
-                                style: TextStyle(
-                                  fontFamily: 'PlusJakartaSans',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Icon(Icons.arrow_forward),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: OutlinedButton.icon(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.onSurface,
-                            side: BorderSide.none,
-                            backgroundColor: AppColors.surfaceContainerHigh,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          icon: const Icon(Icons.share),
-                          label: const Text(
-                            'Partager mes progrès',
-                            style: TextStyle(
-                              fontFamily: 'PlusJakartaSans',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 100),
+                      const SizedBox(height: 28),
+                      _buildFeedbackCard(),
+                      const SizedBox(height: 28),
+                      _buildActionButtons(),
                     ]),
                   ),
                 ),
@@ -338,30 +163,166 @@ class _ResultatsScreenState extends State<ResultatsScreen> {
     );
   }
 
-  Widget _buildBadge({
+  Widget _buildHeroScore() {
+    final score = _result.overallScore.clamp(0, 100);
+
+    return Container(
+      padding: const EdgeInsets.all(26),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFF1A1C1B),
+            Color(0xFF7A2A00),
+            Color(0xFFE46C2F),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(34),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.24),
+            blurRadius: 32,
+            offset: const Offset(0, 18),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          SizedBox(
+            width: 134,
+            height: 134,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: 134,
+                  height: 134,
+                  child: CircularProgressIndicator(
+                    value: score / 100,
+                    strokeWidth: 10,
+                    backgroundColor: Colors.white.withValues(alpha: 0.12),
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      Color(0xFFFFD47A),
+                    ),
+                  ),
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '$score',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 44,
+                      ),
+                    ),
+                    Text(
+                      '/100',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.74),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            _headlineForScore(score),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+              fontSize: 30,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'Ta session est enregistrée et l’IA a déjà préparé ton feedback de progression.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.86),
+              height: 1.5,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHighlights() {
+    return Row(
+      children: [
+        Expanded(
+          child: _buildBadgeCard(
+            icon: Icons.bolt_rounded,
+            title: '+${_result.xpEarned} XP',
+            subtitle: 'Récompense session',
+            color: AppColors.secondary,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _buildBadgeCard(
+            icon: Icons.local_fire_department_rounded,
+            title: '${_result.streak} jours',
+            subtitle: 'Série actuelle',
+            color: AppColors.tertiary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBadgeCard({
     required IconData icon,
-    required String text,
-    required Color backgroundColor,
-    required Color textColor,
+    required String title,
+    required String subtitle,
+    required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(20),
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: textColor),
-          const SizedBox(width: 4),
-          Text(
-            text,
-            style: TextStyle(
-              fontFamily: 'SpaceMono',
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
-              color: textColor,
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(icon, color: color),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    color: AppColors.onSurface.withValues(alpha: 0.6),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -378,13 +339,13 @@ class _ResultatsScreenState extends State<ResultatsScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF1A1C1B).withOpacity(0.04),
-            blurRadius: 32,
-            offset: const Offset(0, 8),
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 22,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -394,11 +355,10 @@ class _ResultatsScreenState extends State<ResultatsScreen> {
           Text(
             label.toUpperCase(),
             style: TextStyle(
-              fontFamily: 'SpaceGrotesk',
               fontSize: 10,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 2,
-              color: AppColors.onSurfaceVariant,
+              fontWeight: FontWeight.w800,
+              color: AppColors.onSurface.withValues(alpha: 0.5),
+              letterSpacing: 1.5,
             ),
           ),
           const SizedBox(height: 12),
@@ -407,11 +367,9 @@ class _ResultatsScreenState extends State<ResultatsScreen> {
             children: [
               Text(
                 '$value%',
-                style: TextStyle(
-                  fontFamily: 'SpaceMono',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w900,
                   fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.onSurface,
                 ),
               ),
               Icon(icon, color: color, size: 24),
@@ -419,12 +377,12 @@ class _ResultatsScreenState extends State<ResultatsScreen> {
           ),
           const SizedBox(height: 12),
           ClipRRect(
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(999),
             child: LinearProgressIndicator(
               value: value / 100,
-              backgroundColor: AppColors.surfaceContainerHighest,
+              minHeight: 8,
+              backgroundColor: color.withValues(alpha: 0.12),
               valueColor: AlwaysStoppedAnimation<Color>(color),
-              minHeight: 6,
             ),
           ),
         ],
@@ -432,22 +390,132 @@ class _ResultatsScreenState extends State<ResultatsScreen> {
     );
   }
 
-  IconData _getIconForMetric(String metric) {
+  Widget _buildFeedbackCard() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF0EDE6),
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(
+          color: AppColors.outlineVariant.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              color: AppColors.primaryContainer,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Icon(
+              Icons.smart_toy_rounded,
+              color: Colors.white,
+              size: 28,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Analyse de l’IA',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  _result.aiFeedback,
+                  style: const TextStyle(
+                    color: AppColors.onSurfaceVariant,
+                    height: 1.5,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Column(
+      children: [
+        SizedBox(
+          width: double.infinity,
+          height: 62,
+          child: ElevatedButton(
+            onPressed: () {
+              if (widget.returnToPreviousRoute) {
+                Navigator.of(context).pop();
+                return;
+              }
+
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const HomeScreen()),
+                (route) => false,
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(widget.primaryActionLabel),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward_rounded),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 14),
+        SizedBox(
+          width: double.infinity,
+          height: 56,
+          child: OutlinedButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.share_rounded),
+            label: const Text('Partager mes progrès'),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide.none,
+              backgroundColor: AppColors.surfaceContainerHigh,
+              foregroundColor: AppColors.onSurface,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _headlineForScore(int score) {
+    if (score >= 90) return 'Très forte session';
+    if (score >= 80) return 'Excellent travail';
+    if (score >= 70) return 'Belle progression';
+    if (score >= 60) return 'Base prometteuse';
+    return 'Continue, tu progresses';
+  }
+
+  IconData _iconForMetric(String metric) {
     switch (metric) {
       case 'Prononciation':
-        return Icons.record_voice_over;
+        return Icons.record_voice_over_rounded;
       case 'Fluidité':
-        return Icons.speed;
+        return Icons.speed_rounded;
       case 'Grammaire':
-        return Icons.spellcheck;
+        return Icons.spellcheck_rounded;
       case 'Vocabulaire':
-        return Icons.menu_book;
+        return Icons.menu_book_rounded;
       default:
-        return Icons.star;
+        return Icons.insights_rounded;
     }
   }
 
-  Color _getColorForMetric(String metric) {
+  Color _colorForMetric(String metric) {
     switch (metric) {
       case 'Prononciation':
         return AppColors.secondary;

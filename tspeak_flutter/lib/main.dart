@@ -10,6 +10,7 @@ import 'services/api_service.dart';
 import 'services/auth_service.dart';
 import 'services/user_service.dart';
 import 'services/speech_service.dart';
+import 'services/simulation_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
@@ -31,6 +32,7 @@ void main() {
         RepositoryProvider(create: (context) => AuthService(context.read<ApiService>())),
         RepositoryProvider(create: (context) => UserService(context.read<ApiService>())),
         RepositoryProvider(create: (context) => SpeechService(context.read<ApiService>())),
+        RepositoryProvider(create: (context) => SimulationService(context.read<ApiService>())),
       ],
       child: const TSpeakApp(),
     ),

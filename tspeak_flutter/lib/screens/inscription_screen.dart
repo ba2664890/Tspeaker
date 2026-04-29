@@ -603,7 +603,11 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
       if (mounted) {
         setState(() => _isLoading = false);
         if (user != null) {
-          Navigator.pushReplacementNamed(context, '/home');
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              Navigator.pushReplacementNamed(context, '/home');
+            }
+          });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Échec de la synchronisation.')));
         }

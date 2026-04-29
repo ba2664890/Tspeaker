@@ -10,7 +10,8 @@ class UserService {
     final response = await _apiService.get('/auth/me/');
     if (response.statusCode == 200) {
       // Backend wraps: { success: true, data: { ...user } }
-      final data = (response.data['data'] ?? response.data) as Map<String, dynamic>;
+      final data =
+          (response.data['data'] ?? response.data) as Map<String, dynamic>;
       return User.fromJson(data);
     }
     throw Exception('Impossible de charger le profil utilisateur');
@@ -25,31 +26,18 @@ class UserService {
     }
   }
 
-  Future<List<LeaderboardEntry>> getLeaderboard() async {
-    try {
-      final response = await _apiService.get('/auth/leaderboard/');
-      if (response.statusCode == 200) {
-        return (response.data as List)
-            .map<LeaderboardEntry>((e) => LeaderboardEntry.fromJson(e))
-            .toList();
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-}
-
-// Add fromJson to LeaderboardEntry if missing
-extension LeaderboardEntryJson on LeaderboardEntry {
-  static LeaderboardEntry fromJson(Map<String, dynamic> json) {
-    return LeaderboardEntry(
-      rank: json['rank'],
-      name: json['name'],
-      avatarUrl: json['avatar_url'] ?? '',
-      xp: json['xp'],
-      league: json['league'] ?? '',
-      isCurrentUser: json['is_current_user'] ?? false,
+  Future<LeaderboardData> getLeaderboard({String scope = 'weekly'}) async {
+    final response = await _apiService.get(
+      '/auth/leaderboard/',
+      queryParameters: {'scope': scope},
     );
+
+    if (response.statusCode == 200) {
+      final data =
+          (response.data['data'] ?? response.data) as Map<String, dynamic>;
+      return LeaderboardData.fromJson(data);
+    }
+
+    throw Exception('Impossible de charger le classement');
   }
 }

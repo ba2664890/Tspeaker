@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../utils/url_validator.dart';
 
 class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -49,7 +50,7 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
                               width: 3,
                             ),
                             image: DecorationImage(
-                              image: NetworkImage(profileImageUrl!),
+                              image: UrlValidator.getSafeImage(profileImageUrl),
                               fit: BoxFit.cover,
                             ),
                             boxShadow: [
@@ -159,7 +160,11 @@ class TopAppBarWithBack extends StatelessWidget implements PreferredSizeWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: onBack ?? () => Navigator.pop(context),
+                    onPressed: onBack ?? () {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        Navigator.pop(context);
+                      });
+                    },
                     style: IconButton.styleFrom(
                       backgroundColor: Colors.white,
                       shape: const CircleBorder(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'resultats_screen.dart';
+import '../utils/url_validator.dart';
 
 class SimulationActiveScreen extends StatefulWidget {
   const SimulationActiveScreen({super.key});
@@ -30,6 +31,19 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
   }
 
   @override
+  void reassemble() {
+    super.reassemble();
+    // Interrompre temporairement l'animation lors d'un Hot Reload
+    // pour éviter l'exception `!_debugDuringDeviceUpdate` de MouseTracker.
+    if (_waveController.isAnimating) {
+      _waveController.stop();
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) _waveController.repeat();
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.surface,
@@ -37,7 +51,13 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
         backgroundColor: AppColors.surface,
         elevation: 0,
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                Navigator.pop(context);
+              }
+            });
+          },
           icon: const Icon(Icons.arrow_back, color: AppColors.onSurface),
         ),
         title: Row(
@@ -95,13 +115,12 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
               color: AppColors.onSurface,
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(right: 16),
             child: CircleAvatar(
               radius: 16,
-              backgroundImage: NetworkImage(
-                'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop',
-              ),
+              backgroundImage: UrlValidator.getSafeImage(
+                  'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop'),
             ),
           ),
         ],
@@ -203,8 +222,9 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
                         // Background image
                         ClipRRect(
                           borderRadius: BorderRadius.circular(40),
-                          child: Image.network(
-                            'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop',
+                          child: Image(
+                            image: UrlValidator.getSafeImage(
+                                'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop'),
                             fit: BoxFit.cover,
                             color: Colors.white.withOpacity(0.6),
                             colorBlendMode: BlendMode.overlay,
@@ -357,7 +377,11 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  // Pause logic placeholder
+                                });
+                              },
                               icon: const Icon(
                                 Icons.pause,
                                 color: AppColors.onSurfaceVariant,
@@ -368,19 +392,24 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
                           // Mic button
                           GestureDetector(
                             onTap: () {
-                              setState(() {
-                                _isRecording = !_isRecording;
-                              });
-                              // Navigate to results after "recording"
-                              if (_isRecording) {
-                                Future.delayed(const Duration(seconds: 2), () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) => const ResultatsScreen(),
-                                    ),
-                                  );
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (!mounted) return;
+                                setState(() {
+                                  _isRecording = !_isRecording;
                                 });
-                              }
+                                // Navigate to results after "recording"
+                                if (_isRecording) {
+                                  Future.delayed(const Duration(seconds: 2), () {
+                                    if (mounted) {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (_) => const ResultatsScreen(),
+                                        ),
+                                      );
+                                    }
+                                  });
+                                }
+                              });
                             },
                             child: Container(
                               width: 96,
@@ -420,7 +449,11 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  // Skip logic placeholder
+                                });
+                              },
                               icon: const Icon(
                                 Icons.skip_next,
                                 color: AppColors.onSurfaceVariant,
@@ -495,8 +528,8 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
                       ],
               ),
               child: ClipOval(
-                child: Image.network(
-                  imageUrl,
+                child: Image(
+                  image: UrlValidator.getSafeImage(imageUrl),
                   fit: BoxFit.cover,
                 ),
               ),

@@ -5,6 +5,7 @@ import '../main.dart';
 class ApiService {
   late Dio _dio;
   static const String baseUrl = 'http://localhost:8001/api/v1';
+  bool _isRefreshing = false;
 
   ApiService({String? baseUrl}) {
     _dio = Dio(BaseOptions(
@@ -27,7 +28,17 @@ class ApiService {
         return handler.next(options);
       },
       onError: (DioException e, handler) async {
-        if (e.response?.statusCode == 401) {
+        if (e.response?.statusCode == 401 && !_isRefreshing) {
+          // Don't try to refresh if this is already a refresh attempt
+          if (e.requestOptions.path.contains('/auth/refresh/')) {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.remove('access_token');
+            await prefs.remove('refresh_token');
+            TSpeakApp.navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
+            return handler.next(e);
+          }
+
+          _isRefreshing = true;
           try {
             final prefs = await SharedPreferences.getInstance();
             final refreshToken = prefs.getString('refresh_token');
@@ -41,7 +52,9 @@ class ApiService {
               );
               if (refreshResp.statusCode == 200) {
                 final newAccess = refreshResp.data['access'] as String;
+                final newRefresh = refreshResp.data['refresh'] as String;
                 await prefs.setString('access_token', newAccess);
+                await prefs.setString('refresh_token', newRefresh);
                 e.requestOptions.headers['Authorization'] = 'Bearer $newAccess';
                 final retryResponse = await _dio.fetch(e.requestOptions);
                 return handler.resolve(retryResponse);
@@ -53,6 +66,8 @@ class ApiService {
             await prefs.remove('access_token');
             await prefs.remove('refresh_token');
             TSpeakApp.navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
+          } finally {
+            _isRefreshing = false;
           }
         }
         return handler.next(e);
