@@ -1,0 +1,54 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter run -d web-server --web-hostname 0.0.0.0 --web-port 8084
+
+## exception
+
+DartDevelopmentServiceException: DartDevelopmentServiceException: WebSocketChannelException: WebSocketException: Connection to 'http://127.0.0.1:46545/ttPFnXu0Pr4=/ws#' was not upgraded to websocket
+
+```
+```
+
+## flutter doctor
+
+```
+[32m[✓][39m Flutter (Channel stable, 3.41.6, on Ubuntu 22.04.5 LTS 6.8.0-106-generic, locale en_US.UTF-8) [216ms]
+    [32m•[39m Flutter version 3.41.6 on channel stable at /home/cardan/development/flutter
+    [32m•[39m Upstream repository https://github.com/flutter/flutter.git
+    [32m•[39m Framework revision db50e20168 (3 weeks ago), 2026-03-25 16:21:00 -0700
+    [32m•[39m Engine revision 425cfb54d0
+    [32m•[39m Dart version 3.11.4
+    [32m•[39m DevTools version 2.54.2
+    [32m•[39m Feature flags: enable-web, enable-linux-desktop, enable-macos-desktop, enable-windows-desktop, enable-android, enable-ios, cli-animations,
+      enable-native-assets, omit-legacy-version-file, enable-lldb-debugging, enable-uiscene-migration
+
+[31m[✗][39m Android toolchain - develop for Android devices [72ms]
+    [32m•[39m Android SDK at /media/cardan/87E3-1616/Android/Sdk
+    [32m•[39m Emulator version unknown
+    [31m✗[39m Flutter requires Android SDK 36 and the Android BuildTools 28.0.3
+      To update the Android SDK visit https://flutter.dev/to/linux-android-setup for detailed instructions.
+
+[32m[✓][39m Chrome - develop for the web [33ms]
+    [32m•[39m Chrome at google-chrome
+
+[32m[✓][39m Linux toolchain - develop for Linux desktop [899ms]
+    [32m•[39m Ubuntu clang version 14.0.0-1ubuntu1.1
+    [32m•[39m cmake version 3.22.1
+    [32m•[39m ninja version 1.10.1
+    [32m•[39m pkg-config version 0.29.2
+    [32m•[39m GL_EXT_framebuffer_blit: no
+    [32m•[39m GL_EXT_texture_format_BGRA8888: no
+
+[32m[✓][39m Connected device (3 available) [406ms]
+    [32m•[39m Linux (desktop)  • linux      • linux-x64      • Ubuntu 22.04.5 LTS 6.8.0-106-generic
+    [32m•[39m Web Server (web) • web-server • web-javascript • Flutter Tools
+    [32m•[39m Chrome (web)     • chrome     • web-javascript • Google Chrome 146.0.7680.71
+
+[32m[✓][39m Network resources [972ms]
+    [32m•[39m All expected network resources are available.
+
+[33m![39m Doctor found issues in 1 category.
+```

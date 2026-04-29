@@ -1,0 +1,684 @@
+[2026-04-14 13:16:53,774] WARNING tspeak.api exceptions: Erreur API (400): {'full_name': [ErrorDetail(string='Ce champ est obligatoire.', code='required')], 'password_confirm': [ErrorDetail(string='Ce champ est obligatoire.', code='required')], 'native_language': [ErrorDetail(string="«\xa0Wolof\xa0» n'est pas un choix valide.", code='invalid_choice')], 'level': [ErrorDetail(string="«\xa0Débutant\xa0» n'est pas un choix valide.", code='invalid_choice')], 'gdpr_consent': [ErrorDetail(string='Ce champ est obligatoire.', code='required')]}
+[2026-04-14 13:25:38,888] INFO tspeak.auth views: Nouvel utilisateur inscrit: ba2664890@gmail.com (langue: pulaar)
+[2026-04-14 13:25:38,896] WARNING tspeak.performance middleware: Requête lente: POST /api/v1/auth/register/ — 1038ms (user=anonymous)
+[2026-04-14 13:25:39,986] INFO tspeak.auth views: Connexion réussie: ba2664890@gmail.com
+[2026-04-14 13:25:39,987] WARNING tspeak.performance middleware: Requête lente: POST /api/v1/auth/login/ — 1022ms (user=anonymous)
+[2026-04-14 14:11:16,788] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 14:11:16,789] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 14:37:09,501] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 14:37:09,502] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 14:37:09,668] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:09,669] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:09,726] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:09,726] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:09,780] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:09,782] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:09,824] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:09,825] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:09,909] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:09,909] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:09,988] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:09,989] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,051] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,052] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,116] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,117] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,211] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,212] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,310] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,313] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,349] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,350] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,415] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,416] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,485] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,486] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,577] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,578] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,673] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,673] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,763] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,763] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,835] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,835] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,921] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,922] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:10,991] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:10,992] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,067] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:11,067] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,152] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:11,152] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,248] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:11,250] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,327] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:11,330] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,395] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:11,395] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,467] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:11,468] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,550] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:11,550] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,632] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:11,632] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,700] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:11,700] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,783] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:11,784] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,847] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:37:11,848] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:37:11,918] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 58 seconds.', code='throttled')}
+[2026-04-14 14:39:48,131] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 14:39:48,138] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 14:39:48,404] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:48,405] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:48,476] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:48,481] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:48,609] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:48,613] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:48,684] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:48,685] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:48,728] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:48,729] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:48,825] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:48,826] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:48,852] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:48,853] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:48,922] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:48,923] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:48,989] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:48,990] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,089] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,089] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,122] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,122] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,232] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,235] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,295] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,296] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,384] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,385] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,421] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,424] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,515] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,518] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,574] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,574] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,654] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,654] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,733] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,734] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,813] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,814] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:49,892] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:49,892] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:50,008] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:50,009] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:50,052] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:50,053] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:50,142] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:50,143] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:50,223] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:50,223] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:50,297] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:50,298] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:50,382] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:50,382] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:50,458] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:50,462] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:50,533] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:50,534] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:50,714] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:39:50,715] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:39:50,770] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 58 seconds.', code='throttled')}
+[2026-04-14 14:39:58,817] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 14:39:58,818] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 14:39:58,854] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 50 seconds.', code='throttled')}
+[2026-04-14 14:40:01,412] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 14:40:01,413] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 14:40:01,434] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 47 seconds.', code='throttled')}
+[2026-04-14 14:40:07,282] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 14:40:07,282] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 14:40:07,310] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 42 seconds.', code='throttled')}
+[2026-04-14 14:40:17,670] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 14:40:17,671] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 14:40:17,694] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 31 seconds.', code='throttled')}
+[2026-04-14 14:40:19,014] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 14:40:19,015] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 14:40:19,045] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 30 seconds.', code='throttled')}
+[2026-04-14 14:50:37,182] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 14:50:37,190] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 14:50:37,271] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:37,272] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:37,403] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:37,404] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:37,480] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:37,483] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:37,603] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:37,604] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:37,780] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:37,785] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:37,914] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:37,919] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:38,076] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:38,079] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:38,143] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:38,146] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:38,273] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:38,274] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:38,373] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:38,374] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:38,466] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:38,467] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:38,570] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:38,571] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:38,659] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:38,662] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:38,786] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:38,787] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:38,867] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:38,868] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:39,008] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:39,009] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:39,095] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:39,102] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:39,204] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:39,206] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:39,309] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:39,311] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:39,394] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:39,397] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:39,476] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:39,477] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:39,617] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:39,621] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:39,809] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:39,811] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:39,889] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:39,892] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:40,056] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:40,058] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:40,144] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:40,148] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:40,258] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:40,259] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:40,397] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:40,402] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:40,514] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:40,515] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:40,596] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 14:50:40,597] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 14:50:40,678] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 57 seconds.', code='throttled')}
+[2026-04-14 15:22:17,113] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 15:22:17,114] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 15:22:17,130] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,131] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,188] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,189] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,242] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,243] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,318] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,319] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,375] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,375] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,431] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,431] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,485] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,486] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,544] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,544] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,599] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,600] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,666] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,668] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,725] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,726] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,780] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,780] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,841] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,841] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,900] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,900] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:17,958] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:17,959] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,017] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,017] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,077] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,077] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,132] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,132] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,186] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,186] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,241] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,241] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,295] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,295] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,348] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,349] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,407] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,408] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,467] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,467] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,523] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,523] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,584] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,585] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,659] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,659] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,715] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,715] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,771] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,772] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,828] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:22:18,829] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:22:18,881] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 59 seconds.', code='throttled')}
+[2026-04-14 15:23:15,972] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 15:23:15,973] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 15:23:15,993] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 2 seconds.', code='throttled')}
+[2026-04-14 15:23:16,859] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 15:23:16,860] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 15:23:16,874] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 1 second.', code='throttled')}
+[2026-04-14 15:23:17,220] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 15:23:17,221] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 15:23:17,240] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,241] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,298] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,299] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,355] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,355] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,408] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,408] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,465] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,466] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,527] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,528] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,583] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,584] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,642] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,642] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,703] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,704] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,759] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,759] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,814] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,814] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,871] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,871] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,927] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,927] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:17,983] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:17,983] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,040] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,041] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,096] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,096] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,150] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,151] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,205] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,206] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,260] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,260] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,351] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,352] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,407] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,407] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,460] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,461] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,514] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,515] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,571] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,572] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,625] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,626] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,680] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,681] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,742] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,743] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,797] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,798] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,856] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,858] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,914] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:23:18,917] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:23:18,970] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 59 seconds.', code='throttled')}
+[2026-04-14 15:23:43,080] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 15:23:43,080] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 15:23:43,095] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 35 seconds.', code='throttled')}
+[2026-04-14 15:23:44,704] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 15:23:44,705] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 15:23:44,717] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 33 seconds.', code='throttled')}
+[2026-04-14 15:28:10,330] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 15:28:10,330] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 15:28:10,390] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:10,390] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:10,427] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:10,427] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:10,513] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:10,514] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:10,533] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:10,533] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:10,599] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:10,600] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:10,662] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:10,663] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:10,720] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:10,721] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:10,781] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:10,781] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:10,840] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:10,840] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:10,900] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:10,901] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:10,959] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:10,959] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,017] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,018] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,110] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,112] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,187] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,188] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,267] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,268] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,329] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,329] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,397] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,398] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,463] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,463] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,536] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,536] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,592] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,593] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,649] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,650] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,714] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,715] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,774] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,774] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,836] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,836] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,895] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,896] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:11,974] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:11,975] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:12,039] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:12,039] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:12,117] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:12,117] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:12,176] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:12,176] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:12,240] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:28:12,240] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:28:12,300] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 59 seconds.', code='throttled')}
+[2026-04-14 15:28:18,285] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 15:28:18,285] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 15:28:18,312] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 53 seconds.', code='throttled')}
+[2026-04-14 15:41:16,817] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 15:41:16,819] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 15:41:16,856] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:16,857] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:16,945] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:16,945] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,068] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,069] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,154] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,155] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,224] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,225] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,299] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,300] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,376] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,376] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,458] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,458] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,539] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,541] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,624] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,625] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,709] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,709] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,780] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,780] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,857] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,858] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:17,943] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:17,944] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,013] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,013] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,091] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,091] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,177] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,178] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,248] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,249] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,326] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,327] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,424] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,425] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,469] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,472] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,570] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,571] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,632] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,635] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,674] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,675] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,750] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,750] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,832] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,832] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,942] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,951] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:18,997] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:18,998] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:19,082] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:19,085] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:19,164] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:41:19,165] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:41:19,248] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 58 seconds.', code='throttled')}
+[2026-04-14 15:47:12,417] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 15:47:12,418] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 15:47:12,445] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:12,445] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:12,501] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:12,501] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:12,563] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:12,563] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:12,619] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:12,619] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:12,678] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:12,679] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:12,733] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:12,733] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:12,790] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:12,790] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:12,848] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:12,848] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:12,912] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:12,912] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:12,979] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:12,979] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,047] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,049] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,109] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,109] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,165] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,165] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,221] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,222] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,277] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,278] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,334] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,335] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,392] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,392] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,448] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,448] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,505] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,506] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,564] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,565] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,623] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,623] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,682] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,683] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,742] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,742] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,811] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,811] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,874] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,874] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:13,946] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:13,947] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:14,014] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:14,015] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:14,074] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:14,075] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:14,137] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:14,138] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:14,209] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 15:47:14,210] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 15:47:14,272] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 59 seconds.', code='throttled')}
+[2026-04-14 16:02:34,186] INFO tspeak.auth views: Connexion réussie: ba2664890@gmail.com
+[2026-04-14 16:08:20,797] INFO tspeak.auth views: Déconnexion: ba2664890@gmail.com
+[2026-04-14 17:31:01,600] INFO tspeak.auth views: Nouvel utilisateur inscrit: abdou2003@gmail.com (langue: pulaar)
+[2026-04-14 17:50:51,555] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 17:50:51,556] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 18:24:48,740] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 18:24:48,740] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 18:24:48,767] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:48,768] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:48,836] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:48,837] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:48,900] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:48,900] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:48,958] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:48,958] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,021] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,023] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,088] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,088] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,154] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,155] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,220] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,220] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,279] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,279] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,342] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,342] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,402] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,402] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,472] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,473] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,538] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,538] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,599] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,599] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,668] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,668] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,737] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,737] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,801] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,801] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,862] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,863] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,919] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,920] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:49,976] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:49,977] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:50,032] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:50,033] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:50,088] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:50,088] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:50,146] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:50,146] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:50,220] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:50,221] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:50,280] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:50,280] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:50,339] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:50,340] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:50,397] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:50,397] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:50,460] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:50,460] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:50,516] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:50,518] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:50,577] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 18:24:50,577] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 18:24:50,630] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 59 seconds.', code='throttled')}
+[2026-04-14 18:25:21,729] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 28 seconds.', code='throttled')}
+[2026-04-14 18:25:42,224] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 7 seconds.', code='throttled')}
+[2026-04-14 18:25:43,064] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 6 seconds.', code='throttled')}
+[2026-04-14 18:25:43,757] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 6 seconds.', code='throttled')}
+[2026-04-14 18:26:17,462] INFO tspeak.auth views: Connexion réussie: abdou2003@gmail.com
+[2026-04-14 19:01:01,009] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 19:01:01,009] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 19:17:17,745] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 19:17:17,746] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-04-14 19:17:17,764] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:17,765] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:17,827] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:17,827] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:17,887] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:17,888] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:17,957] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:17,958] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,023] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,024] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,081] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,081] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,140] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,140] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,196] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,196] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,258] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,259] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,314] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,314] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,374] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,374] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,432] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,433] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,496] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,496] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,552] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,552] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,610] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,610] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,667] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,668] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,723] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,723] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,782] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,782] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,837] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,838] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,898] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,898] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:18,957] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:18,958] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:19,034] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:19,036] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:19,095] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:19,097] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:19,160] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:19,161] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:19,220] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:19,220] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:19,274] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:19,274] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:19,334] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:19,335] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:19,391] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:19,392] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:19,449] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:19,450] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:19,512] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string='Le jeton a été banni', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid')}
+[2026-04-14 19:17:19,513] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/refresh/ — IP=127.0.0.1
+[2026-04-14 19:17:19,566] WARNING tspeak.api exceptions: Erreur API (429): {'detail': ErrorDetail(string='Requête ralentie. Expected available in 59 seconds.', code='throttled')}
+[2026-04-14 19:18:26,743] INFO tspeak.auth views: Connexion réussie: abdou2003@gmail.com
+[2026-04-14 19:32:39,447] INFO tspeak.auth views: Déconnexion: abdou2003@gmail.com
+[2026-04-14 22:30:24,136] INFO tspeak.auth views: Connexion réussie: abdou2003@gmail.com
+[2026-04-14 23:08:29,683] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-04-14 23:08:29,684] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
