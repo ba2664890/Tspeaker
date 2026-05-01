@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../utils/safe_ui.dart';
 import '../utils/url_validator.dart';
 import 'home_screen.dart';
 
@@ -34,21 +35,12 @@ class _TestNiveauScreenState extends State<TestNiveauScreen>
   @override
   void reassemble() {
     super.reassemble();
-    if (_pulseController.isAnimating) {
-      _pulseController.stop();
-      Future.delayed(const Duration(milliseconds: 500), () {
-        if (mounted) _pulseController.repeat();
-      });
-    }
+    SafeUI.handleAnimationReassemble(_pulseController, state: this);
   }
 
   void _toggleRecording() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        setState(() {
-          _isRecording = !_isRecording;
-        });
-      }
+    SafeUI.setState(this, () {
+      _isRecording = !_isRecording;
     });
   }
 
@@ -313,9 +305,9 @@ class _TestNiveauScreenState extends State<TestNiveauScreen>
           // Skip button
           TextButton(
             onPressed: () {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
+              SafeUI.navigate(context, (ctx) {
                 if (mounted) {
-                  Navigator.of(context).pushReplacement(
+                  Navigator.of(ctx).pushReplacement(
                     MaterialPageRoute(builder: (_) => const HomeScreen()),
                   );
                 }

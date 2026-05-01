@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_theme.dart';
+import '../utils/safe_ui.dart';
 import '../widgets/patterns_painter.dart';
 import '../services/auth_service.dart';
 
@@ -18,6 +19,7 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
   int _currentStep = 0;
   bool _isLoading = false;
   bool _obscurePassword = true;
+  bool _isHotReloading = false;
 
   // Controllers
   final _firstNameController = TextEditingController();
@@ -80,6 +82,23 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
       );
     } else {
       Navigator.maybePop(context);
+    }
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() => _isHotReloading = true);
+      });
+      Future.delayed(const Duration(milliseconds: 800), () {
+        if (mounted) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) setState(() => _isHotReloading = false);
+          });
+        }
+      });
     }
   }
 
@@ -565,8 +584,13 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
                       ),
                     ),
                   ),
-                ).animate(onPlay: (c) => c.repeat(reverse: true))
-                 .shimmer(duration: 3.seconds, color: Colors.white.withOpacity(0.2)),
+                ).animate(
+                    target: _isHotReloading ? 0 : 1,
+                    onPlay: (c) => c.repeat(reverse: true),
+                ).shimmer(
+                    duration: 3.seconds, 
+                    color: Colors.white.withOpacity(0.2),
+                ),
               ),
             ],
           ),
@@ -603,11 +627,11 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
       if (mounted) {
         setState(() => _isLoading = false);
         if (user != null) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
+          SafeUI.navigate(context, (ctx) {
             if (mounted) {
-              Navigator.pushReplacementNamed(context, '/home');
+              Navigator.pushReplacementNamed(ctx, '/home');
             }
-          });
+          }, extended: true);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Échec de la synchronisation.')));
         }

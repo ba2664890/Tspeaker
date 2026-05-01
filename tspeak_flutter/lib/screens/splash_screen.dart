@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../theme/app_theme.dart';
+import '../utils/safe_ui.dart';
 import '../widgets/patterns_painter.dart';
 import '../services/auth_service.dart';
 
@@ -12,6 +13,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool _isHotReloading = false;
+
   @override
   void initState() {
     super.initState();
@@ -24,12 +27,30 @@ class _SplashScreenState extends State<SplashScreen> {
       final authService = context.read<AuthService>();
       final loggedIn = await authService.isLoggedIn();
       if (mounted) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        SafeUI.navigate(context, (ctx) {
           if (mounted) {
-            Navigator.of(context).pushReplacementNamed(loggedIn ? '/home' : '/login');
+            Navigator.of(ctx).pushReplacementNamed(loggedIn ? '/home' : '/login');
           }
         });
       }
+    }
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() => _isHotReloading = true);
+      });
+      
+      Future.delayed(const Duration(milliseconds: 800), () {
+        if (mounted) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) setState(() => _isHotReloading = false);
+          });
+        }
+      });
     }
   }
 
@@ -80,6 +101,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: LinearProgressIndicator(
                   backgroundColor: AppColors.surfaceContainerHighest,
                   valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                  value: _isHotReloading ? 0.5 : null,
                   borderRadius: BorderRadius.circular(10),
                   minHeight: 6,
                 ),

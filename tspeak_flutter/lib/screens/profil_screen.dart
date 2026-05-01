@@ -9,6 +9,7 @@ import '../models/user.dart' as models;
 import '../services/auth_service.dart';
 import '../services/user_service.dart';
 import '../theme/app_theme.dart';
+import '../utils/safe_ui.dart';
 import '../utils/url_validator.dart';
 
 class ProfilScreen extends StatefulWidget {
@@ -48,7 +49,9 @@ class _ProfilScreenState extends State<ProfilScreen> {
 
   Future<void> _refreshProfile() async {
     final future = context.read<UserService>().getUserProfile();
-    setState(() => _userFuture = future);
+    setState(() {
+      _userFuture = future;
+    });
     await future;
   }
 
@@ -115,9 +118,9 @@ class _ProfilScreenState extends State<ProfilScreen> {
     await context.read<AuthService>().logout();
     if (!mounted) return;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    SafeUI.navigate(context, (ctx) {
       if (mounted) {
-        Navigator.of(context).pushNamedAndRemoveUntil('/login', (_) => false);
+        Navigator.of(ctx).pushNamedAndRemoveUntil('/login', (_) => false);
       }
     });
   }

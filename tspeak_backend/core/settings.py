@@ -8,12 +8,29 @@ from pathlib import Path
 from datetime import timedelta
 from decouple import config, Csv
 
+# Fix for TensorFlow / Protobuf "MessageFactory object has no attribute GetPrototype" error
+os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ─── Sécurité ───────────────────────────────────────────────────────────────
-SECRET_KEY = config("SECRET_KEY", default="change-me-in-production-please")
+SECRET_KEY = config("SECRET_KEY", default="change-me-in-production-please-longer-key-32-chars")
 DEBUG = config("DEBUG", default=False, cast=bool)
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv())
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS", 
+    default="localhost,127.0.0.1,tspeaker-backend-1.onrender.com", 
+    cast=Csv()
+)
+# Ajout des domaines Render dynamiquement
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://tspeaker-backend-1.onrender.com",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
 
 # ─── Applications ────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
@@ -72,43 +89,76 @@ TEMPLATES = [
     },
 ]
 
+import dj_database_url
+
 # ─── Base de données ─────────────────────────────────────────────────────────
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 # ─── Cache & Redis ───────────────────────────────────────────────────────────
-REDIS_URL = config("REDIS_URL", default="redis://localhost:6379")
+# Sur Render, on privilégie os.environ pour être sûr de capter les variables injectées
+REDIS_URL = os.environ.get("REDIS_URL") or config("REDIS_URL", default="redis://127.0.0.1:6379")
+CACHE_BACKEND = config("CACHE_BACKEND", default="redis")
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"{REDIS_URL}/0",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "CONNECTION_POOL_KWARGS": {"max_connections": 20},
-            "SOCKET_CONNECT_TIMEOUT": 5,
-            "SOCKET_TIMEOUT": 5,
+# Détection de l'environnement Render
+IS_RENDER = os.environ.get("RENDER", "False") == "True"
+
+# Nettoyage du REDIS_URL
+_cleaned_redis_url = REDIS_URL.rstrip('/')
+
+# Si on est sur Render mais que le REDIS_URL pointe sur localhost, c'est une erreur de config
+if IS_RENDER and "127.0.0.1" in _cleaned_redis_url:
+    print("⚠️ WARNING: REDIS_URL pointing to localhost on Render. Falling back to LocMem to avoid 500 errors.")
+    CACHE_BACKEND = "locmem"
+
+if CACHE_BACKEND == "locmem":
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "tspeak-default-cache",
+            "TIMEOUT": 300,
         },
-        "KEY_PREFIX": "tspeak",
-        "TIMEOUT": 300,  # 5 minutes par défaut
-    },
-    "sessions": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"{REDIS_URL}/1",
-        "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
-    },
-}
+        "sessions": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "tspeak-session-cache",
+        },
+    }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": f"{_cleaned_redis_url}/0",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                "CONNECTION_POOL_KWARGS": {"max_connections": 20},
+                "SOCKET_CONNECT_TIMEOUT": 5,
+                "SOCKET_TIMEOUT": 5,
+            },
+            "KEY_PREFIX": "tspeak",
+            "TIMEOUT": 300,
+        },
+        "sessions": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": f"{_cleaned_redis_url}/1",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+            "KEY_PREFIX": "tspeak_sess",
+            "TIMEOUT": 86400, # 24h
+        },
+    }
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "sessions"
 
 # ─── Celery ──────────────────────────────────────────────────────────────────
-CELERY_BROKER_URL = f"{REDIS_URL}/2"
-CELERY_RESULT_BACKEND = f"{REDIS_URL}/2"
+CELERY_BROKER_URL = f"{_cleaned_redis_url}/2"
+CELERY_RESULT_BACKEND = f"{_cleaned_redis_url}/2"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
@@ -116,6 +166,12 @@ CELERY_TIMEZONE = "Africa/Dakar"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 300  # 5 min max par tâche audio
 CELERY_WORKER_CONCURRENCY = 4
+# Import explicite de tous les modules de tâches pour garantir l'enregistrement
+CELERY_IMPORTS = [
+    "apps.sessions.tasks",
+    "apps.progress.tasks",
+    "apps.scoring.tasks",
+]
 
 # ─── DRF ────────────────────────────────────────────────────────────────────
 REST_FRAMEWORK = {
@@ -133,6 +189,8 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
         "anon": "30/min",
         "user": "100/min",
+        "login": "12/min",
+        "register": "10/hour",
         "audio_upload": "10/min",
     },
     "EXCEPTION_HANDLER": "core.exceptions.custom_exception_handler",
@@ -153,7 +211,7 @@ SIMPLE_JWT = {
 # ─── CORS ────────────────────────────────────────────────────────────────────
 CORS_ALLOWED_ORIGINS = config(
     "CORS_ALLOWED_ORIGINS",
-    default="http://localhost:3000,http://localhost:8080",
+    default="http://localhost:3000,http://localhost:8080,http://127.0.0.1:3000,http://127.0.0.1:8080",
     cast=Csv(),
 )
 CORS_ALLOW_CREDENTIALS = True
@@ -192,10 +250,17 @@ AUDIO_DELETE_AFTER_PROCESSING = True  # RGPD : suppression après 24h
 # ─── Configuration IA ────────────────────────────────────────────────────────
 WHISPER_MODEL = config("WHISPER_MODEL", default="medium")
 WHISPER_DEVICE = config("WHISPER_DEVICE", default="cpu")  # "cuda" pour GPU
+WHISPER_COMPUTE_TYPE = config("WHISPER_COMPUTE_TYPE", default="default")
 WHISPER_FINE_TUNED_PATH = config("WHISPER_FINE_TUNED_PATH", default=None)
-WAV2VEC_MODEL = config("WAV2VEC_MODEL", default="facebook/wav2vec2-large-xlsr-53")
+WAV2VEC_MODEL = config("WAV2VEC_MODEL", default="facebook/wav2vec2-base-960h")
+WAV2VEC_DEVICE = config("WAV2VEC_DEVICE", default=WHISPER_DEVICE)
+WAV2VEC_MAX_AUDIO_SECONDS = config("WAV2VEC_MAX_AUDIO_SECONDS", default=120, cast=int)
+AUDIO_PROCESSING_MODE = config("AUDIO_PROCESSING_MODE", default="async")
+AUDIO_INLINE_FALLBACK_ENABLED = config("AUDIO_INLINE_FALLBACK_ENABLED", default=True, cast=bool)
+AUDIO_INLINE_FALLBACK_AFTER_SECONDS = config("AUDIO_INLINE_FALLBACK_AFTER_SECONDS", default=8, cast=int)
 LLM_API_KEY = config("LLM_API_KEY", default="")
-LLM_MODEL = config("LLM_MODEL", default="gpt-4o-mini")
+LLM_MODEL = config("LLM_MODEL", default="meta-llama/Meta-Llama-3-8B-Instruct")
+LLM_BASE_URL = config("LLM_BASE_URL", default="https://router.huggingface.co/v1")
 LLM_MAX_TOKENS = 500
 AI_PROCESSING_TIMEOUT = 30  # secondes
 

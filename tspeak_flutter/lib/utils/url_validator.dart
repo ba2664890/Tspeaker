@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class UrlValidator {
+  static String? baseUrl;
+
   static bool isValidUrl(String? url) {
     if (url == null || url.isEmpty) return false;
     try {
@@ -11,9 +13,19 @@ class UrlValidator {
     }
   }
 
+  static String wrapUrl(String? url) {
+    if (url == null || url.isEmpty) return '';
+    if (isValidUrl(url)) return url;
+    if (url.startsWith('/') && baseUrl != null) {
+      return '$baseUrl$url';
+    }
+    return url;
+  }
+
   static ImageProvider getSafeImage(String? url, {String placeholder = 'assets/images/logo.png'}) {
-    if (isValidUrl(url)) {
-      return NetworkImage(url!);
+    final wrapped = wrapUrl(url);
+    if (isValidUrl(wrapped)) {
+      return NetworkImage(wrapped);
     }
     return AssetImage(placeholder);
   }

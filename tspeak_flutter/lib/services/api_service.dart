@@ -1,10 +1,11 @@
+import 'package:flutter/widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 
 class ApiService {
   late Dio _dio;
-  static const String baseUrl = 'http://localhost:8001/api/v1';
+  static const String baseUrl = 'https://tspeaker-backend-1.onrender.com/api/v1';
   bool _isRefreshing = false;
 
   ApiService({String? baseUrl}) {
@@ -20,6 +21,9 @@ class ApiService {
 
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
+        if (options.data is FormData) {
+          options.contentType = Headers.multipartFormDataContentType;
+        }
         final prefs = await SharedPreferences.getInstance();
         final token = prefs.getString('access_token');
         if (token != null) {
@@ -34,7 +38,9 @@ class ApiService {
             final prefs = await SharedPreferences.getInstance();
             await prefs.remove('access_token');
             await prefs.remove('refresh_token');
-            TSpeakApp.navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              TSpeakApp.navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
+            });
             return handler.next(e);
           }
 
@@ -65,7 +71,9 @@ class ApiService {
             final prefs = await SharedPreferences.getInstance();
             await prefs.remove('access_token');
             await prefs.remove('refresh_token');
-            TSpeakApp.navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              TSpeakApp.navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
+            });
           } finally {
             _isRefreshing = false;
           }
@@ -77,17 +85,25 @@ class ApiService {
 
   Dio get dio => _dio;
 
-  Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<Response> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
     try {
-      return await _dio.get(path, queryParameters: queryParameters);
+      return await _dio.get(
+        path,
+        queryParameters: queryParameters,
+        options: options,
+      );
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Response> post(String path, {dynamic data}) async {
+  Future<Response> post(String path, {dynamic data, Options? options}) async {
     try {
-      return await _dio.post(path, data: data);
+      return await _dio.post(path, data: data, options: options);
     } catch (e) {
       rethrow;
     }

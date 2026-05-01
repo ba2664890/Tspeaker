@@ -11,10 +11,14 @@ import 'services/auth_service.dart';
 import 'services/user_service.dart';
 import 'services/speech_service.dart';
 import 'services/simulation_service.dart';
+import 'utils/url_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Configure base domain for media
+  UrlValidator.baseUrl = 'http://localhost:8001';
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

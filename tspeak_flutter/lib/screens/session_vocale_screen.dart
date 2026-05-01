@@ -77,12 +77,7 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
   @override
   void reassemble() {
     super.reassemble();
-    if (_pulseController.isAnimating) {
-      _pulseController.stop();
-      Future.delayed(const Duration(milliseconds: 500), () {
-        if (mounted) _pulseController.repeat();
-      });
-    }
+    SafeUI.handleAnimationReassemble(_pulseController, state: this);
   }
 
   Future<void> _bootstrapSession() async {
@@ -99,17 +94,20 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
     }
 
     try {
-      final sessionId = await context.read<SpeechService>().startSession();
+      final session = await context.read<SpeechService>().startSessionDetails();
 
       if (!mounted) return;
 
       SafeUI.run(() {
         if (mounted) {
           setState(() {
-            _sessionId = sessionId;
+            _sessionId = session?.sessionId;
+            if (session != null) {
+              _currentQuestion = session.firstQuestion;
+            }
             _isPreparingSession = false;
             _errorMessage =
-                sessionId == null ? 'Impossible de créer la session vocale.' : null;
+                session == null ? 'Impossible de créer la session vocale.' : null;
           });
         }
       });
@@ -158,11 +156,8 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
     }
 
     if (mounted) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() => _isRecording = false);
-        }
-      });
+      if (_pulseController.isAnimating) _pulseController.stop();
+      SafeUI.setState(this, () => _isRecording = false);
     }
 
     if (widget.onClose != null) {
@@ -177,11 +172,7 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
     _recordingSeconds = 0;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!mounted) return;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() => _recordingSeconds += 1);
-        }
-      });
+      SafeUI.setState(this, () => _recordingSeconds += 1);
     });
   }
 
@@ -272,10 +263,20 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
         throw Exception('Upload échoué');
       }
 
-      final exchangeResult =
-          await speechService.waitForExchangeResult(exchangeId);
+      final uploadStatus = upload?['status']?.toString();
+      final exchangeResult = uploadStatus == 'completed'
+          ? upload
+          : await speechService.waitForExchangeResult(exchangeId);
       if (exchangeResult == null) {
         throw Exception('Résultat indisponible');
+      }
+      if (exchangeResult['success'] == false ||
+          exchangeResult['status'] == 'failed') {
+        final error = exchangeResult['error'];
+        final message = error is Map
+            ? error['message']?.toString()
+            : 'Traitement audio échoué';
+        throw Exception(message ?? 'Traitement audio échoué');
       }
 
       final exchangeData =
@@ -311,8 +312,7 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
       final resultsScreen = MaterialPageRoute<void>(
         builder: (_) => ResultatsScreen(
           sessionTitle: widget.title,
-          primaryActionLabel:
-              widget.embeddedInHome ? 'Retour au Home' : 'Prochaine session',
+          primaryActionLabel: 'Retour au Home',
           returnToPreviousRoute: widget.embeddedInHome,
           result: models.SessionResult(
             overallScore: overall,
@@ -329,24 +329,46 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
                     'Bonne base. Continue pour stabiliser tes progrès.')
                 .toString(),
           ),
+          onContinueSession: () {
+            // Reset state so user can record another exchange in same session
+            if (mounted) {
+              SafeUI.run(() {
+                if (mounted) {
+                  setState(() {
+                    _isRecording = false;
+                    _isProcessing = false;
+                    _recordingSeconds = 0;
+                    _errorMessage = null;
+                    _currentPath = null;
+                    // sessionId is preserved to continue the same backend session
+                  });
+                  if (!_pulseController.isAnimating) {
+                    _pulseController.repeat();
+                  }
+                }
+              });
+            }
+          },
         ),
       );
 
       if (widget.embeddedInHome) {
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
+        SafeUI.navigate(context, (ctx) async {
+          if (_pulseController.isAnimating) _pulseController.stop();
+          await Navigator.of(ctx).push(resultsScreen);
           if (mounted) {
-            await Navigator.of(context).push(resultsScreen);
+            // Give extra frame for the pop transition to settle
+            await Future.delayed(const Duration(milliseconds: 32));
             if (mounted) {
               widget.onComplete?.call();
             }
           }
-        });
+        }, extended: true);
       } else {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            Navigator.of(context).pushReplacement(resultsScreen);
-          }
-        });
+        SafeUI.navigate(context, (ctx) {
+          if (_pulseController.isAnimating) _pulseController.stop();
+          Navigator.of(ctx).pushReplacement(resultsScreen);
+        }, extended: true);
       }
     } catch (e) {
       if (!mounted) return;

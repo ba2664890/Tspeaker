@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../theme/app_theme.dart';
+import '../utils/safe_ui.dart';
 import 'inscription_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _onNextPressed() {
     if (_currentPage < _pages.length - 1) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      SafeUI.navigate(context, (ctx) {
         if (mounted) {
           _pageController.nextPage(
             duration: const Duration(milliseconds: 300),
@@ -49,9 +50,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         }
       });
     } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      SafeUI.navigate(context, (ctx) {
         if (mounted) {
-          Navigator.of(context).pushReplacement(
+          Navigator.of(ctx).pushReplacement(
             MaterialPageRoute(builder: (_) => const InscriptionScreen()),
           );
         }
@@ -84,9 +85,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                      SafeUI.navigate(context, (ctx) {
                         if (mounted) {
-                          Navigator.of(context).pushReplacement(
+                          Navigator.of(ctx).pushReplacement(
                             MaterialPageRoute(
                                 builder: (_) => const InscriptionScreen()),
                           );
@@ -112,12 +113,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: (index) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    if (mounted) {
-                      setState(() {
-                        _currentPage = index;
-                      });
-                    }
+                  SafeUI.setState(this, () {
+                    _currentPage = index;
                   });
                 },
                 itemCount: _pages.length,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
-import 'resultats_screen.dart';
+import '../utils/safe_ui.dart';
 import '../utils/url_validator.dart';
+import 'resultats_screen.dart';
 
 class SimulationActiveScreen extends StatefulWidget {
   const SimulationActiveScreen({super.key});
@@ -35,12 +36,7 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
     super.reassemble();
     // Interrompre temporairement l'animation lors d'un Hot Reload
     // pour éviter l'exception `!_debugDuringDeviceUpdate` de MouseTracker.
-    if (_waveController.isAnimating) {
-      _waveController.stop();
-      Future.delayed(const Duration(milliseconds: 500), () {
-        if (mounted) _waveController.repeat();
-      });
-    }
+    SafeUI.handleAnimationReassemble(_waveController, state: this);
   }
 
   @override
@@ -52,10 +48,8 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (mounted) {
-                Navigator.pop(context);
-              }
+            SafeUI.navigate(context, (ctx) {
+              Navigator.pop(ctx);
             });
           },
           icon: const Icon(Icons.arrow_back, color: AppColors.onSurface),
@@ -378,7 +372,7 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
                             ),
                             child: IconButton(
                               onPressed: () {
-                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                SafeUI.run(() {
                                   // Pause logic placeholder
                                 });
                               },
@@ -392,23 +386,20 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
                           // Mic button
                           GestureDetector(
                             onTap: () {
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                if (!mounted) return;
-                                setState(() {
-                                  _isRecording = !_isRecording;
+                              SafeUI.setState(this, () {
+                                _isRecording = !_isRecording;
+                              });
+                              if (!_isRecording) {
+                                return;
+                              }
+                              Future.delayed(const Duration(seconds: 2), () {
+                                SafeUI.navigate(context, (ctx) {
+                                  Navigator.of(ctx).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => const ResultatsScreen(),
+                                    ),
+                                  );
                                 });
-                                // Navigate to results after "recording"
-                                if (_isRecording) {
-                                  Future.delayed(const Duration(seconds: 2), () {
-                                    if (mounted) {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (_) => const ResultatsScreen(),
-                                        ),
-                                      );
-                                    }
-                                  });
-                                }
                               });
                             },
                             child: Container(
@@ -450,7 +441,7 @@ class _SimulationActiveScreenState extends State<SimulationActiveScreen>
                             ),
                             child: IconButton(
                               onPressed: () {
-                                WidgetsBinding.instance.addPostFrameCallback((_) {
+                                SafeUI.run(() {
                                   // Skip logic placeholder
                                 });
                               },

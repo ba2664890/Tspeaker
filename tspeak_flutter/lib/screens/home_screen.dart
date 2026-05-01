@@ -30,13 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
   int _freeSessionVersion = 0;
 
   void _handleTabChange(int index) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        setState(() {
-          _currentIndex = index;
-        });
-      }
-    });
+    SafeUI.setState(this, () {
+      _currentIndex = index;
+    }, extended: true);
   }
 
   late Widget _homeScreen;
@@ -72,13 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _openFreeSessionTab() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        setState(() {
-          _freeSessionVersion += 1;
-          _currentIndex = 2;
-        });
-      }
+    SafeUI.setState(this, () {
+      _freeSessionVersion += 1;
+      _currentIndex = 2;
     });
   }
 
@@ -187,7 +179,9 @@ class _HomeContentState extends State<HomeContent> {
     final future = _loadBundle();
     SafeUI.run(() {
       if (mounted) {
-        setState(() => _bundleFuture = future);
+        setState(() {
+          _bundleFuture = future;
+        });
       }
     });
     await future;
@@ -234,7 +228,7 @@ class _HomeContentState extends State<HomeContent> {
   }
 
   void _openTab(int index) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    SafeUI.run(() {
       if (mounted) {
         widget.onTabChange(index);
       }

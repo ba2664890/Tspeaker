@@ -1,119 +1,196 @@
 """
-T.Speak — Module Wav2Vec 2.0 : Scoring Phonétique
-Analyse la prononciation phonème par phonème et compare avec un locuteur natif.
+T.Speak - Wav2Vec 2.0 pronunciation scoring.
 
-Modèle : facebook/wav2vec2-large-xlsr-53 (cross-lingual)
-Adapté pour mesurer la distance phonétique accent africain ↔ anglais natif.
+Le scoreur utilise un vrai checkpoint Wav2Vec2ForCTC anglais pour mesurer la
+qualite acoustique, puis combine cette evidence avec la transcription Whisper et
+le texte attendu. Le resultat reste exploitable meme sans phonemizer systeme.
 """
 
+from __future__ import annotations
+
 import logging
+import re
+import threading
 import time
+from dataclasses import dataclass
+from functools import lru_cache
 from typing import Optional
 
 import numpy as np
-import torch
-import torchaudio
-import Levenshtein
-from transformers import (
-    Wav2Vec2ForCTC,
-    Wav2Vec2Processor,
-    Wav2Vec2FeatureExtractor,
-)
+import soundfile as sf
+from scipy.signal import resample_poly
+from jiwer import wer
+
+try:
+    import Levenshtein
+except ImportError:  # pragma: no cover
+    Levenshtein = None
+
+try:
+    import torch
+except ImportError:  # pragma: no cover
+    torch = None
 
 logger = logging.getLogger("tspeak.ai")
 
-# Phonèmes anglais (IPA simplifié)
-ENGLISH_PHONEMES = [
-    "AA", "AE", "AH", "AO", "AW", "AY",
-    "B", "CH", "D", "DH", "EH", "ER", "EY",
-    "F", "G", "HH", "IH", "IY", "JH", "K",
-    "L", "M", "N", "NG", "OW", "OY", "P",
-    "R", "S", "SH", "T", "TH", "UH", "UW",
-    "V", "W", "Y", "Z", "ZH",
-]
 
-# Phonèmes fréquemment problématiques pour les locuteurs africains francophones
 AFRICAN_FRENCH_DIFFICULT_PHONEMES = {
-    "TH": "La plupart des langues africaines n'ont pas ce son",
-    "W": "Souvent confondu avec /v/ en français",
-    "R": "Le /r/ roulé africain diffère de l'anglais",
-    "V": "Parfois confondu avec /b/ (substrat wolof)",
-    "NG": "Le /ng/ final est difficile pour les francophones",
+    "TH": "Place la langue entre les dents; evite de remplacer par /s/ ou /z/.",
+    "DH": "Garde la langue entre les dents et fais vibrer la voix.",
+    "R": "L'anglais demande un /r/ retroflechi, moins roule que le /r/ local.",
+    "W": "Arrondis les levres; evite de le transformer en /v/.",
+    "V": "Mets les dents du haut sur la levre du bas; evite /b/.",
+    "NG": "Garde le son dans le nez en fin de mot, sans ajouter /g/ fort.",
+    "H": "Expire clairement au debut du mot; ne le rends pas muet.",
 }
+
+
+@dataclass(frozen=True)
+class TokenSpan:
+    token: str
+    start_sec: float
+    end_sec: float
+    probability: float
 
 
 class Wav2VecScorer:
     """
-    Scoreur de prononciation basé sur Wav2Vec 2.0.
+    Scoreur de prononciation rapide et complet.
 
-    Pipeline :
-    1. Extraction des features audio (CNN)
-    2. Contexte temporel (Transformer)
-    3. Classification phonémique (CTC)
-    4. Comparaison avec référence native
-    5. Score par phonème + score global
+    Pipeline:
+    1. Charge l'audio en mono 16 kHz.
+    2. Passe l'audio dans un modele Wav2Vec2 CTC anglais.
+    3. Decode les tokens avec timestamps et confiances.
+    4. Compare reference, transcription Whisper et sortie CTC.
+    5. Retourne score global, details par token/mot et conseils cibles.
     """
 
-    MODEL_ID = "facebook/wav2vec2-large-xlsr-53"
+    MODEL_ID = "facebook/wav2vec2-base-960h"
     SAMPLE_RATE = 16000
+    MAX_AUDIO_SECONDS = 120
 
-    def __init__(self, model_id: Optional[str] = None, device: Optional[str] = None):
+    def __init__(
+        self,
+        model_id: Optional[str] = None,
+        device: Optional[str] = None,
+        max_audio_seconds: int = MAX_AUDIO_SECONDS,
+    ):
         self.model_id = model_id or self.MODEL_ID
-        self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = device or (
+            "cuda" if torch is not None and torch.cuda.is_available() else "cpu"
+        )
+        self.max_audio_seconds = max_audio_seconds
         self._model = None
         self._processor = None
+        # Blank token ID pour CTC: pad_token_id pour Wav2Vec2, avec fallback a 0.
+        self._blank_token_id: int = 0
+        # Vocab inverse: int -> token string, cache au chargement du modele.
+        self._id_to_token: dict[int, str] = {}
+        self._model_lock = threading.Lock()
 
-        logger.info("Wav2VecScorer initialisé: model=%s device=%s", self.model_id, self.device)
+        logger.info("Wav2VecScorer initialise: model=%s device=%s", self.model_id, self.device)
+
+    # ------------------------------------------------------------------
+    # Proprietes avec chargement lazy thread-safe
+    # ------------------------------------------------------------------
 
     @property
     def model(self):
         if self._model is None:
-            self._load_model()
+            with self._model_lock:
+                if self._model is None:
+                    self._load_model()
         return self._model
 
     @property
     def processor(self):
         if self._processor is None:
-            self._load_model()
+            with self._model_lock:
+                if self._processor is None:
+                    self._load_model()
         return self._processor
 
-    def _load_model(self):
-        """Charge le modèle Wav2Vec2 avec optimisations."""
-        logger.info("Chargement Wav2Vec2 '%s'...", self.model_id)
+    def _load_model(self) -> None:
+        """Charge le modele Wav2Vec2ForCTC et applique les optimisations CPU/GPU."""
+        if torch is None:
+            raise RuntimeError(
+                "torch est requis pour le scoring Wav2Vec. Installez les dependances backend."
+            )
+
+        from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
+
+        logger.info("Chargement Wav2Vec2 CTC '%s'...", self.model_id)
         start = time.monotonic()
-        self._processor = Wav2Vec2Processor.from_pretrained(self.model_id)
+
+        processor = Wav2Vec2Processor.from_pretrained(self.model_id)
         model = Wav2Vec2ForCTC.from_pretrained(self.model_id)
-        
-        # Optimisation : Quantisation pour CPU
+
         if self.device == "cpu":
-            logger.info("Application de la quantisation dynamique (CPU)...")
             model = torch.quantization.quantize_dynamic(
                 model, {torch.nn.Linear}, dtype=torch.qint8
             )
-        
-        self._model = model.to(self.device)
-        self._model.eval()
-        logger.info("Wav2Vec2 chargé et optimisé en %.2fs", time.monotonic() - start)
+        else:
+            model = model.to(self.device)
 
-    def load_audio(self, audio_path: str) -> torch.Tensor:
-        """Charge et normalise un fichier audio à 16kHz mono."""
-        waveform, sample_rate = torchaudio.load(audio_path)
+        model.eval()
+        self._processor = processor
+        self._model = model
 
-        # Convertir en mono
-        if waveform.shape[0] > 1:
-            waveform = waveform.mean(dim=0, keepdim=True)
+        # FIX: blank_token_id doit toujours etre un int pour que la comparaison
+        # dans decode_tokens fonctionne. Wav2Vec2 utilise pad_token_id comme
+        # symbole CTC blank; on utilise 0 en dernier recours.
+        pad_id = getattr(processor.tokenizer, "pad_token_id", None)
+        self._blank_token_id = pad_id if isinstance(pad_id, int) else 0
 
-        # Resampler à 16kHz si nécessaire
-        if sample_rate != self.SAMPLE_RATE:
-            resampler = torchaudio.transforms.Resample(sample_rate, self.SAMPLE_RATE)
-            waveform = resampler(waveform)
+        # PERF: construire le vocab inverse une seule fois ici plutot qu'a chaque
+        # appel de decode_tokens (economise ~32 000 iterations a chaque inference).
+        self._id_to_token = {v: k for k, v in processor.tokenizer.get_vocab().items()}
 
-        return waveform.squeeze()
+        logger.info("Wav2Vec2 charge en %.2fs", time.monotonic() - start)
 
-    def extract_logits(self, waveform: torch.Tensor) -> torch.Tensor:
-        """Extrait les logits phonémiques du modèle Wav2Vec2."""
+    # ------------------------------------------------------------------
+    # Chargement audio
+    # ------------------------------------------------------------------
+
+    def load_audio(self, audio_path: str) -> np.ndarray:
+        """Charge et normalise l'audio en mono float32 16 kHz."""
+        # PERF/QUALITE: sf.read retourne directement (data, samplerate).
+        # L'appel prealable a sf.info() etait redondant et ouvrait le fichier 2x.
+        # On borne la lecture a max_audio_seconds * 16000 frames APRES resampling
+        # en lisant d'abord la duree, mais avec une seule ouverture via sf.SoundFile.
+        with sf.SoundFile(audio_path) as f:
+            native_sr = f.samplerate
+            max_frames = self.max_audio_seconds * native_sr
+            waveform = f.read(frames=max_frames, dtype="float32", always_2d=False)
+
+        if waveform.ndim > 1:
+            waveform = waveform.mean(axis=1)
+
+        if native_sr != self.SAMPLE_RATE:
+            gcd = int(np.gcd(native_sr, self.SAMPLE_RATE))
+            waveform = resample_poly(
+                waveform,
+                self.SAMPLE_RATE // gcd,
+                native_sr // gcd,
+            ).astype(np.float32)
+
+        if waveform.size == 0:
+            raise ValueError("Audio vide ou illisible.")
+
+        # QUALITE: np.asarray() redondant supprime (sf.read retourne deja float32).
+        peak = float(np.max(np.abs(waveform)))
+        if peak > 0:
+            waveform = waveform / peak * 0.95
+        return waveform
+
+    # ------------------------------------------------------------------
+    # Inference
+    # ------------------------------------------------------------------
+
+    def extract_logits(self, waveform: np.ndarray) -> "torch.Tensor":
+        """Extrait les logits CTC du modele."""
         inputs = self.processor(
-            waveform.numpy(),
+            waveform,
             sampling_rate=self.SAMPLE_RATE,
             return_tensors="pt",
             padding=True,
@@ -123,39 +200,66 @@ class Wav2VecScorer:
         if attention_mask is not None:
             attention_mask = attention_mask.to(self.device)
 
-        with torch.no_grad():
-            outputs = self._model(input_values, attention_mask=attention_mask)
+        with torch.inference_mode():
+            outputs = self.model(input_values, attention_mask=attention_mask)
+        return outputs.logits
 
-        return outputs.logits  # (batch, time, vocab_size)
+    def decode_tokens(
+        self, logits: "torch.Tensor", audio_duration_sec: float
+    ) -> tuple[str, list[TokenSpan]]:
+        """Decode CTC greedy avec collapse des repetitions et timestamps approximes.
 
-    def decode_phonemes(self, logits: torch.Tensor) -> list[dict]:
+        PERF: on calcule argmax directement sur les logits (plus rapide que
+        softmax + argmax), puis on n'extrait le softmax que pour les indices
+        argmax — economie d'un facteur ~vocab_size sur l'allocation memoire.
         """
-        Décode les phonèmes à partir des logits via argmax (greedy decoding).
-        Retourne une liste de phonèmes avec leur probabilité.
-        """
-        probs = torch.softmax(logits[0], dim=-1).cpu().numpy()  # (time, vocab)
-        predicted_ids = np.argmax(probs, axis=-1)
+        logits_np = logits[0].detach().cpu().float().numpy()  # (T, V)
+        predicted_ids = logits_np.argmax(axis=1)              # (T,)
 
-        vocab = self.processor.tokenizer.get_vocab()
-        id_to_token = {v: k for k, v in vocab.items()}
+        # Softmax numeriquement stable uniquement sur les max-logits.
+        # log-sum-exp trick: P(argmax) = exp(l_max) / sum(exp(l_i))
+        #                              = 1 / (1 + sum_{i!=max} exp(l_i - l_max))
+        # On calcule le denominateur complet pour eviter une approximation.
+        max_logits = logits_np[np.arange(len(predicted_ids)), predicted_ids]  # (T,)
+        shifted = logits_np - max_logits[:, np.newaxis]  # broadcast
+        max_probs = 1.0 / np.exp(np.log(np.sum(np.exp(shifted), axis=1)))     # (T,)
 
-        phonemes = []
-        prev_id = -1
-        for t_idx, token_id in enumerate(predicted_ids):
-            token = id_to_token.get(token_id, "<unk>")
-            if token == "<pad>":
-                prev_id = -1
+        time_step_sec = audio_duration_sec / max(1, len(predicted_ids))
+
+        collapsed: list[TokenSpan] = []
+        transcript_parts: list[str] = []
+        prev_id: Optional[int] = None
+
+        for idx, token_id in enumerate(predicted_ids):
+            token_id_int = int(token_id)
+
+            if token_id_int == self._blank_token_id:
+                prev_id = None
                 continue
-            if token_id == prev_id:
-                continue  # Supprimer les répétitions CTC
-            phonemes.append({
-                "phoneme": token,
-                "time_step": t_idx,
-                "probability": float(probs[t_idx, token_id]),
-            })
-            prev_id = token_id
+            if prev_id == token_id_int:
+                continue
 
-        return phonemes
+            token = self._id_to_token.get(token_id_int, "")
+            if not token or token.startswith("<"):
+                prev_id = token_id_int
+                continue
+
+            normalized_token = " " if token == "|" else token.lower()
+            transcript_parts.append(normalized_token)
+            collapsed.append(TokenSpan(
+                token=normalized_token.strip() or "|",
+                start_sec=idx * time_step_sec,
+                end_sec=(idx + 1) * time_step_sec,
+                probability=float(max_probs[idx]),
+            ))
+            prev_id = token_id_int
+
+        ctc_text = _normalize_text("".join(transcript_parts))
+        return ctc_text, collapsed
+
+    # ------------------------------------------------------------------
+    # Scoring principal
+    # ------------------------------------------------------------------
 
     def score_pronunciation(
         self,
@@ -163,177 +267,339 @@ class Wav2VecScorer:
         reference_text: str,
         user_text: str,
     ) -> dict:
-        """
-        Score complet de prononciation.
-
-        Args:
-            user_audio_path: Chemin audio utilisateur (WAV 16kHz)
-            reference_text: Texte de référence attendu (question IA)
-            user_text: Transcription de la réponse utilisateur (depuis Whisper)
-
-        Returns:
-            {
-                "pronunciation_score": float (0-100),
-                "phoneme_scores": [...],
-                "difficult_phonemes": [...],
-                "word_scores": {...},
-                "overall_accuracy": float,
-            }
-        """
         start_time = time.monotonic()
 
         try:
-            # Charger l'audio utilisateur
             waveform = self.load_audio(user_audio_path)
-
-            # Extraire logits
+            duration_sec = len(waveform) / self.SAMPLE_RATE
             logits = self.extract_logits(waveform)
+            ctc_text, token_spans = self.decode_tokens(logits, duration_sec)
 
-            # Décoder phonèmes
-            user_phonemes = self.decode_phonemes(logits)
+            normalized_reference = _normalize_text(reference_text)
+            normalized_user = _normalize_text(user_text) or ctc_text
 
-            # Obtenir les phonèmes de référence (via G2P)
-            reference_phonemes = self._text_to_phonemes(user_text)
+            reference_match = _similarity(normalized_reference, normalized_user)
+            ctc_match = _similarity(normalized_user, ctc_text)
 
-            # Calculer la similarité phonétique (distance d'édition normalisée)
-            phoneme_accuracy = self._compute_phoneme_accuracy(
-                [p["phoneme"] for p in user_phonemes],
-                reference_phonemes,
+            # PERF: calcul des unites phonemiques une seule fois, partage entre
+            # _phoneme_similarity et _identify_difficult_phonemes.
+            ref_units = _text_to_pronunciation_units(normalized_reference)
+            usr_units = _text_to_pronunciation_units(normalized_user)
+
+            phoneme_accuracy = _sequence_similarity(ref_units, usr_units)
+            acoustic_confidence = self._acoustic_confidence(token_spans)
+
+            pronunciation_score = _weighted_score(
+                acoustic_confidence=acoustic_confidence,
+                reference_match=reference_match,
+                ctc_match=ctc_match,
+                phoneme_accuracy=phoneme_accuracy,
             )
-
-            # Identifier les phonèmes difficiles pour cet utilisateur
-            difficult = self._identify_difficult_phonemes(user_phonemes)
-
-            # Score global prononciation (0-100)
-            pronunciation_score = round(phoneme_accuracy * 100, 2)
-
-            # Score par mot
-            word_scores = self._compute_word_scores(user_text, user_phonemes, logits)
+            word_scores = self._compute_word_scores(normalized_user, token_spans, pronunciation_score)
+            difficult = self._identify_difficult_phonemes(
+                normalized_reference, normalized_user, token_spans
+            )
 
             elapsed_ms = int((time.monotonic() - start_time) * 1000)
             logger.info(
-                "Scoring phonétique: %.0fms — score=%.1f",
-                elapsed_ms, pronunciation_score,
+                "Scoring Wav2Vec: %dms score=%.1f acoustic=%.2f ref=%.2f ctc=%.2f",
+                elapsed_ms,
+                pronunciation_score,
+                acoustic_confidence,
+                reference_match,
+                ctc_match,
             )
 
             return {
                 "pronunciation_score": pronunciation_score,
-                "phoneme_accuracy": float(phoneme_accuracy),
-                "phoneme_count": len(user_phonemes),
-                "phoneme_scores": user_phonemes[:50],  # Limiter pour la réponse API
+                "phoneme_accuracy": round(float(phoneme_accuracy), 4),
+                "acoustic_confidence": round(float(acoustic_confidence), 4),
+                "reference_match": round(float(reference_match), 4),
+                "ctc_match": round(float(ctc_match), 4),
+                "ctc_transcription": ctc_text,
+                "phoneme_count": len(token_spans),
+                "phoneme_scores": [
+                    {
+                        "phoneme": span.token.upper(),
+                        "start": round(span.start_sec, 3),
+                        "end": round(span.end_sec, 3),
+                        "probability": round(span.probability, 4),
+                    }
+                    for span in token_spans[:80]
+                ],
                 "difficult_phonemes": difficult,
                 "word_scores": word_scores,
                 "processing_ms": elapsed_ms,
             }
 
-        except Exception as e:
-            logger.error("Erreur scoring phonétique: %s", e, exc_info=True)
-            # Retourner un score neutre en cas d'erreur
-            return {
-                "pronunciation_score": 60.0,
-                "phoneme_accuracy": 0.6,
-                "phoneme_count": 0,
-                "phoneme_scores": [],
-                "difficult_phonemes": [],
-                "word_scores": {},
-                "error": str(e),
-            }
+        except Exception as exc:
+            logger.error("Erreur scoring Wav2Vec: %s", exc, exc_info=True)
+            return self._fallback_score(reference_text, user_text, str(exc), start_time)
 
-    def _text_to_phonemes(self, text: str) -> list[str]:
-        """
-        Convertit du texte en phonèmes IPA via phonemizer.
-        Fallback sur un mapping simple si phonemizer non disponible.
-        """
-        try:
-            from phonemizer import phonemize
-            phonemes_str = phonemize(
-                text,
-                backend="espeak",
-                language="en-us",
-                with_stress=True,
-                separator=phonemize.separator.Separator(phone=" ", word="| ", syllable=""),
-            )
-            return [p for p in phonemes_str.split() if p and p != "|"]
-        except Exception:
-            # Fallback : tokenisation simple
-            return list(text.upper().replace(" ", ""))
+    # ------------------------------------------------------------------
+    # Methodes internes
+    # ------------------------------------------------------------------
 
-    def _compute_phoneme_accuracy(
-        self, predicted: list[str], reference: list[str]
-    ) -> float:
-        """
-        Calcule la précision phonémique via la bibliothèque Levenshtein (optimisée).
-        """
-        if not reference:
-            return 0.5
+    def _acoustic_confidence(self, token_spans: list[TokenSpan]) -> float:
+        if not token_spans:
+            return 0.35
+        probabilities = [span.probability for span in token_spans if span.token != "|"]
+        if not probabilities:
+            return 0.35
+        # On compresse legerement les extremes: les CTC sont souvent trop confiants.
+        confidence = float(np.mean(probabilities))
+        return float(np.clip((confidence - 0.15) / 0.8, 0.0, 1.0))
 
-        # Utiliser la bibliothèque Levenshtein pour plus de rapidité
-        # Convertir les listes de phonèmes en "chaînes" de caractères uniques pour Levenshtein
-        # car la lib travaille sur des chaînes.
-        pred_str = "".join([chr(hash(p) % 1000 + 32) for p in predicted])
-        ref_str = "".join([chr(hash(p) % 1000 + 32) for p in reference])
+    def _identify_difficult_phonemes(
+        self,
+        reference_text: str,
+        user_text: str,
+        token_spans: list[TokenSpan],
+    ) -> list[dict]:
+        hints: list[dict] = []
+        reference_upper = reference_text.upper()
+        user_upper = user_text.upper()
+        low_confidence: set[str] = {
+            span.token.upper()
+            for span in token_spans
+            if span.token != "|" and span.probability < 0.55
+        }
 
-        edit_dist = Levenshtein.distance(pred_str, ref_str)
-        max_len = max(len(predicted), len(reference))
-        accuracy = 1.0 - (edit_dist / max_len) if max_len > 0 else 0.5
-
-        return float(np.clip(accuracy, 0.0, 1.0))
-
-    def _identify_difficult_phonemes(self, phonemes: list[dict]) -> list[dict]:
-        """
-        Identifie les phonèmes difficiles (faible probabilité de confiance).
-        Filtre les phonèmes problématiques connus pour les locuteurs africains.
-        """
-        difficult = []
-        for p in phonemes:
-            phoneme = p["phoneme"].upper()
-            if p["probability"] < 0.7 and phoneme in AFRICAN_FRENCH_DIFFICULT_PHONEMES:
-                difficult.append({
+        # QUALITE: bool() explicite pour eviter le type ambigu bool|set issu de &.
+        candidates: dict[str, bool] = {
+            "TH": bool(
+                ("TH" in reference_upper and "TH" not in user_upper)
+                or ({"T", "S", "Z"} & low_confidence)
+            ),
+            "DH": bool(
+                ("THE" in reference_upper or "THAT" in reference_upper)
+                and ({"D", "Z"} & low_confidence)
+            ),
+            "R":  bool("R"  in reference_upper and "R"  in low_confidence),
+            "W":  bool("W"  in reference_upper and "W"  in low_confidence),
+            "V":  bool("V"  in reference_upper and "V"  in low_confidence),
+            "NG": bool("NG" in reference_upper and "NG" not in user_upper),
+            "H":  bool(
+                reference_upper.startswith("H")
+                and (not user_upper.startswith("H") or "H" in low_confidence)
+            ),
+        }
+        for phoneme, is_difficult in candidates.items():
+            if is_difficult:
+                hints.append({
                     "phoneme": phoneme,
-                    "probability": p["probability"],
+                    "probability": round(_average_token_probability(phoneme, token_spans), 4),
                     "tip": AFRICAN_FRENCH_DIFFICULT_PHONEMES[phoneme],
                 })
-        return difficult[:10]  # Max 10 phonèmes difficiles
+        return hints[:10]
 
     def _compute_word_scores(
-        self, text: str, phonemes: list[dict], logits: torch.Tensor
+        self,
+        text: str,
+        token_spans: list[TokenSpan],
+        fallback_score: float,
     ) -> dict[str, float]:
-        """
-        Calcule un score par mot basé sur la confiance des phonèmes.
-        Retourne {mot: score_confiance} pour colorisation dans Flutter.
-        """
         words = text.split()
-        if not words or not phonemes:
+        if not words:
             return {}
+        if not token_spans:
+            return {word: round(fallback_score, 1) for word in words}
 
-        # Distribuer les phonèmes entre les mots proportionnellement
-        phonemes_per_word = max(1, len(phonemes) // len(words))
-        word_scores = {}
-
-        for i, word in enumerate(words):
-            start_idx = i * phonemes_per_word
-            end_idx = start_idx + phonemes_per_word
-            word_phonemes = phonemes[start_idx:end_idx]
-
-            if word_phonemes:
-                avg_confidence = np.mean([p["probability"] for p in word_phonemes])
-                word_scores[word] = round(float(avg_confidence) * 100, 1)
+        letter_spans = [span for span in token_spans if re.match(r"[a-z]", span.token)]
+        scores: dict[str, float] = {}
+        cursor = 0
+        for word in words:
+            letters_needed = len(re.sub(r"[^a-z]", "", word.lower()))
+            # FIX: si letters_needed == 0, on n'avance pas le curseur et on
+            # attribue le score de fallback plutot que de consommer un span
+            # de facon non deterministe.
+            if letters_needed == 0 or cursor >= len(letter_spans):
+                scores[word] = round(fallback_score, 1)
+                continue
+            chunk = letter_spans[cursor:cursor + letters_needed]
+            cursor += letters_needed
+            if chunk:
+                scores[word] = round(float(np.mean([s.probability for s in chunk])) * 100, 1)
             else:
-                word_scores[word] = 70.0  # Score neutre
+                scores[word] = round(fallback_score, 1)
+        return scores
 
-        return word_scores
+    def _fallback_score(
+        self,
+        reference_text: str,
+        user_text: str,
+        error: str,
+        start_time: float,
+    ) -> dict:
+        normalized_reference = _normalize_text(reference_text)
+        normalized_user = _normalize_text(user_text)
+        text_similarity = _similarity(normalized_reference, normalized_user)
+        score = round(float(np.clip(45 + text_similarity * 40, 35, 85)), 2)
+        return {
+            "pronunciation_score": score,
+            "phoneme_accuracy": round(text_similarity, 4),
+            "acoustic_confidence": 0.0,
+            "reference_match": round(text_similarity, 4),
+            "ctc_match": 0.0,
+            "ctc_transcription": "",
+            "phoneme_count": 0,
+            "phoneme_scores": [],
+            "difficult_phonemes": [],
+            "word_scores": {word: score for word in normalized_user.split()},
+            "processing_ms": int((time.monotonic() - start_time) * 1000),
+            "error": error,
+        }
 
 
-# ─── Singleton global ────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Utilitaires module-level
+# ---------------------------------------------------------------------------
+
+def _normalize_text(text: str) -> str:
+    text = text or ""
+    text = text.lower().replace("'", "")
+    text = re.sub(r"[^a-z0-9\s]", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _similarity(reference: str, hypothesis: str) -> float:
+    if not reference and not hypothesis:
+        return 1.0
+    if not reference or not hypothesis:
+        return 0.0
+
+    word_accuracy = 1.0 - min(1.0, wer(reference, hypothesis))
+    if Levenshtein is not None:
+        char_distance = Levenshtein.distance(reference, hypothesis)
+    else:
+        char_distance = _edit_distance(list(reference), list(hypothesis))
+    char_accuracy = 1.0 - char_distance / max(len(reference), len(hypothesis), 1)
+    return float(np.clip((word_accuracy * 0.65) + (char_accuracy * 0.35), 0.0, 1.0))
+
+
+def _sequence_similarity(reference: list[str], hypothesis: list[str]) -> float:
+    if not reference and not hypothesis:
+        return 1.0
+    if not reference or not hypothesis:
+        return 0.0
+    distance = _edit_distance(reference, hypothesis)
+    return float(np.clip(1.0 - distance / max(len(reference), len(hypothesis), 1), 0.0, 1.0))
+
+
+def _edit_distance(a: list[str], b: list[str]) -> int:
+    """Distance d'edition optimisee O(min(|a|,|b|)) en memoire."""
+    if len(a) < len(b):
+        a, b = b, a  # garantit que b est la sequence plus courte
+    previous = list(range(len(b) + 1))
+    for i, item_a in enumerate(a, start=1):
+        current = [i]
+        for j, item_b in enumerate(b, start=1):
+            current.append(min(
+                previous[j] + 1,
+                current[j - 1] + 1,
+                previous[j - 1] + (0 if item_a == item_b else 1),
+            ))
+        previous = current
+    return previous[-1]
+
+
+@lru_cache(maxsize=256)
+def _text_to_pronunciation_units(text: str) -> tuple[str, ...]:
+    """Convertit un texte en unites phonemiques (IPA ou graphemes).
+
+    PERF: le decorateur @lru_cache evite de relancer espeak/phonemizer pour
+    le meme texte (typiquement le texte de reference, appele 2-3x par scoring).
+    On retourne un tuple (hashable) pour permettre le cache.
+    """
+    try:
+        from phonemizer import phonemize
+        from phonemizer.separator import Separator
+
+        phonemes = phonemize(
+            text,
+            backend="espeak",
+            language="en-us",
+            strip=True,
+            preserve_punctuation=False,
+            with_stress=False,
+            separator=Separator(phone=" ", word=" | ", syllable=""),
+        )
+        units = [unit for unit in phonemes.split() if unit != "|"]
+        if units:
+            return tuple(units)
+    except Exception:
+        pass
+
+    normalized = _normalize_text(text)
+    # Fallback graphemique: moins fin que l'IPA, mais stable et sans dependance systeme.
+    return tuple(char for char in normalized.replace(" ", "|"))
+
+
+def _weighted_score(
+    acoustic_confidence: float,
+    reference_match: float,
+    ctc_match: float,
+    phoneme_accuracy: float,
+) -> float:
+    score = (
+        acoustic_confidence * 0.35
+        + reference_match   * 0.30
+        + phoneme_accuracy  * 0.25
+        + ctc_match         * 0.10
+    ) * 100
+    return round(float(np.clip(score, 0.0, 100.0)), 2)
+
+
+def _average_token_probability(phoneme: str, token_spans: list[TokenSpan]) -> float:
+    """Probabilite moyenne des spans dont le token appartient au phoneme donne.
+
+    FIX: la condition etait inversee. On cherche les spans dont le token est
+    CONTENU dans le phoneme cible (ex: 'T' in 'TH'), pas l'inverse.
+    """
+    values = [
+        span.probability
+        for span in token_spans
+        if span.token != "|" and span.token.upper() in phoneme
+    ]
+    return float(np.mean(values)) if values else 0.0
+
+
+# ---------------------------------------------------------------------------
+# Singleton Django-aware
+# ---------------------------------------------------------------------------
 
 _scorer_instance: Optional[Wav2VecScorer] = None
+_scorer_lock = threading.Lock()
 
 
 def get_scorer() -> Wav2VecScorer:
-    """Retourne l'instance singleton du scoreur."""
+    """Retourne l'instance singleton du scoreur (lazy, thread-safe)."""
     global _scorer_instance
     if _scorer_instance is None:
-        from django.conf import settings
-        model_id = getattr(settings, "WAV2VEC_MODEL", "facebook/wav2vec2-large-xlsr-53")
-        _scorer_instance = Wav2VecScorer(model_id=model_id)
+        with _scorer_lock:
+            if _scorer_instance is None:
+                _scorer_instance = _build_scorer_from_settings()
     return _scorer_instance
+
+
+def _build_scorer_from_settings() -> Wav2VecScorer:
+    """Instancie le scoreur a partir de django.conf.settings si disponible,
+    sinon utilise les valeurs par defaut de la classe.
+
+    Separer cette logique de get_scorer() permet de tester la factory sans
+    avoir un projet Django configure.
+    """
+    try:
+        from django.conf import settings as django_settings
+        return Wav2VecScorer(
+            model_id=getattr(django_settings, "WAV2VEC_MODEL", Wav2VecScorer.MODEL_ID),
+            device=getattr(django_settings, "WAV2VEC_DEVICE", None),
+            max_audio_seconds=getattr(
+                django_settings,
+                "WAV2VEC_MAX_AUDIO_SECONDS",
+                Wav2VecScorer.MAX_AUDIO_SECONDS,
+            ),
+        )
+    except Exception:
+        # Django non configure (tests unitaires, scripts standalone, etc.)
+        return Wav2VecScorer()

@@ -31,7 +31,9 @@ class _ClassementScreenState extends State<ClassementScreen> {
 
   Future<void> _refresh() async {
     final future = _fetchLeaderboard();
-    setState(() => _leaderboardFuture = future);
+    setState(() {
+      _leaderboardFuture = future;
+    });
     await future;
   }
 

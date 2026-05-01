@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/safe_ui.dart';
 import '../theme/app_theme.dart';
 import '../utils/url_validator.dart';
 
@@ -161,8 +162,8 @@ class TopAppBarWithBack extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   IconButton(
                     onPressed: onBack ?? () {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        Navigator.pop(context);
+                      SafeUI.navigate(context, (ctx) {
+                        Navigator.pop(ctx);
                       });
                     },
                     style: IconButton.styleFrom(

@@ -60,7 +60,9 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
 
   Future<void> _refresh() async {
     final future = _loadBundle();
-    setState(() => _bundleFuture = future);
+    setState(() {
+      _bundleFuture = future;
+    });
     await future;
   }
 

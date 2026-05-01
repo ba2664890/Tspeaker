@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
               setState(() => _errorMessage = 'Email ou mot de passe incorrect.');
             }
           }
-        });
+        }, extended: true);
       }
     } on AuthException catch (e) {
       if (mounted) {
@@ -121,20 +121,12 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted || _cooldownSeconds <= 1) {
         timer.cancel();
         if (mounted) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) {
-              setState(() => _cooldownSeconds = 0);
-            }
-          });
+          SafeUI.setState(this, () => _cooldownSeconds = 0);
         }
         return;
       }
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() => _cooldownSeconds -= 1);
-        }
-      });
+      SafeUI.setState(this, () => _cooldownSeconds -= 1);
     });
   }
 
