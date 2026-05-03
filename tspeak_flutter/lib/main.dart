@@ -6,6 +6,7 @@ import 'screens/splash_screen.dart';
 import 'screens/inscription_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/debug_screen.dart';
 import 'services/api_service.dart';
 import 'services/auth_service.dart';
 import 'services/user_service.dart';
@@ -17,8 +18,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Configure base domain for media
-  UrlValidator.baseUrl = 'http://localhost:8001';
+  // Configure base domain for mediahttps
+  UrlValidator.baseUrl = 'https://high-donate-vat-wrote.trycloudflare.com';
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -32,7 +33,7 @@ void main() {
   runApp(
     MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (_) => ApiService(baseUrl: 'http://localhost:8001/api/v1')),
+        RepositoryProvider(create: (_) => ApiService(baseUrl: 'https://high-donate-vat-wrote.trycloudflare.com/api/v1/')),
         RepositoryProvider(create: (context) => AuthService(context.read<ApiService>())),
         RepositoryProvider(create: (context) => UserService(context.read<ApiService>())),
         RepositoryProvider(create: (context) => SpeechService(context.read<ApiService>())),
@@ -62,6 +63,7 @@ class TSpeakApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/inscription': (context) => const InscriptionScreen(),
         '/home': (context) => const HomeScreen(),
+        '/debug': (context) => DebugScreen(),
       },
     );
   }

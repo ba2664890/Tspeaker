@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 
@@ -37,9 +38,8 @@ class SessionVocaleScreen extends StatefulWidget {
   State<SessionVocaleScreen> createState() => _SessionVocaleScreenState();
 }
 
-class _SessionVocaleScreenState extends State<SessionVocaleScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _pulseController;
+class _SessionVocaleScreenState extends State<SessionVocaleScreen> {
+  static const MethodChannel _ttsChannel = MethodChannel('tspeak/tts');
   final AudioRecorder _audioRecorder = AudioRecorder();
 
   late Future<models.User> _userFuture;
@@ -49,18 +49,22 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
   bool _isPreparingSession = true;
   bool _isProcessing = false;
   int _recordingSeconds = 0;
+  int _totalSessionSeconds = 0;
   String? _sessionId;
   String? _currentPath;
   String? _errorMessage;
+  String _lastTranscription = '';
+  bool _hasEndedSession = false;
+  bool _isSpeakingQuestion = false;
+  bool _hasAutoSpokenFirstQuestion = false;
+  models.SessionResult? _lastSessionResult;
+  String _lastNextQuestion = '';
   late String _currentQuestion;
+  bool _showResultsOverlay = false;
 
   @override
   void initState() {
     super.initState();
-    _pulseController = AnimationController(
-      duration: const Duration(milliseconds: 1800),
-      vsync: this,
-    )..repeat();
     _userFuture = context.read<UserService>().getUserProfile();
     _currentQuestion = widget.openingMessage;
     _bootstrapSession();
@@ -68,16 +72,10 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
 
   @override
   void dispose() {
-    _pulseController.dispose();
     _timer?.cancel();
+    _stopSpeakingQuestion(updateState: false);
     _audioRecorder.dispose();
     super.dispose();
-  }
-
-  @override
-  void reassemble() {
-    super.reassemble();
-    SafeUI.handleAnimationReassemble(_pulseController, state: this);
   }
 
   Future<void> _bootstrapSession() async {
@@ -90,6 +88,7 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
           });
         }
       });
+      await _autoSpeakFirstQuestion();
       return;
     }
 
@@ -106,8 +105,24 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
               _currentQuestion = session.firstQuestion;
             }
             _isPreparingSession = false;
-            _errorMessage =
-                session == null ? 'Impossible de créer la session vocale.' : null;
+            _errorMessage = session == null
+                ? 'Impossible de créer la session vocale.'
+                : null;
+          });
+        }
+      });
+      if (session != null) {
+        await _autoSpeakFirstQuestion();
+      }
+    } on SpeechServiceException catch (e) {
+      if (!mounted) return;
+      SafeUI.run(() {
+        if (mounted) {
+          setState(() {
+            _isPreparingSession = false;
+            _errorMessage = e.code == 'SESSION_LIMIT_REACHED'
+                ? e.message
+                : 'Impossible de préparer la session vocale. ${e.message}';
           });
         }
       });
@@ -128,20 +143,27 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
     _stopTimer();
 
     if (mounted) {
-    SafeUI.run(() {
-      if (mounted) {
-        setState(() {
-          _isRecording = false;
-          _isPreparingSession = true;
-          _isProcessing = false;
-          _recordingSeconds = 0;
-          _sessionId = null;
-          _currentPath = null;
-          _errorMessage = null;
-          _currentQuestion = widget.openingMessage;
-        });
-      }
-    });
+      SafeUI.run(() {
+        if (mounted) {
+          setState(() {
+            _isRecording = false;
+            _isPreparingSession = true;
+            _isProcessing = false;
+            _recordingSeconds = 0;
+            _totalSessionSeconds = 0;
+            _sessionId = null;
+            _currentPath = null;
+            _errorMessage = null;
+            _lastTranscription = '';
+            _hasEndedSession = false;
+            _isSpeakingQuestion = false;
+            _hasAutoSpokenFirstQuestion = false;
+            _lastSessionResult = null;
+            _lastNextQuestion = '';
+            _currentQuestion = widget.openingMessage;
+          });
+        }
+      });
     }
 
     await _bootstrapSession();
@@ -154,11 +176,13 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
       } catch (_) {}
       _stopTimer();
     }
+    await _stopSpeakingQuestion();
 
     if (mounted) {
-      if (_pulseController.isAnimating) _pulseController.stop();
       SafeUI.setState(this, () => _isRecording = false);
     }
+
+    await _endCurrentSession();
 
     if (widget.onClose != null) {
       widget.onClose!.call();
@@ -184,6 +208,7 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
     if (_sessionId == null || _isPreparingSession || _isProcessing) return;
 
     try {
+      await _stopSpeakingQuestion();
       if (!await _audioRecorder.hasPermission()) {
         _showInfoSnackBar('Autorise le micro pour commencer la pratique.',
             isError: true);
@@ -240,6 +265,7 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
   }
 
   Future<void> _processRecording(String path) async {
+    final exchangeDurationSec = _recordingSeconds;
     SafeUI.run(() {
       if (mounted) {
         setState(() {
@@ -255,7 +281,7 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
         _sessionId!,
         path,
         question: _currentQuestion,
-        durationSec: _recordingSeconds.toDouble(),
+        durationSec: exchangeDurationSec.toDouble(),
       );
 
       final exchangeId = upload?['exchange_id']?.toString();
@@ -281,11 +307,6 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
 
       final exchangeData =
           (exchangeResult['data'] ?? exchangeResult) as Map<String, dynamic>;
-
-      final endResponse = await speechService.endSession(
-        _sessionId!,
-        durationSec: _recordingSeconds,
-      );
       final scoreResponse = await speechService.getSessionScores(_sessionId!);
       final scoreData = (scoreResponse?['data'] ?? const <String, dynamic>{})
           as Map<String, dynamic>;
@@ -304,72 +325,45 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
       final overall =
           (scoreData['global_score'] ?? exchangeData['global_score'] ?? 0)
               .round();
-      final xpEarned = (endResponse?['xp_earned'] ?? 0) as int;
-      final streak = (endResponse?['streak_days'] ?? 0) as int;
+      final transcription = (exchangeData['transcription'] ?? '').toString();
+      final nextQuestion = (exchangeData['ai_response'] ??
+              exchangeData['next_question'] ??
+              _currentQuestion)
+          .toString();
+      _totalSessionSeconds += exchangeDurationSec;
 
       if (!mounted) return;
 
-      final resultsScreen = MaterialPageRoute<void>(
-        builder: (_) => ResultatsScreen(
-          sessionTitle: widget.title,
-          primaryActionLabel: 'Retour au Home',
-          returnToPreviousRoute: widget.embeddedInHome,
-          result: models.SessionResult(
-            overallScore: overall,
-            xpEarned: xpEarned,
-            streak: streak,
-            metrics: {
-              'Prononciation': pronunciation,
-              'Fluidité': fluency,
-              'Grammaire': grammar,
-              'Vocabulaire': vocabulary,
-            },
-            aiFeedback: (scoreData['feedback_text'] ??
-                    exchangeData['ai_feedback'] ??
-                    'Bonne base. Continue pour stabiliser tes progrès.')
-                .toString(),
-          ),
-          onContinueSession: () {
-            // Reset state so user can record another exchange in same session
-            if (mounted) {
-              SafeUI.run(() {
-                if (mounted) {
-                  setState(() {
-                    _isRecording = false;
-                    _isProcessing = false;
-                    _recordingSeconds = 0;
-                    _errorMessage = null;
-                    _currentPath = null;
-                    // sessionId is preserved to continue the same backend session
-                  });
-                  if (!_pulseController.isAnimating) {
-                    _pulseController.repeat();
-                  }
-                }
-              });
-            }
-          },
-        ),
+      final sessionResult = models.SessionResult(
+        overallScore: overall,
+        xpEarned: 0,
+        streak: 0,
+        metrics: {
+          'Prononciation': pronunciation,
+          'Fluidité': fluency,
+          'Grammaire': grammar,
+          'Vocabulaire': vocabulary,
+        },
+        aiFeedback: (scoreData['feedback_text'] ??
+                exchangeData['ai_feedback'] ??
+                'Bonne base. Continue pour stabiliser tes progrès.')
+            .toString(),
+        transcription: transcription,
+        durationSec: exchangeDurationSec,
+        nextQuestion:
+            nextQuestion.isNotEmpty ? nextQuestion : 'Can you tell me more?',
       );
 
-      if (widget.embeddedInHome) {
-        SafeUI.navigate(context, (ctx) async {
-          if (_pulseController.isAnimating) _pulseController.stop();
-          await Navigator.of(ctx).push(resultsScreen);
-          if (mounted) {
-            // Give extra frame for the pop transition to settle
-            await Future.delayed(const Duration(milliseconds: 32));
-            if (mounted) {
-              widget.onComplete?.call();
-            }
-          }
-        }, extended: true);
-      } else {
-        SafeUI.navigate(context, (ctx) {
-          if (_pulseController.isAnimating) _pulseController.stop();
-          Navigator.of(ctx).pushReplacement(resultsScreen);
-        }, extended: true);
-      }
+      SafeUI.run(() {
+        if (mounted) {
+          setState(() {
+            _lastSessionResult = sessionResult;
+            _lastNextQuestion = sessionResult.nextQuestion;
+          });
+        }
+      });
+
+      _openResults(sessionResult, sessionResult.nextQuestion);
     } catch (e) {
       if (!mounted) return;
       SafeUI.run(() {
@@ -386,11 +380,11 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
       );
     } finally {
       if (mounted) {
-      SafeUI.run(() {
-        if (mounted) {
-          setState(() => _isProcessing = false);
-        }
-      });
+        SafeUI.run(() {
+          if (mounted) {
+            setState(() => _isProcessing = false);
+          }
+        });
       }
       try {
         final file = File(path);
@@ -399,6 +393,113 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
         }
       } catch (_) {}
     }
+  }
+
+  void _continueWithQuestion(models.SessionResult result, String nextQuestion) {
+    if (!mounted) return;
+
+    // Fermer l'overlay de résultats
+    SafeUI.run(() {
+      if (mounted) {
+        setState(() => _showResultsOverlay = false);
+      }
+    });
+
+    // Réinitialiser pour la prochaine question
+    SafeUI.run(() {
+      if (mounted) {
+        setState(() {
+          _isRecording = false;
+          _isProcessing = false;
+          _recordingSeconds = 0;
+          _errorMessage = null;
+          _currentPath = null;
+          _lastTranscription = result.transcription;
+          _currentQuestion =
+              nextQuestion.isNotEmpty ? nextQuestion : 'Can you tell me more?';
+        });
+      }
+    });
+  }
+
+  void _openResults(
+    models.SessionResult result,
+    String nextQuestion, {
+    bool previewOnly = false,
+  }) {
+    if (previewOnly) {
+      // Mode preview: naviguer normalement
+      final resultsScreen = MaterialPageRoute<void>(
+        builder: (_) => ResultatsScreen(
+          sessionTitle: widget.title,
+          primaryActionLabel: 'Retour à la pratique',
+          returnToPreviousRoute: true,
+          result: result,
+          onFinishSession: null,
+          onContinueSession: () => _continueWithQuestion(result, nextQuestion),
+        ),
+      );
+      SafeUI.navigate(context, (ctx) {
+        Navigator.of(ctx).push(resultsScreen);
+      }, extended: true);
+    } else {
+      // Mode normal: afficher en overlay fluide
+      SafeUI.run(() {
+        if (mounted) {
+          setState(() => _showResultsOverlay = true);
+        }
+      });
+    }
+  }
+
+  Future<void> _showLatestResults() async {
+    final result = _lastSessionResult;
+    if (result == null) {
+      _showInfoSnackBar('Aucun résultat disponible pour cette session.');
+      return;
+    }
+    _openResults(result, _lastNextQuestion, previewOnly: true);
+  }
+
+  Future<void> _autoSpeakFirstQuestion() async {
+    if (_hasAutoSpokenFirstQuestion) return;
+    _hasAutoSpokenFirstQuestion = true;
+    await _speakCurrentQuestion();
+  }
+
+  Future<void> _speakCurrentQuestion() async {
+    final question = _currentQuestion.trim();
+    if (question.isEmpty) return;
+
+    SafeUI.run(() {
+      if (mounted) {
+        setState(() => _isSpeakingQuestion = true);
+      }
+    });
+
+    try {
+      await _ttsChannel.invokeMethod<void>('speak', {
+        'text': question,
+        'language': 'en-US',
+      });
+    } catch (_) {
+      _showInfoSnackBar('Lecture vocale indisponible sur cet appareil.',
+          isError: true);
+    } finally {
+      SafeUI.run(() {
+        if (mounted) {
+          setState(() => _isSpeakingQuestion = false);
+        }
+      });
+    }
+  }
+
+  Future<void> _stopSpeakingQuestion({bool updateState = true}) async {
+    try {
+      await _ttsChannel.invokeMethod<void>('stop');
+    } catch (_) {}
+    if (!updateState || !mounted) return;
+    SafeUI.setState(this, () => _isSpeakingQuestion = false);
   }
 
   void _showInfoSnackBar(String message, {bool isError = false}) {
@@ -412,6 +513,17 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
     );
   }
 
+  Future<void> _endCurrentSession() async {
+    if (_hasEndedSession || _sessionId == null || _totalSessionSeconds <= 0) {
+      return;
+    }
+    _hasEndedSession = true;
+    await context.read<SpeechService>().endSession(
+          _sessionId!,
+          durationSec: _totalSessionSeconds,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<models.User>(
@@ -419,71 +531,297 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
       builder: (context, snapshot) {
         final user = snapshot.data;
 
-        return Scaffold(
-          body: BackgroundWrapper(
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
-                child: Column(
-                  children: [
-                    _buildTopBar(user),
-                    const SizedBox(height: 18),
-                    _buildHeaderCard(),
-                    const SizedBox(height: 18),
-                    Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(22),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.94),
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.05),
-                              blurRadius: 28,
-                              offset: const Offset(0, 14),
-                            ),
-                          ],
-                        ),
-                        child: SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _buildPulseRingStack(user),
-                              const SizedBox(height: 34),
-                              _buildQuestionCard(),
-                              const SizedBox(height: 34),
-                              _buildStatusPanel(),
-                              const SizedBox(height: 28),
-                              _buildTimerDisplay(),
-                              const SizedBox(height: 22),
-                              _buildMicButton(),
-                              const SizedBox(height: 16),
-                              _buildInstructionText(),
-                              if (!_isPreparingSession &&
-                                  !_isProcessing &&
-                                  (_errorMessage != null ||
-                                      _sessionId == null)) ...[
-                                const SizedBox(height: 14),
-                                OutlinedButton.icon(
-                                  onPressed: _retrySession,
-                                  icon: const Icon(Icons.refresh_rounded),
-                                  label: const Text('Relancer la session'),
+        return Stack(
+          children: [
+            // Main scaffold
+            Scaffold(
+              body: BackgroundWrapper(
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+                    child: Column(
+                      children: [
+                        _buildTopBar(user),
+                        const SizedBox(height: 18),
+                        _buildHeaderCard(),
+                        const SizedBox(height: 18),
+                        Expanded(
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(22),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.94),
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.05),
+                                  blurRadius: 28,
+                                  offset: const Offset(0, 14),
                                 ),
                               ],
-                            ],
+                            ),
+                            child: SingleChildScrollView(
+                              physics: const ClampingScrollPhysics(),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  _buildPracticeAvatar(user),
+                                  const SizedBox(height: 34),
+                                  _buildQuestionCard(),
+                                  const SizedBox(height: 14),
+                                  _buildQuestionActions(),
+                                  if (_lastTranscription.isNotEmpty) ...[
+                                    const SizedBox(height: 18),
+                                    _buildLastTranscriptionCard(),
+                                  ],
+                                  const SizedBox(height: 34),
+                                  _buildStatusPanel(),
+                                  const SizedBox(height: 28),
+                                  _buildTimerDisplay(),
+                                  const SizedBox(height: 22),
+                                  _buildMicButton(),
+                                  const SizedBox(height: 16),
+                                  _buildInstructionText(),
+                                  if (!_isPreparingSession &&
+                                      !_isProcessing &&
+                                      (_errorMessage != null ||
+                                          _sessionId == null)) ...[
+                                    const SizedBox(height: 14),
+                                    OutlinedButton.icon(
+                                      onPressed: _retrySession,
+                                      icon: const Icon(Icons.refresh_rounded),
+                                      label: const Text('Relancer la session'),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            // Results overlay
+            if (_showResultsOverlay && _lastSessionResult != null)
+              _buildResultsOverlay(),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildResultsOverlay() {
+    final result = _lastSessionResult!;
+
+    return Positioned.fill(
+      child: GestureDetector(
+        onTap: () {}, // Empêche les tapotements sous l'overlay
+        child: Container(
+          color: Colors.black.withValues(alpha: 0.3),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.85,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.15),
+                      blurRadius: 32,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(28),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Résultats de ta réponse',
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Score global circulaire
+                      Center(
+                        child: Container(
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.primary.withValues(alpha: 0.15),
+                                AppColors.secondary.withValues(alpha: 0.1),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${result.overallScore}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displaySmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w900,
+                                        color: AppColors.primary,
+                                      ),
+                                ),
+                                Text(
+                                  '/100',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: AppColors.onSurface
+                                            .withValues(alpha: 0.6),
+                                      ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 28),
+
+                      // Métriques en grille
+                      GridView.count(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: result.metrics.entries.map((e) {
+                          return Container(
+                            padding: const EdgeInsets.all(14),
+                            decoration: BoxDecoration(
+                              color: AppColors.surfaceContainerLow,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${e.value}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w800,
+                                        color: AppColors.primary,
+                                      ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  e.key,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: AppColors.onSurface
+                                            .withValues(alpha: 0.6),
+                                      ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Feedback AI
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.tertiary.withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: AppColors.tertiary.withValues(alpha: 0.2),
+                          ),
+                        ),
+                        child: Text(
+                          result.aiFeedback,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    height: 1.5,
+                                  ),
+                        ),
+                      ),
+                      const SizedBox(height: 28),
+
+                      // Action buttons
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () {
+                                SafeUI.run(() {
+                                  if (mounted) {
+                                    setState(() => _showResultsOverlay = false);
+                                  }
+                                });
+                              },
+                              icon: const Icon(Icons.close_rounded),
+                              label: const Text('Fermer'),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () => _continueWithQuestion(
+                                result,
+                                _lastNextQuestion,
+                              ),
+                              icon: const Icon(Icons.arrow_forward_rounded),
+                              label: const Text('Continuer'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+
+                      // View full report button
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            SafeUI.run(() {
+                              if (mounted) {
+                                setState(() => _showResultsOverlay = false);
+                              }
+                            });
+                            // Naviguer vers le rapport complet
+                            _openResults(result, _lastNextQuestion,
+                                previewOnly: true);
+                          },
+                          icon: const Icon(Icons.bar_chart_rounded),
+                          label: const Text('Voir le rapport complet'),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -652,14 +990,10 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
     );
   }
 
-
-  Widget _buildPulseRingStack(models.User? user) {
+  Widget _buildPracticeAvatar(models.User? user) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        _buildPulseRing(1.0, 0.0),
-        _buildPulseRing(1.35, 0.25),
-        _buildPulseRing(1.7, 0.5),
         Container(
           width: 138,
           height: 138,
@@ -704,6 +1038,35 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
     );
   }
 
+  Widget _buildLastTranscriptionCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.82),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: AppColors.outlineVariant),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.subject_rounded, color: AppColors.primary, size: 20),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              _lastTranscription,
+              style: TextStyle(
+                color: AppColors.onSurface.withValues(alpha: 0.72),
+                height: 1.45,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildQuestionCard() {
     return Container(
       width: double.infinity,
@@ -730,9 +1093,44 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
     );
   }
 
+  Widget _buildQuestionActions() {
+    final canUseActions =
+        !_isPreparingSession && !_isProcessing && _sessionId != null;
+
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 10,
+      runSpacing: 10,
+      children: [
+        OutlinedButton.icon(
+          onPressed: canUseActions && !_isRecording
+              ? (_isSpeakingQuestion
+                  ? () => _stopSpeakingQuestion()
+                  : _speakCurrentQuestion)
+              : null,
+          icon: Icon(
+            _isSpeakingQuestion
+                ? Icons.stop_circle_outlined
+                : Icons.volume_up_rounded,
+          ),
+          label: Text(_isSpeakingQuestion ? 'Arrêter' : 'Lire la question'),
+        ),
+        if (_lastSessionResult != null)
+          OutlinedButton.icon(
+            onPressed:
+                canUseActions && !_isRecording ? _showLatestResults : null,
+            icon: const Icon(Icons.bar_chart_rounded),
+            label: const Text('Voir les résultats'),
+          ),
+      ],
+    );
+  }
+
   Widget _buildTimerDisplay() {
+    final minutes = (_recordingSeconds ~/ 60).toString().padLeft(2, '0');
+    final seconds = (_recordingSeconds % 60).toString().padLeft(2, '0');
     return Text(
-      '00:${_recordingSeconds.toString().padLeft(2, '0')}',
+      '$minutes:$seconds',
       style: Theme.of(context).textTheme.displaySmall?.copyWith(
             fontWeight: FontWeight.w900,
           ),
@@ -744,8 +1142,7 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
       onTap: _isPreparingSession || _isProcessing
           ? null
           : (_isRecording ? _stopRecording : _startRecording),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
+      child: Container(
         width: 98,
         height: 98,
         decoration: BoxDecoration(
@@ -795,26 +1192,6 @@ class _SessionVocaleScreenState extends State<SessionVocaleScreen>
         fontWeight: FontWeight.w700,
         letterSpacing: 1.1,
       ),
-    );
-  }
-
-  Widget _buildPulseRing(double scale, double delay) {
-    return AnimatedBuilder(
-      animation: _pulseController,
-      builder: (context, child) {
-        final value = (_pulseController.value + delay) % 1.0;
-        return Container(
-          width: 138 * (1 + value * 0.4 * scale),
-          height: 138 * (1 + value * 0.4 * scale),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: AppColors.primary.withValues(alpha: 0.2 * (1 - value)),
-              width: 2,
-            ),
-          ),
-        );
-      },
     );
   }
 }

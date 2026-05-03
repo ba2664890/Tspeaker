@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:math';
 
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ class ResultatsScreen extends StatefulWidget {
   final String primaryActionLabel;
   final bool returnToPreviousRoute;
   final VoidCallback? onContinueSession;
+  final Future<void> Function()? onFinishSession;
 
   const ResultatsScreen({
     super.key,
@@ -22,6 +22,7 @@ class ResultatsScreen extends StatefulWidget {
     this.primaryActionLabel = 'Retour au Home',
     this.returnToPreviousRoute = false,
     this.onContinueSession,
+    this.onFinishSession,
   });
 
   @override
@@ -53,7 +54,8 @@ class _ResultatsScreenState extends State<ResultatsScreen>
   @override
   void initState() {
     super.initState();
-    _confettiController = ConfettiController(duration: const Duration(seconds: 4));
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 4));
     _animController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 700),
@@ -127,6 +129,14 @@ class _ResultatsScreenState extends State<ResultatsScreen>
                             _buildMetricsGrid(),
                             const SizedBox(height: 20),
                             _buildAiFeedbackCard(),
+                            if (_result.nextQuestion.isNotEmpty) ...[
+                              const SizedBox(height: 20),
+                              _buildNextQuestionCard(),
+                            ],
+                            if (_result.transcription.isNotEmpty) ...[
+                              const SizedBox(height: 20),
+                              _buildTranscriptionCard(),
+                            ],
                             const SizedBox(height: 28),
                             _buildActionButtons(),
                           ]),
@@ -220,13 +230,10 @@ class _ResultatsScreenState extends State<ResultatsScreen>
                 onPressed: () {
                   _confettiController.stop();
                   _animController.stop();
-                  if (widget.returnToPreviousRoute) {
-                    Navigator.of(context).pop();
-                  } else {
-                    Navigator.of(context).pushNamedAndRemoveUntil('/home', (_) => false);
-                  }
+                  _finishAndLeave();
                 },
-                icon: const Icon(Icons.close_rounded, size: 20, color: AppColors.onSurface),
+                icon: const Icon(Icons.close_rounded,
+                    size: 20, color: AppColors.onSurface),
                 visualDensity: VisualDensity.compact,
               ),
             ),
@@ -240,9 +247,9 @@ class _ResultatsScreenState extends State<ResultatsScreen>
               Text(
                 'RÉSULTATS',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.primary,
-                  letterSpacing: 3,
-                ),
+                      color: AppColors.primary,
+                      letterSpacing: 3,
+                    ),
               ),
               const SizedBox(height: 2),
               Text(
@@ -250,8 +257,8 @@ class _ResultatsScreenState extends State<ResultatsScreen>
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+                      fontWeight: FontWeight.w800,
+                    ),
               ),
             ],
           ),
@@ -268,10 +275,10 @@ class _ResultatsScreenState extends State<ResultatsScreen>
           child: Text(
             _scoreBadge(_result.overallScore),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: _scoreColor(_result.overallScore),
-              letterSpacing: 1,
-              fontWeight: FontWeight.w900,
-            ),
+                  color: _scoreColor(_result.overallScore),
+                  letterSpacing: 1,
+                  fontWeight: FontWeight.w900,
+                ),
           ),
         ),
       ],
@@ -328,8 +335,10 @@ class _ResultatsScreenState extends State<ResultatsScreen>
                           child: CircularProgressIndicator(
                             value: score / 100,
                             strokeWidth: 9,
-                            backgroundColor: Colors.white.withValues(alpha: 0.15),
-                            valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFFFD47A)),
+                            backgroundColor:
+                                Colors.white.withValues(alpha: 0.15),
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                                Color(0xFFFFD47A)),
                             strokeCap: StrokeCap.round,
                           ),
                         ),
@@ -395,24 +404,35 @@ class _ResultatsScreenState extends State<ResultatsScreen>
   }
 
   Widget _buildXpStreakRow() {
+    final minutes = (_result.durationSec ~/ 60).toString().padLeft(2, '0');
+    final seconds = (_result.durationSec % 60).toString().padLeft(2, '0');
+    final hasFinalSessionRewards = _result.xpEarned > 0 || _result.streak > 0;
+
     return Row(
       children: [
         Expanded(
           child: _buildStatCard(
-            icon: Icons.bolt_rounded,
+            icon: hasFinalSessionRewards
+                ? Icons.bolt_rounded
+                : Icons.timer_outlined,
             iconColor: AppColors.secondary,
-            label: 'XP GAGNÉS',
-            value: '+${_result.xpEarned}',
+            label: hasFinalSessionRewards ? 'XP GAGNÉS' : 'TEMPS',
+            value: hasFinalSessionRewards
+                ? '+${_result.xpEarned}'
+                : '$minutes:$seconds',
             bg: AppColors.secondary.withValues(alpha: 0.07),
           ),
         ),
         const SizedBox(width: 14),
         Expanded(
           child: _buildStatCard(
-            icon: Icons.local_fire_department_rounded,
+            icon: hasFinalSessionRewards
+                ? Icons.local_fire_department_rounded
+                : Icons.forum_outlined,
             iconColor: AppColors.tertiary,
-            label: 'SÉRIE',
-            value: '${_result.streak} JOURS',
+            label: hasFinalSessionRewards ? 'SÉRIE' : 'SESSION',
+            value:
+                hasFinalSessionRewards ? '${_result.streak} JOURS' : 'EN COURS',
             bg: AppColors.tertiary.withValues(alpha: 0.07),
           ),
         ),
@@ -460,10 +480,10 @@ class _ResultatsScreenState extends State<ResultatsScreen>
                 Text(
                   label,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.onSurface.withValues(alpha: 0.5),
-                    letterSpacing: 1.5,
-                    fontSize: 9,
-                  ),
+                        color: AppColors.onSurface.withValues(alpha: 0.5),
+                        letterSpacing: 1.5,
+                        fontSize: 9,
+                      ),
                 ),
                 const SizedBox(height: 3),
                 Text(
@@ -490,9 +510,9 @@ class _ResultatsScreenState extends State<ResultatsScreen>
         Text(
           'DÉTAIL PAR CRITÈRE',
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            letterSpacing: 2,
-            color: AppColors.onSurface.withValues(alpha: 0.45),
-          ),
+                letterSpacing: 2,
+                color: AppColors.onSurface.withValues(alpha: 0.45),
+              ),
         ),
         const SizedBox(height: 14),
         GridView.count(
@@ -605,7 +625,8 @@ class _ResultatsScreenState extends State<ResultatsScreen>
               ),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 24),
+            child: const Icon(Icons.auto_awesome_rounded,
+                color: Colors.white, size: 24),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -624,6 +645,100 @@ class _ResultatsScreenState extends State<ResultatsScreen>
                     height: 1.55,
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTranscriptionCard() {
+    final minutes = (_result.durationSec ~/ 60).toString().padLeft(2, '0');
+    final seconds = (_result.durationSec % 60).toString().padLeft(2, '0');
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.72),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.outlineVariant),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.subject_rounded, color: AppColors.primary),
+              const SizedBox(width: 10),
+              const Expanded(
+                child: Text(
+                  'Transcription',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              Text(
+                '$minutes:$seconds',
+                style: TextStyle(
+                  color: AppColors.onSurface.withValues(alpha: 0.58),
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            _result.transcription,
+            style: const TextStyle(
+              color: AppColors.onSurfaceVariant,
+              height: 1.5,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNextQuestionCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.secondary.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.secondary.withValues(alpha: 0.18)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.record_voice_over_rounded,
+              color: AppColors.secondary),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Prochaine question',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  _result.nextQuestion,
+                  style: const TextStyle(
+                    color: AppColors.onSurfaceVariant,
+                    height: 1.5,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ],
@@ -662,8 +777,8 @@ class _ResultatsScreenState extends State<ResultatsScreen>
                 onPressed: () {
                   _confettiController.stop();
                   _animController.stop();
-                  Navigator.of(context).pop();
                   widget.onContinueSession!();
+                  Navigator.of(context).pop();
                 },
                 icon: const Icon(Icons.mic_rounded, color: Colors.white),
                 label: const Text(
@@ -678,7 +793,8 @@ class _ResultatsScreenState extends State<ResultatsScreen>
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
                 ),
               ),
             ),
@@ -710,11 +826,7 @@ class _ResultatsScreenState extends State<ResultatsScreen>
               onPressed: () {
                 _confettiController.stop();
                 _animController.stop();
-                if (widget.returnToPreviousRoute) {
-                  Navigator.of(context).pop();
-                } else {
-                  Navigator.of(context).pushNamedAndRemoveUntil('/home', (_) => false);
-                }
+                _finishAndLeave();
               },
               icon: const Icon(Icons.home_rounded, color: Colors.white),
               label: Text(
@@ -729,7 +841,8 @@ class _ResultatsScreenState extends State<ResultatsScreen>
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
               ),
             ),
           ),
@@ -748,12 +861,34 @@ class _ResultatsScreenState extends State<ResultatsScreen>
               backgroundColor: Colors.white.withValues(alpha: 0.7),
               foregroundColor: AppColors.onSurface,
               side: const BorderSide(color: AppColors.outlineVariant),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
             ),
           ),
         ),
       ],
     );
+  }
+
+  void _finishAndLeave() {
+    final navigator = Navigator.of(context);
+    final finish = widget.onFinishSession;
+
+    void leave() {
+      if (!mounted) return;
+      if (widget.returnToPreviousRoute) {
+        navigator.pop();
+      } else {
+        navigator.pushNamedAndRemoveUntil('/home', (_) => false);
+      }
+    }
+
+    if (finish == null) {
+      leave();
+      return;
+    }
+
+    finish().whenComplete(leave);
   }
 
   // ── Helpers ──────────────────────────────────────────────────────────────
@@ -783,21 +918,31 @@ class _ResultatsScreenState extends State<ResultatsScreen>
 
   IconData _iconForMetric(String metric) {
     switch (metric) {
-      case 'Prononciation': return Icons.record_voice_over_rounded;
-      case 'Fluidité': return Icons.speed_rounded;
-      case 'Grammaire': return Icons.spellcheck_rounded;
-      case 'Vocabulaire': return Icons.menu_book_rounded;
-      default: return Icons.insights_rounded;
+      case 'Prononciation':
+        return Icons.record_voice_over_rounded;
+      case 'Fluidité':
+        return Icons.speed_rounded;
+      case 'Grammaire':
+        return Icons.spellcheck_rounded;
+      case 'Vocabulaire':
+        return Icons.menu_book_rounded;
+      default:
+        return Icons.insights_rounded;
     }
   }
 
   Color _colorForMetric(String metric) {
     switch (metric) {
-      case 'Prononciation': return AppColors.secondary;
-      case 'Fluidité': return AppColors.primary;
-      case 'Grammaire': return AppColors.tertiary;
-      case 'Vocabulaire': return const Color(0xFF6750A4);
-      default: return AppColors.primary;
+      case 'Prononciation':
+        return AppColors.secondary;
+      case 'Fluidité':
+        return AppColors.primary;
+      case 'Grammaire':
+        return AppColors.tertiary;
+      case 'Vocabulaire':
+        return const Color(0xFF6750A4);
+      default:
+        return AppColors.primary;
     }
   }
 }

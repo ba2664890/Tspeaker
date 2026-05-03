@@ -27,6 +27,17 @@ dependencies:
   dio: ^5.4.1
   path_provider: ^2.1.5
 
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21
+
 dependency_overrides:
   record_linux: ^1.2.0
 

@@ -6,6 +6,7 @@ import '../theme/app_theme.dart';
 import '../widgets/patterns_painter.dart';
 import '../services/auth_service.dart';
 import '../utils/safe_ui.dart';
+import 'debug_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -363,7 +364,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 48),
+                    const SizedBox(height: 16),
+                    // Debug button
+                    Center(
+                      child: TextButton.icon(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const DebugScreen()),
+                        ),
+                        icon: const Icon(Icons.bug_report_outlined, size: 14, color: Colors.grey),
+                        label: const Text(
+                          'Diagnostic r\u00e9seau',
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
                   ],
                 ),
               ),

@@ -12,6 +12,21 @@ class VoiceSessionStart {
   });
 }
 
+class SpeechServiceException implements Exception {
+  final String message;
+  final int? statusCode;
+  final String? code;
+
+  const SpeechServiceException(
+    this.message, {
+    this.statusCode,
+    this.code,
+  });
+
+  @override
+  String toString() => message;
+}
+
 class SpeechService {
   final ApiService _apiService;
 
@@ -41,8 +56,13 @@ class SpeechService {
         );
       }
       return null;
-    } on DioException {
-      return null;
+    } on DioException catch (e) {
+      throw SpeechServiceException(
+        _extractErrorMessage(e.response?.data) ??
+            'Impossible de créer la session vocale.',
+        statusCode: e.response?.statusCode,
+        code: _extractErrorCode(e.response?.data),
+      );
     }
   }
 
@@ -161,5 +181,48 @@ class SpeechService {
     } catch (e) {
       return null;
     }
+  }
+
+  String? _extractErrorMessage(dynamic data) {
+    if (data is Map<String, dynamic>) {
+      final error = data['error'];
+      if (error is Map<String, dynamic>) {
+        final message = error['message'];
+        if (message != null && message.toString().isNotEmpty) {
+          return message.toString();
+        }
+      }
+
+      final detail = data['detail'];
+      if (detail != null && detail.toString().isNotEmpty) {
+        return detail.toString();
+      }
+
+      final message = data['message'];
+      if (message != null && message.toString().isNotEmpty) {
+        return message.toString();
+      }
+    }
+
+    return null;
+  }
+
+  String? _extractErrorCode(dynamic data) {
+    if (data is Map<String, dynamic>) {
+      final error = data['error'];
+      if (error is Map<String, dynamic>) {
+        final code = error['code'];
+        if (code != null && code.toString().isNotEmpty) {
+          return code.toString();
+        }
+      }
+
+      final code = data['code'];
+      if (code != null && code.toString().isNotEmpty) {
+        return code.toString();
+      }
+    }
+
+    return null;
   }
 }

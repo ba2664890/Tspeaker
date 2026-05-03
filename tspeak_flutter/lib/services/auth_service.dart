@@ -63,7 +63,7 @@ class AuthService {
   /// Returns User on success, null on failure.
   Future<User?> login(String email, String password) async {
     try {
-      final response = await _apiService.post('/auth/login/', data: {
+      final response = await _apiService.post('auth/login/', data: {
         'email': email,
         'password': password,
       });

@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _currentIndex,
         onTap: _handleTabChange,
       ),
-      floatingActionButton: _currentIndex == 0 ? _buildHomeFab() : null,
+      floatingActionButton: _buildHomeFab(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

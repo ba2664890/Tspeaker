@@ -54,12 +54,23 @@ class GrammarAnalyzer:
                 "sentence_count": int,
             }
         """
-        if not text or len(text.split()) < 3:
+        if not text or not text.strip():
             return {
-                "grammar_score": 50.0,
+                "grammar_score": 0.0,
                 "errors": [],
                 "sentence_complexity": 0.0,
                 "sentence_count": 0,
+            }
+        
+        words = text.split()
+        
+        # Texte très court (< 3 mots) = score très bas
+        if len(words) < 3:
+            return {
+                "grammar_score": max(15.0, len(words) * 8.0),  # 1 mot=15, 2 mots=16
+                "errors": [{"type": "too_short", "description": "Réponse trop courte"}],
+                "sentence_complexity": 0.0,
+                "sentence_count": max(1, len(re.split(r"[.!?]+", text.strip()))),
             }
 
         errors = []
@@ -71,8 +82,9 @@ class GrammarAnalyzer:
             errors.extend(self._rule_based_analysis(text))
 
         # Score (pénalité par erreur)
-        error_penalty = min(len(errors) * 8, 50)
-        grammar_score = max(50.0, 100.0 - error_penalty)
+        error_penalty = len(errors) * 10
+        # Plus d'indulgence à 50 par défaut: le score peut maintenant descendre très bas.
+        grammar_score = max(10.0, 100.0 - error_penalty)
 
         # Complexité syntaxique
         sentence_complexity = self._compute_complexity(text)
@@ -241,9 +253,9 @@ class VocabularyAnalyzer:
                 "suggestions": [str],
             }
         """
-        if not text:
+        if not text or not text.strip():
             return {
-                "vocabulary_score": 40.0,
+                "vocabulary_score": 0.0,
                 "cefr_level": "A1",
                 "type_token_ratio": 0.0,
                 "unique_words": 0,
@@ -252,6 +264,17 @@ class VocabularyAnalyzer:
             }
 
         words = re.findall(r"\b[a-z]+\b", text.lower())
+        
+        if not words:
+            return {
+                "vocabulary_score": 0.0,
+                "cefr_level": "A1",
+                "type_token_ratio": 0.0,
+                "unique_words": 0,
+                "advanced_words_found": [],
+                "suggestions": [],
+            }
+        
         unique_words = set(words)
 
         # Type-Token Ratio (richesse lexicale)
@@ -261,8 +284,8 @@ class VocabularyAnalyzer:
         advanced_found = list(unique_words & self.ADVANCED_MARKERS)
         intermediate_found = list(unique_words & self.INTERMEDIATE_MARKERS)
 
-        # Calculer score vocabulaire
-        base_score = 45.0  # A2 par défaut
+        # Calculer score vocabulaire — Base plus punitive (20 au lieu de 45)
+        base_score = 20.0
         base_score += len(advanced_found) * 8
         base_score += len(intermediate_found) * 4
         base_score += (ttr - 0.5) * 30  # Bonus/malus TTR

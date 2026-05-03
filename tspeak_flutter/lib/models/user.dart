@@ -327,7 +327,8 @@ class PracticeSessionLaunch {
       sessionId: (json['session_id'] ?? '').toString(),
       openingMessage: json['opening_message'] ?? '',
       simulation: Simulation.fromJson(
-        (json['simulation'] ?? const <String, dynamic>{}) as Map<String, dynamic>,
+        (json['simulation'] ?? const <String, dynamic>{})
+            as Map<String, dynamic>,
       ),
     );
   }
@@ -506,6 +507,9 @@ class SessionResult {
   final int streak;
   final Map<String, int> metrics;
   final String aiFeedback;
+  final String transcription;
+  final int durationSec;
+  final String nextQuestion;
 
   SessionResult({
     required this.overallScore,
@@ -513,5 +517,8 @@ class SessionResult {
     required this.streak,
     required this.metrics,
     required this.aiFeedback,
+    this.transcription = '',
+    this.durationSec = 0,
+    this.nextQuestion = '',
   });
 }

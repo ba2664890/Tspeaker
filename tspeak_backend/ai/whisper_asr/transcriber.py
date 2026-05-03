@@ -35,6 +35,36 @@ logger = logging.getLogger("tspeak.ai")
 _WHISPER_SAMPLE_RATE = 16_000
 _LANG_DETECT_MAX_FRAMES = 30 * _WHISPER_SAMPLE_RATE
 
+# Mapping des codes langue TSpeaker → codes ISO 639-1 reconnus par Whisper.
+# Wolof (wo) est supporté par whisper-medium/large mais pas tiny/base.
+# Si la langue n'est pas trouvée, on passe None pour laisser Whisper détecter.
+NATIVE_LANGUAGE_TO_WHISPER: dict[str, str] = {
+    "french": "fr",
+    "francais": "fr",
+    "français": "fr",
+    "fr": "fr",
+    "wolof": "wo",
+    "wo": "wo",
+    "pulaar": "fr",   # Pas de modèle dédié — détection auto via fr comme fallback
+    "peul": "fr",
+    "bambara": "fr",
+    "dioula": "fr",
+    "serer": "fr",
+    "english": "en",
+    "en": "en",
+}
+
+
+def native_language_to_whisper_code(native_language: str | None) -> str | None:
+    """Convertit un code langue TSpeaker en code ISO pour Whisper.
+
+    Retourne None si la langue est inconnue, afin de laisser Whisper
+    détecter automatiquement la langue de l'audio.
+    """
+    if not native_language:
+        return None
+    return NATIVE_LANGUAGE_TO_WHISPER.get(native_language.lower().strip())
+
 
 class WhisperTranscriber:
     """
@@ -118,7 +148,7 @@ class WhisperTranscriber:
     def transcribe(
         self,
         audio_path: str,
-        language: str = "en",
+        language: Optional[str] = None,
         task: str = "transcribe",
         word_timestamps: bool = True,
     ) -> dict:
@@ -126,20 +156,36 @@ class WhisperTranscriber:
         start_time = time.monotonic()
 
         try:
-            raw_result = self.model.transcribe(
-                audio_path,
-                language=language,
-                task=task,
-                word_timestamps=word_timestamps,
-                beam_size=5,
-                # Hyperparamètres calibrés pour accents africains francophones.
-                temperature=[0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
-                compression_ratio_threshold=2.4,
-                log_prob_threshold=-1.0,
-                vad_filter=True,
-                vad_parameters=dict(min_silence_duration_ms=500),
-                condition_on_previous_text=False,
-            )
+            try:
+                raw_result = self.model.transcribe(
+                    audio_path,
+                    language=language,
+                    task=task,
+                    word_timestamps=word_timestamps,
+                    beam_size=1,
+                    # Hyperparamètres calibrés pour accents africains francophones.
+                    temperature=[0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
+                    compression_ratio_threshold=2.4,
+                    log_prob_threshold=-1.0,
+                    vad_filter=True,
+                    vad_parameters=dict(min_silence_duration_ms=500),
+                    condition_on_previous_text=False,
+                )
+            except ValueError as e:
+                if "max() arg is an empty sequence" in str(e):
+                    logger.warning("VAD a supprimé tout l'audio (silence/bruit). Retour d'un résultat vide.")
+                    elapsed_ms = (time.monotonic() - start_time) * 1000
+                    return {
+                        "text": "",
+                        "language": language or "en",
+                        "words": [],
+                        "segments": [],
+                        "language_probability": 0.0,
+                        "no_speech_prob": 1.0,
+                        "avg_confidence": 0.0,
+                        "processing_ms": int(elapsed_ms),
+                    }
+                raise
 
             if isinstance(raw_result, dict):
                 return self._format_legacy_result(raw_result, start_time)
@@ -213,13 +259,20 @@ class WhisperTranscriber:
         """
         waveform = _load_audio_first_30s(audio_path)
 
-        _, info = self.model.transcribe(
-            waveform,
-            beam_size=1,
-            language=None,
-            word_timestamps=False,
-            condition_on_previous_text=False,
-        )
+        try:
+            _, info = self.model.transcribe(
+                waveform,
+                beam_size=1,
+                language=None,
+                word_timestamps=False,
+                condition_on_previous_text=False,
+            )
+        except ValueError as e:
+            if "max() arg is an empty sequence" in str(e):
+                logger.warning("VAD a supprimé tout l'audio pendant la détection. Fallback sur 'en'.")
+                return "en", 0.0
+            raise
+
         logger.info(
             "Langue détectée: %s (confiance=%.2f)", info.language, info.language_probability
         )

@@ -342,10 +342,10 @@ class Wav2VecScorer:
 
     def _acoustic_confidence(self, token_spans: list[TokenSpan]) -> float:
         if not token_spans:
-            return 0.35
+            return 0.0  # Audio silencieux/vide -> confiance zéro
         probabilities = [span.probability for span in token_spans if span.token != "|"]
         if not probabilities:
-            return 0.35
+            return 0.0  # Pas de tokens valides -> confiance zéro
         # On compresse legerement les extremes: les CTC sont souvent trop confiants.
         confidence = float(np.mean(probabilities))
         return float(np.clip((confidence - 0.15) / 0.8, 0.0, 1.0))

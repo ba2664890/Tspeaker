@@ -2016,13 +2016,18 @@ class _ProfilScreenState extends State<ProfilScreen> {
   }
 
   Future<void> _showLearningPreferencesSheet(models.User user) async {
-    String selectedLanguage =
-        user.nativeLanguage.isNotEmpty ? user.nativeLanguage : 'french';
-    String selectedGoal = user.learningGoal;
+    String selectedLanguage = _languageOptions.containsKey(user.nativeLanguage)
+        ? user.nativeLanguage
+        : 'french';
+    String selectedGoal =
+        _goalOptions.containsKey(user.learningGoal) ? user.learningGoal : '';
     String selectedAgeRange = user.ageRange;
     bool isSaving = false;
 
     const ageRanges = ['13-17', '18-24', '25-34', '35-44', '45+'];
+    if (!ageRanges.contains(selectedAgeRange)) {
+      selectedAgeRange = '';
+    }
 
     try {
       await showModalBottomSheet<void>(

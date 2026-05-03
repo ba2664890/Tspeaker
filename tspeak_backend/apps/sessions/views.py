@@ -45,8 +45,13 @@ class SessionStartView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         user = request.user
 
-        # Vérifier la limite de sessions (utilisateurs gratuits : 5/jour)
-        if not user.is_premium_active():
+        # Limite gratuite désactivée par défaut pendant la phase de test.
+        enforce_free_session_limit = getattr(
+            settings,
+            "ENFORCE_FREE_SESSION_LIMIT",
+            False,
+        )
+        if enforce_free_session_limit and not user.is_premium_active():
             today_count = VocalSession.objects.filter(
                 user=user,
                 created_at__date=timezone.now().date(),

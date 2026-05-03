@@ -3212,3 +3212,730 @@ AttributeError: 'ConversationGenerator' object has no attribute '_build_messages
 [2026-05-01 00:19:26,468] INFO tspeak.ai scorer: Scoring Wav2Vec: 2471ms score=22.2 acoustic=0.35 ref=0.00 ctc=1.00
 [2026-05-01 00:19:29,304] INFO tspeak.ai generator: LLM feedback généré: 2831ms
 [2026-05-01 00:19:29,394] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=519840c4-0b4d-43bd-8737-3afa9c6f391b — 6835ms — prononciation=22.2
+[2026-05-01 19:09:12,957] WARNING tspeak.api exceptions: Erreur API (405): {'detail': ErrorDetail(string='Méthode «\xa0HEAD\xa0» non autorisée.', code='method_not_allowed')}
+[2026-05-01 19:11:39,706] INFO tspeak.auth views: Connexion réussie: Fatimata@gmail.com
+[2026-05-01 19:11:49,388] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-01 19:23:29,583] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Aucun compte actif n'a été trouvé avec les identifiants fournis", code='no_active_account')}
+[2026-05-01 19:23:29,584] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/login/ — IP=154.124.143.238
+[2026-05-01 21:44:46,875] WARNING tspeak.api exceptions: Erreur API (405): {'detail': ErrorDetail(string='Méthode «\xa0HEAD\xa0» non autorisée.', code='method_not_allowed')}
+[2026-05-01 21:46:47,680] WARNING tspeak.api exceptions: Erreur API (405): {'detail': ErrorDetail(string='Méthode «\xa0HEAD\xa0» non autorisée.', code='method_not_allowed')}
+[2026-05-01 21:46:59,659] WARNING tspeak.api exceptions: Erreur API (405): {'detail': ErrorDetail(string='Méthode «\xa0HEAD\xa0» non autorisée.', code='method_not_allowed')}
+[2026-05-01 21:49:06,830] INFO tspeak.auth views: Connexion réussie: Fatimata@gmail.com
+[2026-05-01 21:49:06,831] WARNING tspeak.performance middleware: Requête lente: POST /api/v1/auth/login/ — 1046ms (user=anonymous)
+[2026-05-01 21:52:46,768] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-01 22:33:19,492] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-01 22:33:19,494] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=154.124.143.238
+[2026-05-01 22:56:00,802] INFO tspeak.auth views: Connexion réussie: Fatimata@gmail.com
+[2026-05-01 22:56:06,281] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-01 22:56:18,310] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=eda3a8b0-cdf8-4b7d-b130-a54296b78c7b task=3cc102ab-1eaa-4115-80ee-476770fdcb77
+[2026-05-01 22:56:27,165] WARNING tspeak.sessions views: Fallback inline audio: exchange=eda3a8b0-cdf8-4b7d-b130-a54296b78c7b age=9.0s
+[2026-05-01 22:56:27,166] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=eda3a8b0-cdf8-4b7d-b130-a54296b78c7b
+[2026-05-01 22:56:31,364] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-01 22:56:31,365] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-01 23:02:16,535] INFO tspeak.ai transcriber: Modèle chargé en 345.17s
+[2026-05-01 23:02:16,810] INFO faster_whisper transcribe: Processing audio with duration 00:02.949
+[2026-05-01 23:02:17,031] INFO faster_whisper transcribe: VAD filter removed 00:02.949 of audio
+[2026-05-01 23:02:17,099] INFO tspeak.ai transcriber: Transcription (faster): 345735ms — 0 mots — confiance=0.00
+[2026-05-01 23:02:17,100] INFO tspeak.ai tasks: Transcription: '...'
+[2026-05-01 23:02:17,130] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-01 23:02:21,482] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-01 23:03:26,471] INFO tspeak.ai scorer: Wav2Vec2 charge en 64.99s
+[2026-05-01 23:03:27,040] INFO tspeak.ai scorer: Scoring Wav2Vec: 69910ms score=33.7 acoustic=0.51 ref=0.06 ctc=1.00
+[2026-05-01 23:03:27,629] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-01 23:03:30,145] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-01 23:03:30,146] INFO tspeak.ai generator: LLM feedback généré: 2512ms
+[2026-05-01 23:03:30,235] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=eda3a8b0-cdf8-4b7d-b130-a54296b78c7b — 422979ms — prononciation=33.7
+[2026-05-01 23:03:30,236] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/eda3a8b0-cdf8-4b7d-b130-a54296b78c7b/result/ — 423101ms (user=Fatimata@gmail.com)
+[2026-05-01 23:20:38,086] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-01 23:20:38,087] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-01 23:20:38,087] WARNING tspeak.auth middleware: Auth échouée: /api/v1/simulations/ — IP=154.124.143.238
+[2026-05-01 23:20:38,088] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=154.124.143.238
+[2026-05-01 23:20:44,738] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-01 23:20:51,795] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=7fb37073-33e7-49cc-8dd7-370b938d29dd task=171c7d44-506f-4f1b-ae90-d29f110591e8
+[2026-05-01 23:21:00,691] WARNING tspeak.sessions views: Fallback inline audio: exchange=7fb37073-33e7-49cc-8dd7-370b938d29dd age=9.0s
+[2026-05-01 23:21:00,691] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=7fb37073-33e7-49cc-8dd7-370b938d29dd
+[2026-05-01 23:21:01,144] INFO faster_whisper transcribe: Processing audio with duration 00:03.019
+[2026-05-01 23:21:01,167] INFO faster_whisper transcribe: VAD filter removed 00:03.019 of audio
+[2026-05-01 23:21:01,213] INFO tspeak.ai transcriber: Transcription (faster): 203ms — 0 mots — confiance=0.00
+[2026-05-01 23:21:01,213] INFO tspeak.ai tasks: Transcription: '...'
+[2026-05-01 23:21:01,547] INFO tspeak.ai scorer: Scoring Wav2Vec: 333ms score=21.1 acoustic=0.28 ref=0.01 ctc=1.00
+[2026-05-01 23:21:03,958] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-01 23:21:03,960] INFO tspeak.ai generator: LLM feedback généré: 2411ms
+[2026-05-01 23:21:04,039] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=7fb37073-33e7-49cc-8dd7-370b938d29dd — 3269ms — prononciation=21.1
+[2026-05-01 23:21:04,041] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/7fb37073-33e7-49cc-8dd7-370b938d29dd/result/ — 3361ms (user=Fatimata@gmail.com)
+[2026-05-01 23:22:03,938] INFO tspeak.simulations models: Simulation démarrée: Dakar Tech Hub Networking — user=Fatimata@gmail.com
+[2026-05-02 10:53:48,043] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 10:53:48,045] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=154.125.68.35
+[2026-05-02 11:03:48,307] INFO tspeak.auth views: Connexion réussie: Fatimata@gmail.com
+[2026-05-02 11:03:51,742] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 11:05:39,502] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 11:06:06,409] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=1fe799cd-2fbe-42cf-9198-77b3a3dc6849 task=b18b6bbe-3f4a-4a01-ae98-794e178ee5b1
+[2026-05-02 11:06:15,509] WARNING tspeak.sessions views: Fallback inline audio: exchange=1fe799cd-2fbe-42cf-9198-77b3a3dc6849 age=9.3s
+[2026-05-02 11:06:15,510] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=1fe799cd-2fbe-42cf-9198-77b3a3dc6849
+[2026-05-02 11:06:22,987] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 11:06:22,988] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 11:06:42,240] INFO tspeak.ai transcriber: Modèle chargé en 19.25s
+[2026-05-02 11:06:42,344] INFO faster_whisper transcribe: Processing audio with duration 00:08.545
+[2026-05-02 11:06:42,619] INFO faster_whisper transcribe: VAD filter removed 00:00.337 of audio
+[2026-05-02 11:06:58,147] INFO tspeak.ai transcriber: Transcription (faster): 35160ms — 10 mots — confiance=0.77
+[2026-05-02 11:06:58,148] INFO tspeak.ai tasks: Transcription: 'I'm AC2K and I'm a third year student at Insire....'
+[2026-05-02 11:06:58,153] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-02 11:06:59,011] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-02 11:07:08,696] INFO tspeak.ai scorer: Wav2Vec2 charge en 9.68s
+[2026-05-02 11:07:10,487] INFO tspeak.ai scorer: Scoring Wav2Vec: 12334ms score=34.0 acoustic=0.71 ref=0.08 ctc=0.13
+[2026-05-02 11:07:10,489] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 11:07:10,750] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 11:07:13,290] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-02 11:07:13,290] INFO tspeak.ai generator: LLM feedback généré: 2538ms
+[2026-05-02 11:07:13,362] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=1fe799cd-2fbe-42cf-9198-77b3a3dc6849 — 57781ms — prononciation=34.0
+[2026-05-02 11:07:13,364] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/1fe799cd-2fbe-42cf-9198-77b3a3dc6849/result/ — 57869ms (user=Fatimata@gmail.com)
+[2026-05-02 11:08:12,262] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 11:08:49,258] INFO tspeak.simulations models: Simulation démarrée: Salary Negotiation at Orange — user=Fatimata@gmail.com
+[2026-05-02 11:16:47,837] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 11:17:13,408] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=7c20035d-bc9d-4390-9cc5-2b49ac184163 task=e610c3d9-4547-4ecc-88fd-e583c058e6d4
+[2026-05-02 11:17:22,315] WARNING tspeak.sessions views: Fallback inline audio: exchange=7c20035d-bc9d-4390-9cc5-2b49ac184163 age=9.0s
+[2026-05-02 11:17:22,316] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=7c20035d-bc9d-4390-9cc5-2b49ac184163
+[2026-05-02 11:17:22,759] INFO faster_whisper transcribe: Processing audio with duration 00:21.037
+[2026-05-02 11:17:22,915] INFO faster_whisper transcribe: VAD filter removed 00:00.960 of audio
+[2026-05-02 11:17:48,205] INFO tspeak.ai transcriber: Transcription (faster): 25570ms — 37 mots — confiance=0.83
+[2026-05-02 11:17:48,209] INFO tspeak.ai tasks: Transcription: 'I don't know what you do for a living. I am a stud...'
+[2026-05-02 11:17:51,893] INFO tspeak.ai scorer: Scoring Wav2Vec: 3683ms score=45.0 acoustic=0.91 ref=0.07 ctc=0.60
+[2026-05-02 11:17:51,893] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 11:17:55,259] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-02 11:17:55,259] INFO tspeak.ai generator: LLM feedback généré: 3364ms
+[2026-05-02 11:17:55,336] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=7c20035d-bc9d-4390-9cc5-2b49ac184163 — 32943ms — prononciation=45.0
+[2026-05-02 11:17:55,338] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/7c20035d-bc9d-4390-9cc5-2b49ac184163/result/ — 33036ms (user=Fatimata@gmail.com)
+[2026-05-02 11:18:07,295] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 11:18:16,488] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=3f07429b-a91e-4d1a-9309-5f4a8c6f7374 task=4c981f91-bcd5-4f06-806c-cf7e7ed79252
+[2026-05-02 11:18:25,392] WARNING tspeak.sessions views: Fallback inline audio: exchange=3f07429b-a91e-4d1a-9309-5f4a8c6f7374 age=9.0s
+[2026-05-02 11:18:25,394] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=3f07429b-a91e-4d1a-9309-5f4a8c6f7374
+[2026-05-02 11:18:25,616] INFO faster_whisper transcribe: Processing audio with duration 00:06.548
+[2026-05-02 11:18:25,693] INFO faster_whisper transcribe: VAD filter removed 00:00.000 of audio
+[2026-05-02 11:18:42,590] INFO tspeak.ai transcriber: Transcription (faster): 17092ms — 8 mots — confiance=0.59
+[2026-05-02 11:18:42,591] INFO tspeak.ai tasks: Transcription: 'Mangi Tudu Yaji, Mangi Dukkidakar, Mangi Djangi Ns...'
+[2026-05-02 11:18:43,516] INFO tspeak.ai scorer: Scoring Wav2Vec: 925ms score=34.0 acoustic=0.78 ref=0.03 ctc=0.32
+[2026-05-02 11:18:43,517] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 11:18:46,552] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-02 11:18:46,553] INFO tspeak.ai generator: LLM feedback généré: 3034ms
+[2026-05-02 11:18:46,645] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=3f07429b-a91e-4d1a-9309-5f4a8c6f7374 — 21160ms — prononciation=34.0
+[2026-05-02 11:18:46,648] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/3f07429b-a91e-4d1a-9309-5f4a8c6f7374/result/ — 21270ms (user=Fatimata@gmail.com)
+[2026-05-02 11:19:00,788] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 11:19:00,793] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 11:19:00,795] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=154.125.68.35
+[2026-05-02 11:19:00,797] WARNING tspeak.auth middleware: Auth échouée: /api/v1/simulations/ — IP=154.125.68.35
+[2026-05-02 13:08:43,249] WARNING tspeak.api exceptions: Erreur API (405): {'detail': ErrorDetail(string='Méthode «\xa0HEAD\xa0» non autorisée.', code='method_not_allowed')}
+[2026-05-02 13:20:16,071] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 13:20:16,074] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=154.125.68.35
+[2026-05-02 13:39:46,570] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 13:39:46,576] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 13:39:46,577] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=154.125.68.35
+[2026-05-02 13:39:46,579] WARNING tspeak.auth middleware: Auth échouée: /api/v1/sessions/start/ — IP=154.125.68.35
+[2026-05-02 13:39:47,333] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 13:39:54,809] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=a7d7c63e-decf-4b38-9a6c-9c2fc94fda26 task=38dd78d8-7b98-4619-9406-86c00014e586
+[2026-05-02 13:40:04,354] WARNING tspeak.sessions views: Fallback inline audio: exchange=a7d7c63e-decf-4b38-9a6c-9c2fc94fda26 age=9.8s
+[2026-05-02 13:40:04,355] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=a7d7c63e-decf-4b38-9a6c-9c2fc94fda26
+[2026-05-02 13:40:21,724] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 13:40:21,725] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 13:40:46,394] INFO tspeak.ai transcriber: Modèle chargé en 24.67s
+[2026-05-02 13:40:46,664] INFO faster_whisper transcribe: Processing audio with duration 00:00.511
+[2026-05-02 13:40:47,209] INFO faster_whisper transcribe: VAD filter removed 00:00.511 of audio
+[2026-05-02 13:40:47,892] INFO tspeak.ai transcriber: Transcription (faster): 26167ms — 0 mots — confiance=0.00
+[2026-05-02 13:40:47,894] INFO tspeak.ai tasks: Transcription: '...'
+[2026-05-02 13:40:47,932] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-02 13:40:53,036] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-02 13:41:04,376] INFO tspeak.ai scorer: Wav2Vec2 charge en 11.34s
+[2026-05-02 13:41:05,047] INFO tspeak.ai scorer: Scoring Wav2Vec: 17114ms score=22.2 acoustic=0.35 ref=0.00 ctc=1.00
+[2026-05-02 13:41:06,046] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 13:41:09,002] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-02 13:41:09,005] INFO tspeak.ai generator: LLM feedback généré: 2949ms
+[2026-05-02 13:41:09,140] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=a7d7c63e-decf-4b38-9a6c-9c2fc94fda26 — 64653ms — prononciation=22.2
+[2026-05-02 13:41:09,145] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/a7d7c63e-decf-4b38-9a6c-9c2fc94fda26/result/ — 64804ms (user=Fatimata@gmail.com)
+[2026-05-02 13:44:51,136] INFO tspeak.simulations models: Simulation démarrée: Dakar Tech Hub Networking — user=Fatimata@gmail.com
+[2026-05-02 13:45:22,525] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=d0b7d737-d85c-48cc-a4c7-934840dcda4b task=fd18b2df-6f12-42f5-946c-cf44d8938f6e
+[2026-05-02 13:45:32,268] WARNING tspeak.sessions views: Fallback inline audio: exchange=d0b7d737-d85c-48cc-a4c7-934840dcda4b age=9.9s
+[2026-05-02 13:45:32,270] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=d0b7d737-d85c-48cc-a4c7-934840dcda4b
+[2026-05-02 13:45:33,330] INFO faster_whisper transcribe: Processing audio with duration 00:21.757
+[2026-05-02 13:45:34,799] INFO faster_whisper transcribe: VAD filter removed 00:02.621 of audio
+[2026-05-02 13:47:57,986] INFO tspeak.ai transcriber: Transcription (faster): 145049ms — 27 mots — confiance=0.80
+[2026-05-02 13:47:57,988] INFO tspeak.ai tasks: Transcription: 'Hello, everyone. I hope you are doing well. So tod...'
+[2026-05-02 13:48:15,605] INFO tspeak.ai scorer: Scoring Wav2Vec: 17616ms score=37.9 acoustic=0.83 ref=0.06 ctc=0.28
+[2026-05-02 13:48:15,608] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 13:48:18,744] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-02 13:48:18,746] INFO tspeak.ai generator: LLM feedback généré: 3127ms
+[2026-05-02 13:48:18,874] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=d0b7d737-d85c-48cc-a4c7-934840dcda4b — 166477ms — prononciation=37.9
+[2026-05-02 13:48:18,878] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/d0b7d737-d85c-48cc-a4c7-934840dcda4b/result/ — 166642ms (user=Fatimata@gmail.com)
+[2026-05-02 13:48:34,476] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=66cbc796-23c8-416c-9e14-f5966192851e task=004ef7a8-a823-41f5-827a-ee858d902242
+[2026-05-02 13:48:43,840] WARNING tspeak.sessions views: Fallback inline audio: exchange=66cbc796-23c8-416c-9e14-f5966192851e age=9.6s
+[2026-05-02 13:48:43,841] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=66cbc796-23c8-416c-9e14-f5966192851e
+[2026-05-02 13:48:44,753] INFO faster_whisper transcribe: Processing audio with duration 00:09.822
+[2026-05-02 13:48:45,191] INFO faster_whisper transcribe: VAD filter removed 00:01.518 of audio
+[2026-05-02 13:50:32,119] INFO tspeak.ai transcriber: Transcription (faster): 107803ms — 17 mots — confiance=0.81
+[2026-05-02 13:50:32,121] INFO tspeak.ai tasks: Transcription: 'Hello everyone, I hope you're all doing well. I'm ...'
+[2026-05-02 13:50:40,048] INFO tspeak.ai scorer: Scoring Wav2Vec: 7926ms score=44.0 acoustic=0.89 ref=0.09 ctc=0.41
+[2026-05-02 13:50:40,051] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 13:50:42,670] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-02 13:50:42,672] INFO tspeak.ai generator: LLM feedback généré: 2614ms
+[2026-05-02 13:50:42,769] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=66cbc796-23c8-416c-9e14-f5966192851e — 118831ms — prononciation=44.0
+[2026-05-02 13:50:42,773] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/66cbc796-23c8-416c-9e14-f5966192851e/result/ — 118963ms (user=Fatimata@gmail.com)
+[2026-05-02 13:55:02,020] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 13:55:02,024] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=154.125.68.35
+[2026-05-02 13:56:34,575] INFO tspeak.simulations models: Simulation démarrée: Salary Negotiation at Orange — user=Fatimata@gmail.com
+[2026-05-02 13:57:33,452] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=a837699d-f494-4b44-80de-b908a3058483 task=0841a709-5cd6-4e65-b6c6-f4f96899b179
+[2026-05-02 13:57:43,138] WARNING tspeak.sessions views: Fallback inline audio: exchange=a837699d-f494-4b44-80de-b908a3058483 age=9.8s
+[2026-05-02 13:57:43,139] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=a837699d-f494-4b44-80de-b908a3058483
+[2026-05-02 13:57:44,410] INFO faster_whisper transcribe: Processing audio with duration 00:45.790
+[2026-05-02 13:57:46,348] INFO faster_whisper transcribe: VAD filter removed 00:03.742 of audio
+[2026-05-02 14:20:40,585] INFO tspeak.auth views: Connexion réussie: Fatimata@gmail.com
+[2026-05-02 14:20:40,587] WARNING tspeak.performance middleware: Requête lente: POST /api/v1/auth/login/ — 1516ms (user=anonymous)
+[2026-05-02 14:21:46,610] INFO tspeak.simulations models: Simulation démarrée: Dakar Tech Hub Networking — user=Fatimata@gmail.com
+[2026-05-02 15:52:56,274] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 15:52:56,275] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-05-02 15:59:16,604] INFO tspeak.simulations models: Simulation démarrée: Dakar Tech Hub Networking — user=Fatimata@gmail.com
+[2026-05-02 15:59:22,607] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=7c7db413-7fd2-4907-9711-79b3df8efff3 task=9e138996-b31c-4a7c-95f8-4207cafbda4c
+[2026-05-02 15:59:30,844] WARNING tspeak.sessions views: Fallback inline audio: exchange=7c7db413-7fd2-4907-9711-79b3df8efff3 age=8.3s
+[2026-05-02 15:59:30,844] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=7c7db413-7fd2-4907-9711-79b3df8efff3
+[2026-05-02 15:59:35,699] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 15:59:35,699] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 15:59:44,650] INFO tspeak.ai transcriber: Modèle chargé en 8.95s
+[2026-05-02 15:59:44,756] INFO faster_whisper transcribe: Processing audio with duration 00:03.204
+[2026-05-02 15:59:44,966] INFO faster_whisper transcribe: VAD filter removed 00:03.204 of audio
+[2026-05-02 15:59:45,157] INFO tspeak.ai transcriber: Transcription (faster): 9458ms — 0 mots — confiance=0.00
+[2026-05-02 15:59:45,157] INFO tspeak.ai tasks: Transcription: '...'
+[2026-05-02 15:59:45,168] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-02 15:59:46,018] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-02 15:59:49,163] INFO tspeak.ai scorer: Wav2Vec2 charge en 3.14s
+[2026-05-02 15:59:49,604] INFO tspeak.ai scorer: Scoring Wav2Vec: 4435ms score=22.2 acoustic=0.35 ref=0.00 ctc=1.00
+[2026-05-02 15:59:49,887] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 15:59:52,094] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-02 15:59:52,096] INFO tspeak.ai generator: LLM feedback généré: 2206ms
+[2026-05-02 15:59:52,177] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=7c7db413-7fd2-4907-9711-79b3df8efff3 — 21252ms — prononciation=22.2
+[2026-05-02 15:59:52,178] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/7c7db413-7fd2-4907-9711-79b3df8efff3/result/ — 21340ms (user=Fatimata@gmail.com)
+[2026-05-02 16:22:20,779] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 16:22:20,779] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-05-02 16:37:27,628] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 16:37:27,628] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/leaderboard/ — IP=127.0.0.1
+[2026-05-02 16:39:22,552] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 16:39:28,020] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=46157e25-34d4-4efa-ae68-7a4ed19e49d7 task=47044518-d23e-41cd-91eb-9ac78db2148f
+[2026-05-02 16:39:36,249] WARNING tspeak.sessions views: Fallback inline audio: exchange=46157e25-34d4-4efa-ae68-7a4ed19e49d7 age=8.3s
+[2026-05-02 16:39:36,249] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=46157e25-34d4-4efa-ae68-7a4ed19e49d7
+[2026-05-02 16:39:38,396] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 16:39:38,396] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 16:39:41,158] INFO tspeak.ai transcriber: Modèle chargé en 2.76s
+[2026-05-02 16:39:41,231] INFO faster_whisper transcribe: Processing audio with duration 00:03.297
+[2026-05-02 16:39:41,328] INFO faster_whisper transcribe: VAD filter removed 00:01.424 of audio
+[2026-05-02 16:39:51,374] INFO tspeak.ai transcriber: Transcription (faster): 12978ms — 5 mots — confiance=0.59
+[2026-05-02 16:39:51,374] INFO tspeak.ai tasks: Transcription: '20% so 300,000...'
+[2026-05-02 16:39:51,376] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-02 16:39:51,771] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-02 16:39:54,270] INFO tspeak.ai scorer: Wav2Vec2 charge en 2.50s
+[2026-05-02 16:39:54,600] INFO tspeak.ai scorer: Scoring Wav2Vec: 3223ms score=30.0 acoustic=0.75 ref=0.03 ctc=0.03
+[2026-05-02 16:39:54,601] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 16:39:54,752] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 16:39:57,238] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-02 16:39:57,238] INFO tspeak.ai generator: LLM feedback généré: 2483ms
+[2026-05-02 16:39:57,335] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=46157e25-34d4-4efa-ae68-7a4ed19e49d7 — 20989ms — prononciation=30.0
+[2026-05-02 16:39:57,338] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/46157e25-34d4-4efa-ae68-7a4ed19e49d7/result/ — 21097ms (user=Fatimata@gmail.com)
+[2026-05-02 17:00:23,110] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 17:00:23,111] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-05-02 17:00:25,741] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 17:01:00,583] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=0994eef9-acbd-438b-99e3-8f198f6300bf task=5bd9b6d9-7b14-4735-bdd5-1e723098a395
+[2026-05-02 17:01:08,784] WARNING tspeak.sessions views: Fallback inline audio: exchange=0994eef9-acbd-438b-99e3-8f198f6300bf age=8.3s
+[2026-05-02 17:01:08,784] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=0994eef9-acbd-438b-99e3-8f198f6300bf
+[2026-05-02 17:01:08,941] INFO faster_whisper transcribe: Processing audio with duration 00:04.017
+[2026-05-02 17:01:08,971] INFO faster_whisper transcribe: VAD filter removed 00:00.208 of audio
+[2026-05-02 17:01:20,893] INFO tspeak.ai transcriber: Transcription (faster): 12056ms — 18 mots — confiance=0.57
+[2026-05-02 17:01:20,894] INFO tspeak.ai tasks: Transcription: 'I don't know how this is going to turn out, but I ...'
+[2026-05-02 17:01:21,333] INFO tspeak.ai scorer: Scoring Wav2Vec: 439ms score=31.4 acoustic=0.66 ref=0.07 ctc=0.10
+[2026-05-02 17:01:21,334] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 17:01:23,913] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-02 17:01:23,915] INFO tspeak.ai generator: LLM feedback généré: 2578ms
+[2026-05-02 17:01:24,009] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=0994eef9-acbd-438b-99e3-8f198f6300bf — 15131ms — prononciation=31.4
+[2026-05-02 17:01:24,011] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/0994eef9-acbd-438b-99e3-8f198f6300bf/result/ — 15232ms (user=Fatimata@gmail.com)
+[2026-05-02 17:04:34,864] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 17:08:33,019] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 17:09:06,758] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=b111f23c-1d85-4543-82a5-91703719031c task=0fc7751f-1644-447a-9069-0ec13f764a1e
+[2026-05-02 17:09:14,983] WARNING tspeak.sessions views: Fallback inline audio: exchange=b111f23c-1d85-4543-82a5-91703719031c age=8.3s
+[2026-05-02 17:09:14,983] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=b111f23c-1d85-4543-82a5-91703719031c
+[2026-05-02 17:09:15,146] INFO faster_whisper transcribe: Processing audio with duration 00:04.110
+[2026-05-02 17:09:15,180] INFO faster_whisper transcribe: VAD filter removed 00:04.110 of audio
+[2026-05-02 17:09:15,261] INFO tspeak.ai transcriber: Transcription (faster): 221ms — 0 mots — confiance=0.00
+[2026-05-02 17:09:15,261] INFO tspeak.ai tasks: Transcription: '...'
+[2026-05-02 17:09:15,725] INFO tspeak.ai scorer: Scoring Wav2Vec: 463ms score=22.2 acoustic=0.35 ref=0.00 ctc=1.00
+[2026-05-02 17:09:18,038] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-02 17:09:18,040] INFO tspeak.ai generator: LLM feedback généré: 2313ms
+[2026-05-02 17:09:18,128] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=b111f23c-1d85-4543-82a5-91703719031c — 3057ms — prononciation=22.2
+[2026-05-02 17:09:18,131] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/b111f23c-1d85-4543-82a5-91703719031c/result/ — 3153ms (user=Fatimata@gmail.com)
+[2026-05-02 17:19:36,640] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=eda3a8b0-cdf8-4b7d-b130-a54296b78c7b
+[2026-05-02 17:19:36,641] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=7fb37073-33e7-49cc-8dd7-370b938d29dd
+[2026-05-02 17:19:36,654] ERROR tspeak.ai tasks: Fichier audio introuvable (et non traité): /tmp/tspeak_audio/6a609680-cb59-431f-b94d-34febf8f0996_83c86e7f.m4a
+[2026-05-02 17:19:36,655] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=7c20035d-bc9d-4390-9cc5-2b49ac184163
+[2026-05-02 17:19:36,657] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=1fe799cd-2fbe-42cf-9198-77b3a3dc6849
+[2026-05-02 17:19:36,664] ERROR tspeak.ai tasks: Fichier audio introuvable (et non traité): /tmp/tspeak_audio/49f2ca3c-df1c-4130-820b-b4831541d135_06420148.m4a
+[2026-05-02 17:19:36,666] INFO tspeak.ai tasks: Échange déjà traité (skip): 7c20035d-bc9d-4390-9cc5-2b49ac184163
+[2026-05-02 17:19:36,667] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=3f07429b-a91e-4d1a-9309-5f4a8c6f7374
+[2026-05-02 17:19:36,672] INFO tspeak.ai tasks: Échange déjà traité (skip): 3f07429b-a91e-4d1a-9309-5f4a8c6f7374
+[2026-05-02 17:19:36,673] INFO tspeak.ai tasks: Échange déjà traité (skip): 1fe799cd-2fbe-42cf-9198-77b3a3dc6849
+[2026-05-02 17:19:36,677] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=a7d7c63e-decf-4b38-9a6c-9c2fc94fda26
+[2026-05-02 17:19:36,681] ERROR tspeak.ai tasks: Fichier audio introuvable (et non traité): /tmp/tspeak_audio/373b8952-6072-4dc6-bd59-bc53693b7e6d_3b26c4e4.m4a
+[2026-05-02 17:19:36,684] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=66cbc796-23c8-416c-9e14-f5966192851e
+[2026-05-02 17:19:36,684] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=a837699d-f494-4b44-80de-b908a3058483
+[2026-05-02 17:19:36,685] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=7c7db413-7fd2-4907-9711-79b3df8efff3
+[2026-05-02 17:19:36,686] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=d0b7d737-d85c-48cc-a4c7-934840dcda4b
+[2026-05-02 17:19:36,688] ERROR tspeak.ai tasks: Fichier audio introuvable (et non traité): /tmp/tspeak_audio/639a9822-83b0-4e28-9592-9cc71757624a_88431659.m4a
+[2026-05-02 17:19:36,689] INFO tspeak.ai tasks: Échange déjà traité (skip): d0b7d737-d85c-48cc-a4c7-934840dcda4b
+[2026-05-02 17:19:36,689] ERROR tspeak.ai tasks: Fichier audio introuvable (et non traité): /tmp/tspeak_audio/8af2b686-a27b-4c0e-ad2b-dff59cc7d80f_4d44bdf7.m4a
+[2026-05-02 17:19:36,686] INFO tspeak.ai tasks: Échange déjà traité (skip): 66cbc796-23c8-416c-9e14-f5966192851e
+[2026-05-02 17:19:36,696] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=46157e25-34d4-4efa-ae68-7a4ed19e49d7
+[2026-05-02 17:19:36,696] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=0994eef9-acbd-438b-99e3-8f198f6300bf
+[2026-05-02 17:19:36,696] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=b111f23c-1d85-4543-82a5-91703719031c
+[2026-05-02 17:19:36,699] INFO tspeak.ai tasks: Échange déjà traité (skip): 46157e25-34d4-4efa-ae68-7a4ed19e49d7
+[2026-05-02 17:19:36,699] INFO tspeak.ai tasks: Échange déjà traité (skip): 0994eef9-acbd-438b-99e3-8f198f6300bf
+[2026-05-02 17:19:36,702] ERROR tspeak.ai tasks: Fichier audio introuvable (et non traité): /tmp/tspeak_audio/e29e63a5-fb28-4b5e-8838-23c84d832d41_260b6b5a.m4a
+[2026-05-02 17:23:18,317] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 17:23:18,318] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-05-02 17:23:22,173] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 17:23:30,834] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=f73e2dfc-67d2-474d-9de0-2f729167c67d
+[2026-05-02 17:23:30,863] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=f73e2dfc-67d2-474d-9de0-2f729167c67d task=b862cc73-8fa4-41e5-8f3b-4f9a63208b59
+[2026-05-02 17:23:32,912] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 17:23:32,912] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 17:23:36,044] INFO tspeak.ai transcriber: Modèle chargé en 3.13s
+[2026-05-02 17:23:36,250] INFO tspeak.ai transcriber: Transcription (faster): 3338ms — 0 mots — confiance=0.00
+[2026-05-02 17:23:36,251] INFO tspeak.ai tasks: Transcription: '...'
+[2026-05-02 17:23:36,251] WARNING tspeak.ai tasks: Audio vide/silencieux détecté (exchange=f73e2dfc-67d2-474d-9de0-2f729167c67d), retour scores zéro
+[2026-05-02 17:23:36,326] INFO tspeak.ai tasks: ✅ Traitement silence terminé: exchange=f73e2dfc-67d2-474d-9de0-2f729167c67d
+[2026-05-02 17:33:38,917] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 17:33:45,994] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=cd3190a3-e739-4953-a550-a3e79bd3d770
+[2026-05-02 17:33:46,018] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=cd3190a3-e739-4953-a550-a3e79bd3d770 task=9a772a05-3baf-40cc-b2d0-0ead00cc3d38
+[2026-05-02 17:33:48,019] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 17:33:48,019] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 17:33:51,078] INFO tspeak.ai transcriber: Modèle chargé en 3.06s
+[2026-05-02 17:33:51,295] INFO tspeak.ai transcriber: Transcription (faster): 3276ms — 0 mots — confiance=0.00
+[2026-05-02 17:33:51,295] INFO tspeak.ai tasks: Transcription: '...'
+[2026-05-02 17:33:51,295] WARNING tspeak.ai tasks: Audio vide/silencieux détecté (exchange=cd3190a3-e739-4953-a550-a3e79bd3d770), retour scores zéro
+[2026-05-02 17:33:51,382] INFO tspeak.ai tasks: ✅ Traitement silence terminé: exchange=cd3190a3-e739-4953-a550-a3e79bd3d770
+[2026-05-02 17:34:13,209] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=ef13bc0a-998f-49a9-a222-c2c80f263706
+[2026-05-02 17:34:13,236] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=ef13bc0a-998f-49a9-a222-c2c80f263706 task=e804c213-b8ba-4e64-8975-2da9e2cf73be
+[2026-05-02 17:34:13,500] INFO tspeak.ai transcriber: Transcription (faster): 191ms — 0 mots — confiance=0.00
+[2026-05-02 17:34:13,501] INFO tspeak.ai tasks: Transcription: '...'
+[2026-05-02 17:34:13,501] WARNING tspeak.ai tasks: Audio vide/silencieux détecté (exchange=ef13bc0a-998f-49a9-a222-c2c80f263706), retour scores zéro
+[2026-05-02 17:34:13,586] INFO tspeak.ai tasks: ✅ Traitement silence terminé: exchange=ef13bc0a-998f-49a9-a222-c2c80f263706
+[2026-05-02 17:44:27,950] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 17:44:27,950] WARNING tspeak.auth middleware: Auth échouée: /api/v1/sessions/7ee9ee74-900c-4420-a10b-5b4c3237a23e/audio/ — IP=127.0.0.1
+[2026-05-02 17:45:02,525] INFO tspeak.auth views: Connexion réussie: Fatimata@gmail.com
+[2026-05-02 17:50:59,818] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 17:55:39,124] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=a3532b99-3fd2-4366-8793-e7efab15e7fc
+[2026-05-02 17:55:39,153] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=a3532b99-3fd2-4366-8793-e7efab15e7fc task=a9537e49-e8ae-44ef-aa0e-b298b55f249e
+[2026-05-02 17:55:50,425] INFO tspeak.ai transcriber: Transcription (faster): 11208ms — 7 mots — confiance=0.52
+[2026-05-02 17:55:50,425] INFO tspeak.ai tasks: Transcription: 'It's not permanent, to say the least....'
+[2026-05-02 17:55:50,434] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-02 17:55:51,010] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-02 17:55:54,170] INFO tspeak.ai scorer: Wav2Vec2 charge en 3.16s
+[2026-05-02 17:55:54,444] INFO tspeak.ai scorer: Scoring Wav2Vec: 4009ms score=33.7 acoustic=0.65 ref=0.08 ctc=0.23
+[2026-05-02 17:55:54,445] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 17:55:54,649] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 17:55:57,252] INFO tspeak.ai generator: LLM feedback généré: 2601ms
+[2026-05-02 17:55:57,325] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=a3532b99-3fd2-4366-8793-e7efab15e7fc — 18128ms — prononciation=33.7
+[2026-05-02 17:58:10,062] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=5ea6b61b-2843-4338-94d3-33a367d604dd
+[2026-05-02 17:58:10,088] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=5ea6b61b-2843-4338-94d3-33a367d604dd task=ae598ea0-3d59-4bd6-b6df-43867414a168
+[2026-05-02 17:58:10,356] INFO tspeak.ai transcriber: Transcription (faster): 186ms — 0 mots — confiance=0.00
+[2026-05-02 17:58:10,358] INFO tspeak.ai tasks: Transcription: '...'
+[2026-05-02 17:58:10,358] WARNING tspeak.ai tasks: Audio vide/silencieux détecté (exchange=5ea6b61b-2843-4338-94d3-33a367d604dd), retour scores zéro
+[2026-05-02 17:58:10,450] INFO tspeak.ai tasks: ✅ Traitement silence terminé: exchange=5ea6b61b-2843-4338-94d3-33a367d604dd
+[2026-05-02 17:58:41,918] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=ebb90727-aa29-4bde-95f3-50b818ed6d63
+[2026-05-02 17:58:41,950] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=ebb90727-aa29-4bde-95f3-50b818ed6d63 task=50276628-54a1-4b4d-bc42-e10b8ed662ae
+[2026-05-02 17:59:10,582] INFO tspeak.ai transcriber: Transcription (faster): 28569ms — 7 mots — confiance=0.52
+[2026-05-02 17:59:10,582] INFO tspeak.ai tasks: Transcription: 'Hello, sir. How can I help you?...'
+[2026-05-02 17:59:10,585] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-02 17:59:11,052] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-02 17:59:14,247] INFO tspeak.ai scorer: Wav2Vec2 charge en 3.20s
+[2026-05-02 17:59:15,368] INFO tspeak.ai scorer: Scoring Wav2Vec: 4782ms score=30.9 acoustic=0.56 ref=0.14 ctc=0.10
+[2026-05-02 17:59:16,845] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 17:59:17,033] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 17:59:19,082] INFO tspeak.ai generator: LLM feedback généré: 2047ms
+[2026-05-02 17:59:19,170] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=ebb90727-aa29-4bde-95f3-50b818ed6d63 — 37165ms — prononciation=30.9
+[2026-05-02 18:01:29,010] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 18:01:29,011] WARNING tspeak.auth middleware: Auth échouée: /api/v1/sessions/961d4fa5-2c0c-49f5-abfb-c1b7569fb2a1/end/ — IP=127.0.0.1
+[2026-05-02 18:19:47,021] INFO tspeak.auth views: Connexion réussie: Fatimata@gmail.com
+[2026-05-02 18:21:09,466] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 18:21:21,850] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=55df59a3-59c5-4478-9b10-bb2e213898d8
+[2026-05-02 18:21:21,878] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=55df59a3-59c5-4478-9b10-bb2e213898d8 task=cbc3a1b0-d568-47a9-b830-9fe28a4b64b6
+[2026-05-02 18:21:24,911] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 18:21:24,911] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 18:21:32,532] INFO tspeak.ai transcriber: Modèle chargé en 7.62s
+[2026-05-02 18:21:55,616] INFO tspeak.ai transcriber: Transcription (faster): 30705ms — 11 mots — confiance=0.74
+[2026-05-02 18:21:55,617] INFO tspeak.ai tasks: Transcription: 'Hello, how are you? I hope you are doing very well...'
+[2026-05-02 18:21:55,628] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-02 18:21:56,395] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-02 18:22:00,126] INFO tspeak.ai scorer: Wav2Vec2 charge en 3.73s
+[2026-05-02 18:22:01,089] INFO tspeak.ai scorer: Scoring Wav2Vec: 5461ms score=34.7 acoustic=0.63 ref=0.16 ctc=0.09
+[2026-05-02 18:22:01,095] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 18:22:01,403] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 18:22:03,860] INFO tspeak.ai generator: LLM feedback généré: 2453ms
+[2026-05-02 18:22:03,962] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=55df59a3-59c5-4478-9b10-bb2e213898d8 — 42011ms — prononciation=34.7
+[2026-05-02 18:29:39,636] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=28d98baa-acb8-448c-93e6-7a6e71d0c7d8
+[2026-05-02 18:29:39,659] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=28d98baa-acb8-448c-93e6-7a6e71d0c7d8 task=6c4d75c7-fbbe-46c3-a052-ff4e156a62c0
+[2026-05-02 18:29:45,084] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 18:29:45,084] INFO tspeak.ai tasks: Langue Whisper résolue: native_language=pulaar → whisper=fr
+[2026-05-02 18:29:45,084] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 18:29:52,643] INFO tspeak.ai transcriber: Modèle chargé en 7.56s
+[2026-05-02 18:30:22,392] INFO tspeak.ai transcriber: Transcription (faster): 37307ms — 8 mots — confiance=0.85
+[2026-05-02 18:30:22,392] INFO tspeak.ai tasks: Transcription: 'bonjour, j'espère que vous allez très bien...'
+[2026-05-02 18:30:22,397] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-02 18:30:23,539] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-02 18:30:28,160] INFO tspeak.ai scorer: Wav2Vec2 charge en 4.62s
+[2026-05-02 18:30:29,289] INFO tspeak.ai scorer: Scoring Wav2Vec: 6891ms score=34.0 acoustic=0.71 ref=0.08 ctc=0.07
+[2026-05-02 18:30:29,291] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 18:30:30,045] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 18:30:32,797] INFO tspeak.ai generator: LLM feedback généré: 2743ms
+[2026-05-02 18:30:32,941] INFO tspeak.ai tasks: ✅ Traitement terminé: exchange=28d98baa-acb8-448c-93e6-7a6e71d0c7d8 — 53162ms — prononciation=34.0
+[2026-05-02 19:08:33,403] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 19:08:33,403] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=127.0.0.1
+[2026-05-02 19:08:36,300] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 19:08:46,891] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=5161aba9-efb8-406a-b563-8f15b704af73 task=0fdf92ba-f3e7-4152-a91e-dd260168b640
+[2026-05-02 19:08:49,597] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=5161aba9-efb8-406a-b563-8f15b704af73
+[2026-05-02 19:08:49,682] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 19:08:49,682] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 19:08:53,780] INFO tspeak.ai transcriber: Modèle chargé en 4.10s
+[2026-05-02 19:09:11,015] INFO tspeak.ai transcriber: Transcription (faster): 21333ms — 17 mots — confiance=0.75
+[2026-05-02 19:09:11,015] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=fr (0.48) text='Bonjour, j'espère que vous allez très bi...'
+[2026-05-02 19:09:11,016] WARNING tspeak.ai tasks: Langue incorrecte détectée: fr. Annulation du scoring.
+[2026-05-02 19:09:11,221] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 19:09:13,394] INFO tspeak.ai generator: LLM feedback généré: 2171ms
+[2026-05-02 19:09:13,511] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=5161aba9-efb8-406a-b563-8f15b704af73 — score=0.0
+[2026-05-02 19:11:24,109] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 19:11:29,788] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=c4a9a281-9255-4bb1-a4bc-a5bfc7399c0d
+[2026-05-02 19:11:29,814] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=c4a9a281-9255-4bb1-a4bc-a5bfc7399c0d task=1d658a95-22ca-4a50-a26d-c33749442eab
+[2026-05-02 19:12:04,006] INFO tspeak.ai transcriber: Transcription (faster): 34092ms — 4 mots — confiance=0.51
+[2026-05-02 19:12:04,006] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=jw (0.16) text='Thank you for watching!...'
+[2026-05-02 19:12:04,011] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-02 19:12:04,013] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 19:12:04,723] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-02 19:12:08,090] INFO tspeak.ai scorer: Wav2Vec2 charge en 3.37s
+[2026-05-02 19:12:08,596] INFO tspeak.ai scorer: Scoring Wav2Vec: 4583ms score=39.8 acoustic=0.71 ref=0.22 ctc=0.07
+[2026-05-02 19:12:10,745] INFO tspeak.ai generator: LLM feedback généré: 2146ms
+[2026-05-02 19:12:10,848] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=c4a9a281-9255-4bb1-a4bc-a5bfc7399c0d — score=63.9
+[2026-05-02 19:18:32,634] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=3d004229-e1d2-4faa-b76a-97ff7d167d0e task=35965fc3-a703-4fcc-8c6d-ddc4f1375460
+[2026-05-02 19:18:35,355] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=3d004229-e1d2-4faa-b76a-97ff7d167d0e
+[2026-05-02 19:18:35,428] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 19:18:35,428] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 19:18:39,254] INFO tspeak.ai transcriber: Modèle chargé en 3.83s
+[2026-05-02 19:19:01,071] INFO tspeak.ai transcriber: Transcription (faster): 25644ms — 6 mots — confiance=0.44
+[2026-05-02 19:19:01,072] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=ro (0.74) text='Voi urdeți, ver că văzărea trebuie....'
+[2026-05-02 19:19:01,072] WARNING tspeak.ai tasks: Langue incorrecte détectée: ro (prob=0.74). Scoring annulé.
+[2026-05-02 19:19:01,283] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 19:19:03,215] INFO tspeak.ai generator: LLM feedback généré: 1929ms
+[2026-05-02 19:19:03,284] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=3d004229-e1d2-4faa-b76a-97ff7d167d0e — score=0.0
+[2026-05-02 20:30:54,409] WARNING tspeak.api exceptions: Erreur API (405): {'detail': ErrorDetail(string='Méthode «\xa0HEAD\xa0» non autorisée.', code='method_not_allowed')}
+[2026-05-02 21:24:30,162] INFO tspeak.auth views: Connexion réussie: Fatimata@gmail.com
+[2026-05-02 21:24:30,164] WARNING tspeak.performance middleware: Requête lente: POST /api/v1/auth/login/ — 1914ms (user=anonymous)
+[2026-05-02 21:24:36,317] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 21:24:58,196] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=5922e85d-6716-48a3-8650-a44ca86bbdb8 task=9d4a7121-2b6b-40c1-bfe9-3164e75e902e
+[2026-05-02 21:25:07,255] WARNING tspeak.sessions views: Fallback inline audio: exchange=5922e85d-6716-48a3-8650-a44ca86bbdb8 age=9.3s
+[2026-05-02 21:25:18,481] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=5922e85d-6716-48a3-8650-a44ca86bbdb8
+[2026-05-02 21:25:18,878] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 21:25:18,880] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 21:25:34,499] INFO tspeak.ai transcriber: Modèle chargé en 15.62s
+[2026-05-02 21:25:34,751] INFO faster_whisper transcribe: Processing audio with duration 00:05.016
+[2026-05-02 21:25:35,309] INFO faster_whisper transcribe: VAD filter removed 00:00.392 of audio
+[2026-05-02 21:26:15,157] INFO faster_whisper transcribe: Detected language 'fr' with probability 0.29
+[2026-05-02 21:26:28,797] INFO tspeak.ai transcriber: Transcription (faster): 69917ms — 11 mots — confiance=0.65
+[2026-05-02 21:26:28,797] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=fr (0.29) text='Si c'est l'ONG qui se lance, nous, notre...'
+[2026-05-02 21:26:28,818] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-02 21:26:28,821] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 21:26:33,535] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-02 21:26:43,001] INFO tspeak.ai scorer: Wav2Vec2 charge en 9.46s
+[2026-05-02 21:26:45,788] INFO tspeak.ai scorer: Scoring Wav2Vec: 16969ms score=34.0 acoustic=0.68 ref=0.09 ctc=0.08
+[2026-05-02 21:26:46,801] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 21:26:48,783] INFO httpx _client: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+[2026-05-02 21:26:48,786] INFO tspeak.ai generator: LLM feedback généré: 1978ms
+[2026-05-02 21:26:48,916] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=5922e85d-6716-48a3-8650-a44ca86bbdb8 — score=61.0
+[2026-05-02 21:26:48,921] WARNING tspeak.performance middleware: Requête lente: GET /api/v1/sessions/exchanges/5922e85d-6716-48a3-8650-a44ca86bbdb8/result/ — 101678ms (user=Fatimata@gmail.com)
+[2026-05-02 22:02:57,596] INFO tspeak.auth views: Connexion réussie: Fatimata@gmail.com
+[2026-05-02 22:08:07,852] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 22:08:08,801] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=5922e85d-6716-48a3-8650-a44ca86bbdb8
+[2026-05-02 22:08:08,807] INFO tspeak.ai tasks: Échange déjà traité (skip): 5922e85d-6716-48a3-8650-a44ca86bbdb8
+[2026-05-02 22:08:08,888] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 22:08:24,546] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=bca7aa40-10dd-470a-aa1e-f0e25ce0467e
+[2026-05-02 22:08:24,569] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=bca7aa40-10dd-470a-aa1e-f0e25ce0467e task=0c9f21d2-20ed-4601-84e5-22b634f16114
+[2026-05-02 22:08:24,843] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 22:08:24,844] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 22:08:30,413] INFO tspeak.ai transcriber: Modèle chargé en 5.57s
+[2026-05-02 22:08:30,807] ERROR tspeak.ai transcriber: Erreur Whisper: max() arg is an empty sequence
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/ai/whisper_asr/transcriber.py", line 159, in transcribe
+    raw_result = self.model.transcribe(
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/venv/lib/python3.10/site-packages/faster_whisper/transcribe.py", line 419, in transcribe
+    language = max(
+ValueError: max() arg is an empty sequence
+[2026-05-02 22:08:30,808] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=bca7aa40-10dd-470a-aa1e-f0e25ce0467e — max() arg is an empty sequence
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 91, in process_audio_exchange_now
+    trans_res = transcriber.transcribe(wav_path, language=None)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/ai/whisper_asr/transcriber.py", line 159, in transcribe
+    raw_result = self.model.transcribe(
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/venv/lib/python3.10/site-packages/faster_whisper/transcribe.py", line 419, in transcribe
+    language = max(
+ValueError: max() arg is an empty sequence
+[2026-05-02 22:08:35,812] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=bca7aa40-10dd-470a-aa1e-f0e25ce0467e
+[2026-05-02 22:08:36,022] ERROR tspeak.ai transcriber: Erreur Whisper: max() arg is an empty sequence
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/ai/whisper_asr/transcriber.py", line 159, in transcribe
+    raw_result = self.model.transcribe(
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/venv/lib/python3.10/site-packages/faster_whisper/transcribe.py", line 419, in transcribe
+    language = max(
+ValueError: max() arg is an empty sequence
+[2026-05-02 22:08:36,022] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=bca7aa40-10dd-470a-aa1e-f0e25ce0467e — max() arg is an empty sequence
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 91, in process_audio_exchange_now
+    trans_res = transcriber.transcribe(wav_path, language=None)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/ai/whisper_asr/transcriber.py", line 159, in transcribe
+    raw_result = self.model.transcribe(
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/venv/lib/python3.10/site-packages/faster_whisper/transcribe.py", line 419, in transcribe
+    language = max(
+ValueError: max() arg is an empty sequence
+[2026-05-02 22:08:41,026] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=bca7aa40-10dd-470a-aa1e-f0e25ce0467e
+[2026-05-02 22:08:41,291] ERROR tspeak.ai transcriber: Erreur Whisper: max() arg is an empty sequence
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/ai/whisper_asr/transcriber.py", line 159, in transcribe
+    raw_result = self.model.transcribe(
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/venv/lib/python3.10/site-packages/faster_whisper/transcribe.py", line 419, in transcribe
+    language = max(
+ValueError: max() arg is an empty sequence
+[2026-05-02 22:08:41,291] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=bca7aa40-10dd-470a-aa1e-f0e25ce0467e — max() arg is an empty sequence
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 91, in process_audio_exchange_now
+    trans_res = transcriber.transcribe(wav_path, language=None)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/ai/whisper_asr/transcriber.py", line 159, in transcribe
+    raw_result = self.model.transcribe(
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/venv/lib/python3.10/site-packages/faster_whisper/transcribe.py", line 419, in transcribe
+    language = max(
+ValueError: max() arg is an empty sequence
+[2026-05-02 22:08:46,294] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=bca7aa40-10dd-470a-aa1e-f0e25ce0467e
+[2026-05-02 22:08:46,532] ERROR tspeak.ai transcriber: Erreur Whisper: max() arg is an empty sequence
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/ai/whisper_asr/transcriber.py", line 159, in transcribe
+    raw_result = self.model.transcribe(
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/venv/lib/python3.10/site-packages/faster_whisper/transcribe.py", line 419, in transcribe
+    language = max(
+ValueError: max() arg is an empty sequence
+[2026-05-02 22:08:46,532] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=bca7aa40-10dd-470a-aa1e-f0e25ce0467e — max() arg is an empty sequence
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 91, in process_audio_exchange_now
+    trans_res = transcriber.transcribe(wav_path, language=None)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/ai/whisper_asr/transcriber.py", line 159, in transcribe
+    raw_result = self.model.transcribe(
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/venv/lib/python3.10/site-packages/faster_whisper/transcribe.py", line 419, in transcribe
+    language = max(
+ValueError: max() arg is an empty sequence
+[2026-05-02 22:13:08,277] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=3c55fd61-982f-4ca1-a6f7-2b6277351274 task=9e9c8bff-89d4-4629-92f1-f75dd8b41ad2
+[2026-05-02 22:13:10,249] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=3c55fd61-982f-4ca1-a6f7-2b6277351274
+[2026-05-02 22:13:10,319] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 22:13:10,319] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 22:13:13,154] INFO tspeak.ai transcriber: Modèle chargé en 2.83s
+[2026-05-02 22:13:13,387] WARNING tspeak.ai transcriber: VAD a supprimé tout l'audio (silence/bruit). Retour d'un résultat vide.
+[2026-05-02 22:13:13,387] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=en (0.00) text='...'
+[2026-05-02 22:13:13,414] WARNING tspeak.ai tasks: Audio vide ou trop court (exchange=3c55fd61-982f-4ca1-a6f7-2b6277351274)
+[2026-05-02 22:13:13,628] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 22:13:15,528] INFO tspeak.ai generator: LLM feedback généré: 1897ms
+[2026-05-02 22:13:15,621] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=3c55fd61-982f-4ca1-a6f7-2b6277351274 — score=0.0
+[2026-05-02 22:18:39,092] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Aucun compte actif n'a été trouvé avec les identifiants fournis", code='no_active_account')}
+[2026-05-02 22:18:39,092] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/login/ — IP=196.207.227.11
+[2026-05-02 22:21:10,676] INFO tspeak.auth views: Nouvel utilisateur inscrit: ndeyesallatoure0@gmail.com (langue: wolof)
+[2026-05-02 22:21:56,226] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=ndeyesallatoure0@gmail.com
+[2026-05-02 22:22:17,625] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=ndeyesallatoure0@gmail.com
+[2026-05-02 22:22:21,725] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=ndeyesallatoure0@gmail.com
+[2026-05-02 22:22:53,586] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=8771e21a-4412-4ee5-ab15-0499d3e3fc80
+[2026-05-02 22:22:53,610] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=8771e21a-4412-4ee5-ab15-0499d3e3fc80 task=8524e092-b9d9-463d-8ff4-f41bd52298d8
+[2026-05-02 22:23:02,742] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=8771e21a-4412-4ee5-ab15-0499d3e3fc80 — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 22:23:07,748] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=8771e21a-4412-4ee5-ab15-0499d3e3fc80
+[2026-05-02 22:23:16,687] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=8771e21a-4412-4ee5-ab15-0499d3e3fc80 — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 22:23:21,691] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=8771e21a-4412-4ee5-ab15-0499d3e3fc80
+[2026-05-02 22:23:32,047] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=8771e21a-4412-4ee5-ab15-0499d3e3fc80 — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 22:23:37,051] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=8771e21a-4412-4ee5-ab15-0499d3e3fc80
+[2026-05-02 22:23:47,527] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=8771e21a-4412-4ee5-ab15-0499d3e3fc80 — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 22:23:50,806] INFO tspeak.auth views: Déconnexion: ndeyesallatoure0@gmail.com
+[2026-05-02 22:25:05,491] INFO tspeak.auth views: Nouvel utilisateur inscrit: ndeyesallatoure@gmail.com (langue: wolof)
+[2026-05-02 22:26:10,202] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=ndeyesallatoure@gmail.com
+[2026-05-02 22:26:36,623] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=1cdd191a-a906-4d2f-8a23-5bd127c447dc
+[2026-05-02 22:26:36,649] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=1cdd191a-a906-4d2f-8a23-5bd127c447dc task=0d01a91c-5a51-454a-bb99-33ccedcb070b
+[2026-05-02 22:26:37,054] WARNING tspeak.ai transcriber: VAD a supprimé tout l'audio (silence/bruit). Retour d'un résultat vide.
+[2026-05-02 22:26:37,055] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=en (0.00) text='...'
+[2026-05-02 22:26:37,055] WARNING tspeak.ai tasks: Audio vide ou trop court (exchange=1cdd191a-a906-4d2f-8a23-5bd127c447dc)
+[2026-05-02 22:26:39,040] INFO tspeak.ai generator: LLM feedback généré: 1983ms
+[2026-05-02 22:26:39,116] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=1cdd191a-a906-4d2f-8a23-5bd127c447dc — score=0.0
+[2026-05-02 22:27:19,571] INFO tspeak.simulations models: Simulation démarrée: Salary Negotiation at Orange — user=ndeyesallatoure@gmail.com
+[2026-05-02 22:27:40,927] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=b50f40e4-b51c-4983-af0c-382cf7ccb3e1
+[2026-05-02 22:27:40,945] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=b50f40e4-b51c-4983-af0c-382cf7ccb3e1 task=199596a2-99fb-4798-adde-07005bd3e632
+[2026-05-02 22:27:41,199] WARNING tspeak.ai transcriber: VAD a supprimé tout l'audio (silence/bruit). Retour d'un résultat vide.
+[2026-05-02 22:27:41,199] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=en (0.00) text='...'
+[2026-05-02 22:27:41,199] WARNING tspeak.ai tasks: Audio vide ou trop court (exchange=b50f40e4-b51c-4983-af0c-382cf7ccb3e1)
+[2026-05-02 22:27:43,301] INFO tspeak.ai generator: LLM feedback généré: 2093ms
+[2026-05-02 22:27:43,391] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=b50f40e4-b51c-4983-af0c-382cf7ccb3e1 — score=0.0
+[2026-05-02 22:57:12,293] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 22:57:12,294] WARNING tspeak.auth middleware: Auth échouée: /api/v1/auth/me/ — IP=154.124.143.238
+[2026-05-02 22:59:49,702] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 22:59:55,677] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=d2a82381-dd8c-4344-bf48-1c72730f96c2
+[2026-05-02 22:59:55,699] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=d2a82381-dd8c-4344-bf48-1c72730f96c2 task=c678da58-f675-475c-9a4e-811069f58b63
+[2026-05-02 23:00:07,504] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=d2a82381-dd8c-4344-bf48-1c72730f96c2 — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 23:00:12,509] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=d2a82381-dd8c-4344-bf48-1c72730f96c2
+[2026-05-02 23:00:19,379] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=c75dfe2b-ceb8-47c8-977b-6c4bf207dafa task=78dbf61f-508d-4f74-95aa-1d14968af06c
+[2026-05-02 23:00:24,149] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=c75dfe2b-ceb8-47c8-977b-6c4bf207dafa
+[2026-05-02 23:00:24,402] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 23:00:24,403] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 23:00:31,599] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=d2a82381-dd8c-4344-bf48-1c72730f96c2 — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 23:00:31,961] INFO tspeak.ai transcriber: Modèle chargé en 7.56s
+[2026-05-02 23:00:32,298] WARNING tspeak.ai transcriber: VAD a supprimé tout l'audio (silence/bruit). Retour d'un résultat vide.
+[2026-05-02 23:00:32,298] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=en (0.00) text='...'
+[2026-05-02 23:00:32,298] WARNING tspeak.ai tasks: Audio vide ou trop court (exchange=c75dfe2b-ceb8-47c8-977b-6c4bf207dafa)
+[2026-05-02 23:00:32,618] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 23:00:34,450] INFO tspeak.ai generator: LLM feedback généré: 1828ms
+[2026-05-02 23:00:34,530] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=c75dfe2b-ceb8-47c8-977b-6c4bf207dafa — score=0.0
+[2026-05-02 23:00:36,611] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=d2a82381-dd8c-4344-bf48-1c72730f96c2
+[2026-05-02 23:00:50,390] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=4b3b063d-7502-4027-82a5-7e809974ac3d
+[2026-05-02 23:00:50,416] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=4b3b063d-7502-4027-82a5-7e809974ac3d task=305e3ecd-c4cb-4777-989c-41cc48fef57d
+[2026-05-02 23:00:51,744] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=d2a82381-dd8c-4344-bf48-1c72730f96c2 — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 23:00:56,754] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=d2a82381-dd8c-4344-bf48-1c72730f96c2
+[2026-05-02 23:01:16,066] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=4b3b063d-7502-4027-82a5-7e809974ac3d — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 23:01:20,589] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=d2a82381-dd8c-4344-bf48-1c72730f96c2 — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 23:01:21,072] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=4b3b063d-7502-4027-82a5-7e809974ac3d
+[2026-05-02 23:01:37,189] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=4b3b063d-7502-4027-82a5-7e809974ac3d — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 23:01:42,194] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=4b3b063d-7502-4027-82a5-7e809974ac3d
+[2026-05-02 23:01:59,062] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=4b3b063d-7502-4027-82a5-7e809974ac3d — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 23:02:04,067] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=4b3b063d-7502-4027-82a5-7e809974ac3d
+[2026-05-02 23:02:20,138] ERROR tspeak.ai tasks: ❌ Erreur traitement audio: exchange=4b3b063d-7502-4027-82a5-7e809974ac3d — 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 39, in process_audio_exchange
+    return process_audio_exchange_now(exchange_id, audio_path, native_language)
+  File "/home/cardan/Downloads/TSpeaker/tspeak_backend/apps/sessions/tasks.py", line 93, in process_audio_exchange_now
+    detected_lang = trans_res.get("language", "en")
+AttributeError: 'NoneType' object has no attribute 'get'
+[2026-05-02 23:03:43,263] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 23:03:50,238] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=375c48dc-1046-4150-91dc-9ebd45234840 task=a839050b-51d5-4880-9159-ea03e4eb34ea
+[2026-05-02 23:03:52,468] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=375c48dc-1046-4150-91dc-9ebd45234840
+[2026-05-02 23:03:52,538] INFO tspeak.ai transcriber: WhisperTranscriber initialisé: model=medium device=cpu compute_type=default
+[2026-05-02 23:03:52,538] INFO tspeak.ai transcriber: Chargement du modèle faster-whisper 'medium'...
+[2026-05-02 23:03:56,184] INFO tspeak.ai transcriber: Modèle chargé en 3.65s
+[2026-05-02 23:04:11,369] INFO tspeak.ai transcriber: Transcription (faster): 18830ms — 7 mots — confiance=0.78
+[2026-05-02 23:04:11,369] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=en (0.56) text='Good morning everyone, my name is Abduba...'
+[2026-05-02 23:04:11,375] INFO tspeak.ai scorer: Wav2VecScorer initialise: model=facebook/wav2vec2-base-960h device=cpu
+[2026-05-02 23:04:11,376] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 23:04:12,134] INFO tspeak.ai scorer: Chargement Wav2Vec2 CTC 'facebook/wav2vec2-base-960h'...
+[2026-05-02 23:04:16,037] INFO tspeak.ai scorer: Wav2Vec2 charge en 3.90s
+[2026-05-02 23:04:16,679] INFO tspeak.ai scorer: Scoring Wav2Vec: 5303ms score=33.8 acoustic=0.73 ref=0.06 ctc=0.20
+[2026-05-02 23:04:16,887] INFO tspeak.ai generator: ConversationGenerator initialisé: model=meta-llama/Meta-Llama-3-8B-Instruct base_url=https://router.huggingface.co/v1
+[2026-05-02 23:04:19,181] INFO tspeak.ai generator: LLM feedback généré: 2291ms
+[2026-05-02 23:04:19,301] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=375c48dc-1046-4150-91dc-9ebd45234840 — score=60.9
+[2026-05-02 23:06:06,859] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 23:06:20,626] WARNING tspeak.api exceptions: Erreur API (401): {'detail': ErrorDetail(string="Le type de jeton fourni n'est pas valide", code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Le jeton est invalide ou expiré', code='token_not_valid')}]}
+[2026-05-02 23:06:20,627] WARNING tspeak.auth middleware: Auth échouée: /api/v1/sessions/c0da569a-5337-4849-820f-8095052cf628/end/ — IP=2001:4278:14:408c:cf1:2f2a:83ca:47d2
+[2026-05-02 23:06:28,527] INFO tspeak.auth views: Déconnexion: ndeyesallatoure@gmail.com
+[2026-05-02 23:06:34,130] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=Fatimata@gmail.com
+[2026-05-02 23:06:56,823] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=7d861f09-1a0e-4fbd-8ad8-f416a404ed9a
+[2026-05-02 23:06:56,849] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=7d861f09-1a0e-4fbd-8ad8-f416a404ed9a task=2ecbf15d-1348-4825-a049-21f912a57e25
+[2026-05-02 23:07:11,193] INFO tspeak.ai transcriber: Transcription (faster): 14208ms — 15 mots — confiance=0.89
+[2026-05-02 23:07:11,193] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=fr (0.18) text='Bonjour, j'espère que tu vas bien. Tu va...'
+[2026-05-02 23:07:11,194] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 23:07:12,396] INFO tspeak.ai scorer: Scoring Wav2Vec: 1202ms score=30.4 acoustic=0.61 ref=0.08 ctc=0.08
+[2026-05-02 23:07:14,488] INFO tspeak.ai generator: LLM feedback généré: 2089ms
+[2026-05-02 23:07:14,581] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=7d861f09-1a0e-4fbd-8ad8-f416a404ed9a — score=58.9
+[2026-05-02 23:07:55,997] INFO tspeak.auth views: Nouvel utilisateur inscrit: sallaba@gmail.com (langue: wolof)
+[2026-05-02 23:09:07,516] INFO tspeak.sessions views: Session démarrée: daily_life (conversation) — user=sallaba@gmail.com
+[2026-05-02 23:09:08,658] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=20d0a806-f9b6-4e0a-8659-ea4c96ef4fb6
+[2026-05-02 23:09:08,684] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=20d0a806-f9b6-4e0a-8659-ea4c96ef4fb6 task=3bc4bada-910e-482f-937e-92bbf57842e7
+[2026-05-02 23:09:21,735] INFO tspeak.ai transcriber: Transcription (faster): 12902ms — 7 mots — confiance=0.66
+[2026-05-02 23:09:21,736] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=pt (0.24) text='Bom dia, espero que você esteja bem....'
+[2026-05-02 23:09:21,738] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 23:09:22,424] INFO tspeak.ai scorer: Scoring Wav2Vec: 688ms score=32.5 acoustic=0.70 ref=0.07 ctc=0.08
+[2026-05-02 23:09:24,790] INFO tspeak.ai generator: LLM feedback généré: 2364ms
+[2026-05-02 23:09:24,867] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=20d0a806-f9b6-4e0a-8659-ea4c96ef4fb6 — score=56.8
+[2026-05-02 23:09:33,724] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=0e5d9824-e106-4644-b198-0a8ddf7b236c
+[2026-05-02 23:09:33,734] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=0e5d9824-e106-4644-b198-0a8ddf7b236c task=5f7395ae-0436-4d84-a5bb-55e7ecd4dba8
+[2026-05-02 23:09:50,239] INFO tspeak.ai transcriber: Transcription (faster): 16401ms — 16 mots — confiance=0.85
+[2026-05-02 23:09:50,240] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=en (0.90) text='I am a student at Insay National School....'
+[2026-05-02 23:09:50,241] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 23:09:52,276] INFO tspeak.ai scorer: Scoring Wav2Vec: 2035ms score=43.8 acoustic=0.90 ref=0.07 ctc=0.46
+[2026-05-02 23:09:54,729] INFO tspeak.ai generator: LLM feedback généré: 2451ms
+[2026-05-02 23:09:54,818] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=0e5d9824-e106-4644-b198-0a8ddf7b236c — score=59.0
+[2026-05-02 23:10:40,577] INFO tspeak.simulations models: Simulation démarrée: Salary Negotiation at Orange — user=sallaba@gmail.com
+[2026-05-02 23:11:07,403] INFO tspeak.ai tasks: 🎙️ Traitement audio démarré: exchange=56ccb288-df54-4082-b26b-ea94214789a3
+[2026-05-02 23:11:07,431] INFO tspeak.sessions views: Audio envoyé en traitement: exchange=56ccb288-df54-4082-b26b-ea94214789a3 task=c029e8b2-3cba-4f31-b4d3-7b9a08c1259d
+[2026-05-02 23:11:25,854] INFO tspeak.ai transcriber: Transcription (faster): 18308ms — 28 mots — confiance=0.95
+[2026-05-02 23:11:25,855] INFO tspeak.ai tasks: Détection/Transcription Whisper: lang=en (0.99) text='I'm very happy to hear that you're inter...'
+[2026-05-02 23:11:25,857] WARNING tspeak.ai nlp_analyzer: spaCy non disponible — fallback sur analyse basique
+[2026-05-02 23:11:29,968] INFO tspeak.ai scorer: Scoring Wav2Vec: 4111ms score=53.1 acoustic=1.00 ref=0.10 ctc=0.84
+[2026-05-02 23:11:32,033] INFO tspeak.ai generator: LLM feedback généré: 2062ms
+[2026-05-02 23:11:32,117] INFO tspeak.ai tasks: ✅ Traitement finalisé: exchange=56ccb288-df54-4082-b26b-ea94214789a3 — score=65.9

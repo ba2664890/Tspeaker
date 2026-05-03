@@ -1,1 +1,0 @@
- /home/cardan/Downloads/TSpeaker/tspeak_flutter/.dart_tool/flutter_build/4810be18183406480ceaf28d93e0aa0a/native_assets.json: 

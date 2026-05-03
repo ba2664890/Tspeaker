@@ -6,6 +6,7 @@ Whisper (transcription) → Wav2Vec (scoring phonétique) → LLM (feedback)
 import logging
 import os
 import time
+import concurrent.futures
 
 from celery import shared_task
 from django.core.cache import cache
@@ -58,6 +59,7 @@ def process_audio_exchange(self, exchange_id: str, audio_path: str, native_langu
 def process_audio_exchange_now(exchange_id: str, audio_path: str, native_language: str):
     """Exécute le pipeline audio immédiatement, sans passer par un worker Celery."""
     from apps.sessions.models import AudioExchange
+    from ai.whisper_asr.transcriber import get_transcriber
 
     start_time = time.monotonic()
     logger.info("🎙️ Traitement audio démarré: exchange=%s", exchange_id)
@@ -72,8 +74,6 @@ def process_audio_exchange_now(exchange_id: str, audio_path: str, native_languag
         return {"status": "error", "message": "Exchange not found"}
 
     if not os.path.exists(audio_path):
-        # Si le fichier n'existe pas, c'est peut-être qu'un autre worker (ou le fallback)
-        # l'a déjà traité et supprimé. On vérifie la transcription une dernière fois.
         exchange.refresh_from_db()
         if exchange.transcription:
             return {"status": "success", "already_processed": True}
@@ -86,48 +86,117 @@ def process_audio_exchange_now(exchange_id: str, audio_path: str, native_languag
         # ── Étape 1 : Conversion audio ─────────────────────────────────────
         wav_path = _convert_to_wav(audio_path)
 
-        # ── Étape 2 : Transcription Whisper ───────────────────────────────
-        from ai.whisper_asr.transcriber import get_transcriber
+        # ── Étape 2 : Transcription & Détection All-in-One ───────────────
         transcriber = get_transcriber()
-        transcription_result = transcriber.transcribe(wav_path, language="en")
-        transcription = transcription_result["text"].strip()
-        logger.info("Transcription: '%s...'", transcription[:50])
+        trans_res = transcriber.transcribe(wav_path, language=None)
+        
+        detected_lang = trans_res.get("language", "en")
+        lang_prob = trans_res.get("language_probability", 0.0)
+        transcription = trans_res["text"].strip()
+        
+        logger.info("Détection/Transcription Whisper: lang=%s (%.2f) text='%s...'", 
+                    detected_lang, lang_prob, transcription[:40])
 
-        # ── Étape 3 : Scoring Wav2Vec ──────────────────────────────────────
-        from ai.wav2vec_scoring.scorer import get_scorer
-        scorer = get_scorer()
-        phoneme_analysis = scorer.score_pronunciation(
-            wav_path,
-            reference_text=exchange.ai_question,
-            user_text=transcription,
-        )
-        pronunciation_score = phoneme_analysis["pronunciation_score"]
-        fluency_score = _compute_fluency_score(
-            transcription,
-            duration_sec=exchange.user_audio_duration_sec,
-        )
+        # Critères pour rejeter la langue: plus strict (0.30 au lieu de 0.45)
+        # Si c'est PAS de l'anglais et que Whisper est un minimum sûr, on rejette.
+        is_wrong_language = (detected_lang != 'en') and (lang_prob > 0.30)
+        
+        # Initialisation des variables de pipeline (toutes à 0 par défaut)
+        pronunciation_score = 0.0
+        fluency_score = 0.0
+        grammar_score = 0.0
+        vocabulary_score = 0.0
+        phoneme_analysis = {}
+        grammar_analysis = {"grammar_score": 0.0}
+        vocabulary_analysis = {"vocabulary_score": 0.0}
+        llm_error_hint = None
+        mistakes = {}
 
-        # ── Étape 4 : Analyse grammaire + vocabulaire ────────────────────
-        from ai.wav2vec_scoring.nlp_analyzer import GrammarAnalyzer, VocabularyAnalyzer
-        grammar_analysis = GrammarAnalyzer().analyze(transcription)
-        vocabulary_analysis = VocabularyAnalyzer().analyze(transcription)
-        grammar_score = grammar_analysis["grammar_score"]
-        vocabulary_score = vocabulary_analysis["vocabulary_score"]
+        if is_wrong_language:
+            logger.warning("Langue incorrecte détectée: %s (prob=%.2f). Scoring annulé.", 
+                           detected_lang, lang_prob)
+            llm_error_hint = f"WRONG_LANGUAGE:{detected_lang}"
+            phoneme_analysis = {"error": "wrong_language", "detected": detected_lang}
+            mistakes = {"detected_language": detected_lang, "status": "wrong_language"}
+            # Les scores restent à 0.0
+        else:
+            if not transcription or len(transcription.split()) < 2:
+                logger.warning("Audio vide ou trop court (exchange=%s)", exchange_id)
+                transcription = "[Silence ou inaudible]" if not transcription else transcription
+                llm_error_hint = "SILENCE"
+                phoneme_analysis = {"error": "silence"}
+                mistakes = {"status": "silence_or_too_short"}
+            else:
+                # ── Étape 4 : Pipeline Parallèle ───────────────────────────
+                from ai.wav2vec_scoring.scorer import get_scorer
+                from ai.wav2vec_scoring.nlp_analyzer import GrammarAnalyzer, VocabularyAnalyzer
+                
+                scorer = get_scorer()
+                grammar_tool = GrammarAnalyzer()
+                vocab_tool = VocabularyAnalyzer()
 
-        # ── Étape 5 : Génération feedback LLM ─────────────────────────────
+                with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+                    future_phoneme = executor.submit(
+                        scorer.score_pronunciation, 
+                        wav_path, 
+                        reference_text=exchange.ai_question, 
+                        user_text=transcription
+                    )
+                    future_grammar = executor.submit(grammar_tool.analyze, transcription)
+                    future_vocab = executor.submit(vocab_tool.analyze, transcription)
+
+                    phoneme_analysis = future_phoneme.result()
+                    grammar_analysis = future_grammar.result()
+                    vocabulary_analysis = future_vocab.result()
+
+                pronunciation_score = phoneme_analysis["pronunciation_score"]
+                grammar_score = grammar_analysis["grammar_score"]
+                vocabulary_score = vocabulary_analysis["vocabulary_score"]
+
+                # SECURITE: Si la prononciation est catastrophique (< 15%), 
+                # c'est probablement du charabia ou une langue non détectée.
+                if pronunciation_score < 15.0:
+                    logger.warning("Prononciation trop basse (%.1f). On force les autres scores à 0.", pronunciation_score)
+                    grammar_score = 0.0
+                    vocabulary_score = 0.0
+                    fluency_score = 0.0
+                    grammar_analysis["grammar_score"] = 0.0
+                    vocabulary_analysis["vocabulary_score"] = 0.0
+                else:
+                    fluency_score = _compute_fluency_score(
+                        transcription,
+                        duration_sec=exchange.user_audio_duration_sec,
+                    )
+
+                # Extraction des erreurs pour le LLM
+                mistakes = {
+                    "mispronounced_words": [w for w, s in phoneme_analysis.get("word_scores", {}).items() if s < 55],
+                    "difficult_phonemes": [p["phoneme"] for p in phoneme_analysis.get("difficult_phonemes", [])],
+                    "grammar_errors": [e["description"] for e in grammar_analysis.get("errors", [])],
+                    "cefr_level": vocabulary_analysis.get("cefr_level"),
+                }
+
+        # ── Étape 5 : Feedback LLM ────────────────────────────────────────
         from ai.llm_conversation.generator import get_generator
         generator = get_generator()
         session = exchange.session
         history = _get_session_history(session)
 
+        # On enrichit la transcription pour le LLM si erreur
+        llm_input_text = transcription
+        if llm_error_hint:
+            llm_input_text = f"[{llm_error_hint}]\n{transcription}"
+
         llm_response = generator.generate_feedback(
-            user_transcription=transcription,
+            user_transcription=llm_input_text,
             ai_question=exchange.ai_question,
             pronunciation_score=pronunciation_score,
             fluency_score=fluency_score,
             native_language=native_language,
             session_type=session.session_type,
             history=history,
+            user_level=session.user.level,
+            mistakes=mistakes,
         )
 
         # ── Étape 6 : Sauvegarde ──────────────────────────────────────────
@@ -173,12 +242,15 @@ def process_audio_exchange_now(exchange_id: str, audio_path: str, native_languag
             "vocabulary_analysis": vocabulary_analysis,
             "processing_time_ms": processing_ms,
         }
-        cache.set(f"exchange_result:{exchange_id}", result_data, timeout=600)
+        if is_wrong_language:
+            result_data["error"] = "wrong_language"
+            result_data["detected_language"] = detected_lang
+        elif llm_error_hint == "SILENCE":
+            result_data["error"] = "silence_detected"
 
-        logger.info(
-            "✅ Traitement terminé: exchange=%s — %dms — prononciation=%.1f",
-            exchange_id, processing_ms, pronunciation_score,
-        )
+        cache.set(f"exchange_result:{exchange_id}", result_data, timeout=600)
+        logger.info("✅ Traitement finalisé: exchange=%s — score=%.1f", exchange_id, score.global_score)
+        
         processing_succeeded = True
         return result_data
 
@@ -241,10 +313,18 @@ def _compute_fluency_score(transcription: str, duration_sec: float) -> float:
     - Débit de parole (mots par minute)
     - Ratio de pauses (estimé via longueur vs durée)
     """
-    if not transcription or duration_sec <= 0:
-        return 50.0
+    if not transcription or not transcription.strip():
+        return 0.0  # Audio vide/silencieux -> fluidité = 0
+    
+    if duration_sec <= 0:
+        return 5.0  # Très court mais non-vide
 
     words = transcription.split()
+    
+    # Très peu de mots (< 3) = mauvais score
+    if len(words) < 3:
+        return max(10.0, len(words) * 5.0)  # 0 mots=10, 1 mot=10, 2 mots=10, pas 28 comme avant
+    
     wpm = (len(words) / duration_sec) * 60
 
     # Débit idéal pour l'anglais : 120-180 wpm
@@ -256,10 +336,6 @@ def _compute_fluency_score(transcription: str, duration_sec: float) -> float:
         score = 60.0
     else:
         score = 40.0
-
-    # Pénalité pour transcription très courte (< 5 mots)
-    if len(words) < 5:
-        score *= 0.7
 
     return round(score, 2)
 

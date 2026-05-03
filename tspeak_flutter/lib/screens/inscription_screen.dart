@@ -27,8 +27,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _bioController = TextEditingController();
-  final _countryController = TextEditingController();
-  final _interestsController = TextEditingController();
+  
+  String _selectedCountry = 'Sénégal';
+  final List<String> _selectedPassions = [];
 
   String _selectedLanguage = 'Pulaar';
   String _selectedLevel = 'Intermédiaire';
@@ -37,6 +38,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
 
   final List<String> _languages = ['Wolof', 'Pulaar', 'Bambara', 'Serer', 'Diola', 'Soninké'];
   final List<String> _ageRanges = ['13-17', '18-24', '25-34', '35-44', '45+'];
+  final List<String> _countries = ['Sénégal', 'Guinée', 'Mali', 'Côte d\'Ivoire', 'France', 'États-Unis', 'Autre'];
+  final List<String> _passions = ['Mode', 'Tech', 'Foot', 'Musique', 'Cuisine', 'Sport', 'Lecture', 'Voyages'];
+  
   final List<Map<String, dynamic>> _goals = [
     {'id': 'Business', 'label': '💼', 'title': 'Business', 'desc': 'Carrière & Pro'},
     {'id': 'Voyage', 'label': '✈️', 'title': 'Voyage', 'desc': 'Tourisme & Découverte'},
@@ -58,8 +62,6 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _bioController.dispose();
-    _countryController.dispose();
-    _interestsController.dispose();
     super.dispose();
   }
 
@@ -236,6 +238,24 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
           onToggleVisibility: () => setState(() => _obscurePassword = !_obscurePassword),
           obscureText: _obscurePassword,
         ),
+        const SizedBox(height: 32),
+        Center(
+          child: TextButton(
+            onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+            child: RichText(
+              text: TextSpan(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.onSurface.withOpacity(0.6)),
+                children: [
+                  const TextSpan(text: 'Déjà un compte ? '),
+                  TextSpan(
+                    text: 'Se connecter',
+                    style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -268,7 +288,16 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
       title: 'Profil',
       subtitle: 'Quelques détails pour personnaliser tes sessions.',
       children: [
-        _buildCapsuleInput(_countryController, 'Ton pays de résidence', Icons.public_rounded),
+        _buildGlassSectionHeader('Ton pays de résidence'),
+        const SizedBox(height: 20),
+        Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          alignment: WrapAlignment.center,
+          children: _countries.map((c) => _buildModernChip(c, _selectedCountry, (v) {
+            setState(() => _selectedCountry = c);
+          })).toList(),
+        ),
         const SizedBox(height: 40),
         _buildGlassSectionHeader('Ta tranche d\'âge'),
         const SizedBox(height: 20),
@@ -303,7 +332,25 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
           children: _goals.map((g) => _buildModernGoalCard(g)).toList(),
         ),
         const SizedBox(height: 40),
-        _buildCapsuleInput(_interestsController, 'Tes passions (Mode, Tech, Foot...)', Icons.interests_rounded),
+        _buildGlassSectionHeader('Tes passions'),
+        const SizedBox(height: 20),
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          alignment: WrapAlignment.center,
+          children: _passions.map((p) {
+            final isSelected = _selectedPassions.contains(p);
+            return _buildModernChip(p, isSelected ? p : '', (v) {
+              setState(() {
+                if (isSelected) {
+                  _selectedPassions.remove(p);
+                } else {
+                  _selectedPassions.add(p);
+                }
+              });
+            });
+          }).toList(),
+        ),
       ],
     );
   }
@@ -617,9 +664,9 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
         nativeLanguage: _selectedLanguage.toLowerCase(),
         level: _levels.firstWhere((l) => l['title'] == _selectedLevel)['key'],
         bio: _bioController.text,
-        country: _countryController.text,
+        country: _selectedCountry,
         learningGoal: _selectedGoal,
-        interests: _interestsController.text,
+        interests: _selectedPassions.join(', '),
         ageRange: _selectedAgeRange,
         gdprConsent: true,
       );

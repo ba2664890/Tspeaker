@@ -1,1 +1,0 @@
- /home/cardan/Downloads/TSpeaker/tspeak_flutter/.dart_tool/flutter_build/4810be18183406480ceaf28d93e0aa0a/dart_build_result.json:  /home/cardan/Downloads/TSpeaker/tspeak_flutter/.dart_tool/package_config.json /home/cardan/Downloads/TSpeaker/tspeak_flutter/pubspec.yaml /home/cardan/development/flutter/bin/cache/dart-sdk/version

@@ -2,20 +2,31 @@ import 'package:flutter/widgets.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
+import '../utils/debug_logger.dart';
 
 class ApiService {
   late Dio _dio;
-  static const String baseUrl = 'https://tspeaker-backend-1.onrender.com/api/v1';
+  static const String baseUrl = 'https://high-donate-vat-wrote.trycloudflare.com/api/v1/';
   bool _isRefreshing = false;
 
   ApiService({String? baseUrl}) {
     _dio = Dio(BaseOptions(
       baseUrl: baseUrl ?? ApiService.baseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+      },
+    ));
+
+    _dio.interceptors.add(LogInterceptor(
+      requestBody: true,
+      responseBody: true,
+      logPrint: (obj) {
+        final msg = obj.toString();
+        print('DIO_LOG: $msg');
+        DebugLogger().log(msg);
       },
     ));
 
@@ -39,7 +50,8 @@ class ApiService {
             await prefs.remove('access_token');
             await prefs.remove('refresh_token');
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              TSpeakApp.navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
+              TSpeakApp.navigatorKey.currentState
+                  ?.pushNamedAndRemoveUntil('/login', (route) => false);
             });
             return handler.next(e);
           }
@@ -49,16 +61,29 @@ class ApiService {
             final prefs = await SharedPreferences.getInstance();
             final refreshToken = prefs.getString('refresh_token');
             if (refreshToken != null) {
-              final refreshResp = await _dio.post(
+              final refreshDio = Dio(BaseOptions(
+                baseUrl: _dio.options.baseUrl,
+                connectTimeout: _dio.options.connectTimeout,
+                receiveTimeout: _dio.options.receiveTimeout,
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                },
+              ));
+              final refreshResp = await refreshDio.post(
                 '/auth/refresh/',
                 data: {'refresh': refreshToken},
-                options: Options(
-                  headers: {'Authorization': null}, // no auth header for refresh
-                ),
               );
               if (refreshResp.statusCode == 200) {
-                final newAccess = refreshResp.data['access'] as String;
-                final newRefresh = refreshResp.data['refresh'] as String;
+                final newAccess = refreshResp.data['access']?.toString();
+                final newRefresh =
+                    refreshResp.data['refresh']?.toString() ?? refreshToken;
+                if (newAccess == null || newAccess.isEmpty) {
+                  throw DioException(
+                    requestOptions: e.requestOptions,
+                    message: 'Refresh token response missing access token.',
+                  );
+                }
                 await prefs.setString('access_token', newAccess);
                 await prefs.setString('refresh_token', newRefresh);
                 e.requestOptions.headers['Authorization'] = 'Bearer $newAccess';
@@ -72,7 +97,8 @@ class ApiService {
             await prefs.remove('access_token');
             await prefs.remove('refresh_token');
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              TSpeakApp.navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
+              TSpeakApp.navigatorKey.currentState
+                  ?.pushNamedAndRemoveUntil('/login', (route) => false);
             });
           } finally {
             _isRefreshing = false;
